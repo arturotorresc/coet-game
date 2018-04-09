@@ -6,8 +6,8 @@
 package videogame;
 
 /**
- *
- * @author antoniomejorado
+ * Main class to run the videogame
+ * @author diego martinez
  */
 public class VideoGame {
 
