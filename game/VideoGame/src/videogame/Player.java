@@ -5,63 +5,76 @@
  */
 package videogame;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 /**
- *
- * @author antoniomejorado
+ * Class to use the player in the game
+ * @author diego martinez
  */
 public class Player extends Item{
 
     private int direction;
+    private int width;
+    private int height;
     private Game game;
     
-    public Player(int x, int y, int direction, int width, int height, Game game) {
-        super(x, y, height, width);
-        this.direction = direction;
+    public Player(int x, int y, int width, int height, Game game) {
+        super(x, y, width, height);
         this.game = game;
     }
-
+    /**
+     * To get player's direction
+     * @return direction
+     */
     public int getDirection() {
         return direction;
     }
-
+    /**
+     * To set player's direction
+     * @param direction 
+     */
     public void setDirection(int direction) {
         this.direction = direction;
     }
-
+    /**
+     * To tick the player
+     */
     @Override
     public void tick() {
         // moving player depending on flags
         if (game.getKeyManager().up) {
-           setY(getY() - 1);
+           setY(getY() - 5);
         }
         if (game.getKeyManager().down) {
-           setY(getY() + 1);
+           setY(getY() + 5);
         }
         if (game.getKeyManager().left) {
-           setX(getX() - 1);
+            setX(getX() - 5);
         }
         if (game.getKeyManager().right) {
-           setX(getX() + 1);
+            setX(getX() + 5);
         }
-        // reset x position and y position if colision
-        if (getX() + 60 >= game.getWidth()) {
-            setX(game.getWidth() - 60);
+        // collision with walls
+        if (getY() + 180 >= game.getHeight()) {
+            setY(game.getHeight() - 180);
         }
-        else if (getX() <= -30) {
-            setX(-30);
+        else if (getY() <= 0) {
+            setY(0);
         }
-        if (getY() + 80 >= game.getHeight()) {
-            setY(game.getHeight() - 80);
+        if (getX() + 20 >= game.getWidth()) {
+            setX(game.getWidth() - 20);
         }
-        else if (getY() <= -20) {
-            setY(-20);
+        else if (getX() <= 0) {
+            setX(0);
         }
     }
-
+    /**
+     * To render the player
+     * @param g 
+     */
     @Override
     public void render(Graphics g) {
-        g.drawImage(Assets.player, getX(), getY(), getWidth(), getHeight(), null);
+        g.drawImage(Assets.rick_gun, getX(), getY(), getWidth(), getHeight(), null);        
     }
 }

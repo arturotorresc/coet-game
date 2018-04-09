@@ -10,8 +10,8 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 
 /**
- *
- * @author antoniomejorado
+ * Class to manage the display of the game
+ * @author diego martinez
  */
 public class Display {
     private JFrame jframe;  // this is the app class

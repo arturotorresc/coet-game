@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 /**
- *
+ * Class to load images for the game
  * @author antoniomejorado
  */
 public class ImageLoader {
