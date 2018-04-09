@@ -49,12 +49,24 @@ public class Player extends Item{
         if (game.getKeyManager().down) {
            setY(getY() + 5);
         }
+        if (game.getKeyManager().left) {
+            setX(getX() - 5);
+        }
+        if (game.getKeyManager().right) {
+            setX(getX() + 5);
+        }
         // collision with walls
         if (getY() + 180 >= game.getHeight()) {
             setY(game.getHeight() - 180);
         }
         else if (getY() <= 0) {
             setY(0);
+        }
+        if (getX() + 20 >= game.getWidth()) {
+            setX(game.getWidth() - 20);
+        }
+        else if (getX() <= 0) {
+            setX(0);
         }
     }
     /**

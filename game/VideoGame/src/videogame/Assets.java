@@ -12,8 +12,12 @@ import java.awt.image.BufferedImage;
  * @author diego martinez
  */
 public class Assets {
-    //characters 
-    public static BufferedImage background; // to store background image
+    //backgrounds
+    public static BufferedImage background1; // to store background image for level 1
+    public static BufferedImage background2; // to store background image for level 2
+    public static BufferedImage background3; // to store background image for level 3
+    public static BufferedImage background4; // to store background image for level 4
+    
     public static BufferedImage rick;     // to store the player's image
     public static BufferedImage rick_gun;   //to store the player shooting image
     public static BufferedImage bad;     //to store the brick image
@@ -42,7 +46,11 @@ public class Assets {
      * initializing the images of the game
      */
     public static void init() {
-        background = ImageLoader.loadImage("/images/background.png");
+        background1 = ImageLoader.loadImage("/images/nivel1.png");
+        background2 = ImageLoader.loadImage("/images/nivel2.png");
+        background3 = ImageLoader.loadImage("/images/nivel3.png");
+        background4 = ImageLoader.loadImage("/images/nivel4.png");
+        
         bad = ImageLoader.loadImage("/images/nebulon.png");
         start = ImageLoader.loadImage("/images/mortyStart.png");
         pause = ImageLoader.loadImage("/images/pause.png");

@@ -28,13 +28,9 @@ public class Files {
             printWriter.println("" + game.getPlayer().getX() + "," + 
                     game.getPlayer().getY());
             printWriter.println("" + game.getScore() + "," + game.getVidas());
-            printWriter.println("" + game.getBricks().size());
-            for(Brick enemy : game.getBricks()){
-                printWriter.println("" + enemy.getX() + "," + enemy.getY());
-            }
-            printWriter.println("" + game.getEnemiesShot());
-            printWriter.println("" + game.getShieldOne().getShotsReceived() + 
-                    "," + game.getShieldTwo().getShotsReceived());
+            
+            //TODO: check what will be saved and loaded in the game 
+            
             printWriter.close();
             
         } catch(IOException ioe) {
@@ -62,27 +58,7 @@ public class Files {
             game.setScore(Integer.parseInt(tokens[0]));
             game.setVidas(Integer.parseInt(tokens[1]));
             
-            int enemies = Integer.parseInt(bufferedReader.readLine());
-            
-            //clearing the enemies.
-            game.getBricks().clear();
-            
-            for(int i = 0; i < enemies; i++){
-                //getting the next line.
-                line = bufferedReader.readLine();
-                tokens = line.split(",");
-                int x = Integer.parseInt(tokens[0]);
-                int y = Integer.parseInt(tokens[1]);                
-                Brick enemy = new Brick(x, y, 45, 120, game);
-                game.getBricks().add(enemy);
-            }
-            int enemiesShot = Integer.parseInt(bufferedReader.readLine());
-            game.setEnemiesShot(enemiesShot);
-            
-            line = bufferedReader.readLine();
-            tokens = line.split(",");
-            game.getShieldOne().setShotsReceived(Integer.parseInt(tokens[0]));
-            game.getShieldTwo().setShotsReceived(Integer.parseInt(tokens[1]));         
+            //TODO: check what will be saved and loaded in the game         
             
             
         } catch(IOException ioe){

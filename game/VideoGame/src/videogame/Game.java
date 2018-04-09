@@ -28,29 +28,20 @@ public class Game implements Runnable {
     private boolean started;        //to know when the game starts
     private Player player;          // to use a player
     private boolean canShoot;       // to control player's shooting
-    private Shield shieldOne;       // to use a shield
-    private Shield shieldTwo;       // to use a shield
     private ArrayList<Ball> bullets;  //to use bullets
     private ArrayList<EnemyBullet> enemyBullets; //to use enemy bullets
-    private int enemiesShot;        //to store the amount of enemies shot
-    private ArrayList<Brick> bricks; //to use enemies
+    private int shootTmpPl;        //timer to control shooting
     private int direction;          //to control enemies direction
-    private boolean moveX;          // to control enemies movement on X
     private KeyManager keyManager;  // to manage the keyboard
     private boolean pause;          //to pause the game
     private int vidas;              //to store lives
     private int score;              //to store score
     //to control game status (0-not started, 1-playing, 2-gameOver, 3-Win)
     private int status;             
+    private int level;              //to control the actual level being played
     private boolean gameOver;       //to control the game ending
-    private int shootTmpEn;           //timer to control enemy shooting
-    private int shootTmpPl;           //timer to control player shooting
     private Random r;               //to use a random number
     private Files file;              //File to save and load the game
-    private int bonusTmp;           //timer to control bonus ship
-    private boolean bonus;          //to store if got bonus
-    private Bonus bonusShip;        //to store the bonus ship
-    private int bonusImgTmp;        //timer to control bonus image being showed
     
     
     /**
@@ -82,76 +73,6 @@ public class Game implements Runnable {
      */
     public void setStarted(boolean started) {
         this.started = started;
-    }
-    /**
-     * Get the enemies arraylist
-     * @return bricks
-     */
-    public ArrayList<Brick> getBricks() {
-        return bricks;
-    }
-    /**
-     * Set the enemies arraylist
-     * @param bricks 
-     */
-    public void setBricks(ArrayList<Brick> bricks) {
-        this.bricks = bricks;
-    }
-    /**
-     * get the amount of enemies shot
-     * @return enemiesShot
-     */
-    public int getEnemiesShot() {
-        return enemiesShot;
-    }
-    /**
-     * set the amount of enemies shot
-     * @param enemiesShot 
-     */
-    public void setEnemiesShot(int enemiesShot) {
-        this.enemiesShot = enemiesShot;
-    }    
-    /**
-     * Get the shield one
-     * @return shieldOne
-     */
-    public Shield getShieldOne() {
-        return shieldOne;
-    }
-    /**
-     * Set the shield one
-     * @param shieldOne 
-     */
-    public void setShieldOne(Shield shieldOne) {
-        this.shieldOne = shieldOne;
-    }
-    /**
-     * Get the shield two
-     * @return shieldTwo
-     */
-    public Shield getShieldTwo() {
-        return shieldTwo;
-    }
-    /**
-     * Set the shield two
-     * @param shieldTwo 
-     */
-    public void setShieldTwo(Shield shieldTwo) {
-        this.shieldTwo = shieldTwo;
-    }    
-    /**
-     * Check if enemies should move on X
-     * @return moveX
-     */
-    public boolean isMoveX() {
-        return moveX;
-    }
-    /**
-     * Set if the enemies should move on X
-     * @param moveX 
-     */
-    public void setMoveX(boolean moveX) {
-        this.moveX = moveX;
     }
     /**
      * Get the score
@@ -237,6 +158,20 @@ public class Game implements Runnable {
     public void setStatus(int status) {
         this.status = status;
     }
+    /**
+     * To get the actual level being played
+     * @return level
+     */
+    public int getLevel() {
+        return level;
+    }
+    /**
+     * To set the actual level being played
+     * @param level 
+     */
+    public void setLevel(int level) {
+        this.level = level;
+    }    
     
     /**
      * initializing the variables of the game
@@ -245,30 +180,15 @@ public class Game implements Runnable {
          display = new Display(title, getWidth(), getHeight());  
          Assets.init();
          player = new Player(700, getHeight()/2 - 90, 70, 180, this);
-         shieldOne = new Shield(575, getHeight()/3 - 75, 30, 100, this);
-         shieldTwo = new Shield(575, getHeight()*2/3 - 50, 30, 100, this);
-         bonusShip = new Bonus(25, getHeight()+100, 70, 60, this);
-         bonusShip.setMove(false);
          bullets = new ArrayList<Ball>();  
          enemyBullets = new ArrayList<EnemyBullet>();
-         bricks = new ArrayList<Brick>(); 
-         int width_brick = 45;
-         int height_brick = 120;
-         for (int i = 0; i < 9; i++) {
-             for(int j = 0; j < 3; j++) {
-                 Brick brick = new Brick(i * width_brick + 20, j * height_brick + 70, width_brick, height_brick, this);
-                 bricks.add(brick);
-             }
-         }
-         bonusTmp = 0;
-         enemiesShot = 0;
          canShoot = true;
-         shieldOne.setShotsReceived(0);
-         shieldTwo.setShotsReceived(0);
+         shootTmpPl = 0;
          r = new Random();
          direction = 1;
          vidas = 100;
          score = 0;
+         level = 4;
          gameOver = false;
          pause = false;
          display.getJframe().addKeyListener(keyManager);
@@ -279,26 +199,11 @@ public class Game implements Runnable {
     public void restart() {
         continueGame();
         setStatus(0);
-        bricks.clear();
+        setLevel(1);
         bullets.clear();
-        enemyBullets.clear();        
-        int width_brick = 45;
-        int height_brick = 120;
-        for (int i = 0; i < 9; i++) {
-             for(int j = 0; j < 3; j++) {
-                 Brick brick = new Brick(i * width_brick + 20, j * height_brick + 70, width_brick, height_brick, this);
-                bricks.add(brick);
-            }
-        }
-        enemiesShot = 0;
-        bonusTmp = 0;
-        bonusShip.setY(getHeight()+100);
-        bonusShip.setMove(false);
+        enemyBullets.clear();
         canShoot = true;
-        shieldOne.setY(getHeight()/3 - 75);
-        shieldTwo.setY(getHeight()*2/3 - 50);
-        shieldOne.setShotsReceived(0);
-        shieldTwo.setShotsReceived(0);
+        shootTmpPl = 0;
         r = new Random();
         direction = 1;
         vidas = 100;
@@ -385,19 +290,7 @@ public class Game implements Runnable {
         
         if (!pause && !gameOver) {
             if(this.isStarted()) {
-                shootTmpEn++;
-                bonusTmp++;
-                bonusShip.tick();
                 player.tick();
-                bullets.forEach((bullet) -> {
-                    bullet.tick();
-                });
-                enemyBullets.forEach((bull) -> {
-                    bull.tick();
-                });            
-                bricks.forEach((brick) -> {
-                    brick.tick();
-                });
             }
             
             //player shooting
@@ -416,91 +309,8 @@ public class Game implements Runnable {
             if (shootTmpPl >= 25) {
                 canShoot = true;
                 shootTmpPl = 0;
-            }
-           
-            for (int j = 0; j < bullets.size(); j++) {
-                Ball bullet = (Ball) bullets.get(j);
-                //clearing bullets when crashing with shield
-                if (bullet.intersects(shieldOne) || bullet.intersects(shieldTwo)) {
-                    bullets.remove(bullet);
-                    j--;
-                }
-                //checking if got bonus
-                if(bullet.intersects(bonusShip)) {
-                    score += 500;
-                    bonusShip.setY(getHeight()+100);
-                    bonusShip.setMove(false);
-                    bonus = true;
-                    bonusTmp = 0;
-                }
-                //damaging enemies with player's bullets
-                for (int i = 0; i < bricks.size(); i++) {
-                    Brick brick = (Brick) bricks.get(i);
-                    if(bullet.intersects(brick) && (bullet.getY() > brick.getY() + 5
-                            && bullet.getY() < brick.getY() + brick.getHeight() - 5)
-                            && (bullet.getX() >= brick.getX() + brick.getWidth() -5)) {
-                        bricks.remove(brick);
-                        enemiesShot++;  //count the amount of enemies shot
-                        bullets.remove(bullet);
-                        score += 100;
-                        Assets.playerHit.play();
-                        i--;
-                        j--;
-                    }                
-                }                
-            }
-            
-            //random aliens shooting
-            if (shootTmpEn >= 50) {
-                for(int i = 0; i < bricks.size(); i++) {
-                    if (r.nextInt(27) == i) {
-                        EnemyBullet bullet = new EnemyBullet(bricks.get(i).getX()+60,
-                                bricks.get(i).getY(), 15, 4, this);
-                        enemyBullets.add(bullet);
-                        Assets.alienShot.play();
-                    }
-                }
-                shootTmpEn = 0;
-            }
-            
-            //damaging shield and player with enemy bullets
-            for (int i = 0; i < enemyBullets.size(); i++) {
-                EnemyBullet bullet = (EnemyBullet) enemyBullets.get(i);
-                if (bullet.intersects(shieldOne)) {
-                    enemyBullets.remove(bullet);
-                    shieldOne.setShotsReceived(shieldOne.getShotsReceived()+1);
-                    Assets.shieldHit.play();
-                    i--;
-                } else if(bullet.intersects(shieldTwo)) {
-                    enemyBullets.remove(bullet);
-                    shieldTwo.setShotsReceived(shieldTwo.getShotsReceived()+1);
-                    Assets.shieldHit.play();
-                    i--;
-                }
-                if (bullet.intersects(player)) {
-                    enemyBullets.remove(bullet);
-                    Assets.playerHit.play();
-                    setVidas(getVidas() - 15);
-                    i--;
-                }
-                if(bullet.getX() > getWidth()) {
-                    enemyBullets.remove(bullet);
-                    i--;
-                }
-            }
-            //set bonus ship to move at the second 20
-            if(bonusTmp >= 1000) {
-                bonusShip.setMove(true);
-                bonusTmp = 0;
-            }
+            }                       
         }     
-        //move shields out the window when destroyed
-        if (shieldOne.getShotsReceived() >= 5) {
-            shieldOne.setY(-300);
-        }
-        if (shieldTwo.getShotsReceived() >= 5) {
-            shieldTwo.setY(-300);
-        }
             
         //If lives == 0 game is over with status 2 (lose)
         if (vidas <= 0) {
@@ -508,32 +318,6 @@ public class Game implements Runnable {
             vidas = 0;
             status = 2;
         }       
-        //If enemiesShot == 27(all bricks destroyed)
-        //game is over with status 3(win)
-        if (enemiesShot >= 27) {
-            status = 3;
-            gameOver = true;
-        }
-        
-        //moving aliens
-        bricks.forEach((brick) -> {
-            if(brick.getY() < 0) {
-                setDirection(1);
-                setMoveX(true);
-            } else if(brick.getY() + brick.getHeight() >= getHeight()) {
-                setDirection(-1);
-                setMoveX(true);
-            }
-            if(brick.getX() + brick.getWidth() >= player.getX()) {
-                setVidas(0);
-            }
-        });        
-        if (isMoveX()) {
-            bricks.forEach((brick) -> {
-               brick.setX(brick.getX() + 15);
-            });
-            setMoveX(false);
-        }
     }
     /**
      * To render the game
@@ -553,20 +337,22 @@ public class Game implements Runnable {
         else
         {
             g = bs.getDrawGraphics();
-            g.drawImage(Assets.background, 0, 0, width, height, null);
+            switch(getLevel()) {
+                case 1:
+                    g.drawImage(Assets.background1, 0, 0, width, height, null);
+                    break;
+                case 2:
+                    g.drawImage(Assets.background2, 0, 0, width, height, null);
+                    break;
+                case 3:
+                    g.drawImage(Assets.background3, 0, 0, width, height, null);
+                    break;
+                case 4:
+                    g.drawImage(Assets.background4, 0, 0, width, height, null);
+                    break;
+            }            
             player.render(g);
-            bonusShip.render(g);
-            shieldOne.render(g);
-            shieldTwo.render(g);
-            bullets.forEach((bullet) -> {
-                bullet.render(g);
-            });
-            bricks.forEach((brick) -> {
-                brick.render(g);
-            });
-            enemyBullets.forEach((bull) -> {
-                bull.render(g);
-            });
+            
             //draw the different menus depending on game status
             if(!this.isStarted())
                 if (status == 0)
@@ -584,15 +370,6 @@ public class Game implements Runnable {
                 else if (status == 3)
                     g.drawImage(Assets.win, getWidth()/2 - 200, 
                             getHeight()/2 - 175, 400, 350, null);
-            }
-            if(bonus) {
-                g.drawImage(Assets.bonus, getWidth()/2 - 200, 
-                        getHeight()/2 - 175, 400, 350, null);
-                bonusImgTmp++;
-            }
-            if(bonusImgTmp >= 75) {
-                bonus = false;
-                bonusImgTmp = 0;
             }
             g.setColor(Color.white);
             g.setFont(new Font("default", Font.BOLD, 18));
