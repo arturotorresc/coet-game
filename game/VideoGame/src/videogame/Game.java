@@ -339,7 +339,8 @@ public class Game implements Runnable {
                 case 4:
                     g.drawImage(Assets.background4, 0, 0, width, height, null);
                     break;
-            }            
+            }
+            g.drawImage(Assets.shadow, player.getX()-800, player.getY()-500, width*2, height*2, null);
             player.render(g);
             
             //draw the different menus depending on game status
