@@ -283,7 +283,7 @@ public class Game implements Runnable {
         }
         
         // starting the game
-        if (this.getKeyManager().space && !this.isStarted()) {
+        if (this.getKeyManager().start && !this.isStarted()) {
             setStarted(true);
         }
         
@@ -293,19 +293,6 @@ public class Game implements Runnable {
         if (!pause && !gameOver) {
             if(this.isStarted()) {
                 player.tick();
-            }
-            
-            //player shooting
-            if (canShoot) {
-                if (getKeyManager().s) {
-                    Ball bullet = new Ball(getPlayer().getX() - 15, 
-                            getPlayer().getY() + 70, 15, 4, this);
-                    bullets.add(bullet);
-                    Assets.playerShot.play();
-                    canShoot = false;
-                }
-            } else {
-                shootTmpPl++;
             }
             //wait 1.5 seconds to shoot again
             if (shootTmpPl >= 25) {

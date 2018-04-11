@@ -18,10 +18,9 @@ public class KeyManager implements KeyListener {
     public boolean down;    // flag to move down the player
     public boolean left;    // flag to move left the player
     public boolean right;   // flag to move right the player
-    public boolean space;   //flag to space
+    public boolean start;   //flag to space
     public boolean p;       //flag to pause the game
     public boolean r;       //flag to restart the game
-    public boolean s;       //flag to shoot
     public boolean g;       //flag to save the game
     public boolean l;       //flag to loaf the game
     private boolean hide;   //flag to hide the player.
@@ -42,11 +41,11 @@ public class KeyManager implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         // set true to every key pressed except P and R
-        if (e.getKeyCode() == KeyEvent.VK_P || e.getKeyCode() == KeyEvent.VK_R
-                || e.getKeyCode() == KeyEvent.VK_S)
+        if (e.getKeyCode() == KeyEvent.VK_P || e.getKeyCode() == KeyEvent.VK_R){
             keys[e.getKeyCode()] = false;
-        else 
+        }else{
             keys[e.getKeyCode()] = true;
+        }
     }
     /**
      * To manage keys released
@@ -55,11 +54,11 @@ public class KeyManager implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         // set false to every key released except P and R
-        if (e.getKeyCode() == KeyEvent.VK_P || e.getKeyCode() == KeyEvent.VK_R
-                || e.getKeyCode() == KeyEvent.VK_S)
+        if (e.getKeyCode() == KeyEvent.VK_P || e.getKeyCode() == KeyEvent.VK_R){
             keys[e.getKeyCode()] = true;
-        else 
+        }else{
             keys[e.getKeyCode()] = false;
+        }
     }
     
     /**
@@ -70,14 +69,12 @@ public class KeyManager implements KeyListener {
         down = keys[KeyEvent.VK_DOWN];
         left = keys[KeyEvent.VK_LEFT];
         right = keys[KeyEvent.VK_RIGHT];
-        space = keys[KeyEvent.VK_SPACE];
+        start = keys[KeyEvent.VK_ENTER];
         p = keys[KeyEvent.VK_P];
         r = keys[KeyEvent.VK_R];
-        s = keys[KeyEvent.VK_S];
         g = keys[KeyEvent.VK_G];
         l = keys[KeyEvent.VK_L];
-        //hide = keys[KeyEvent.VK_SPACE];
-        keys[KeyEvent.VK_S] = false;
+        hide = keys[KeyEvent.VK_SPACE];
         keys[KeyEvent.VK_P] = false;
         keys[KeyEvent.VK_R] = false;
     }
