@@ -30,6 +30,7 @@ public class Game implements Runnable {
     private boolean canShoot;       // to control player's shooting
     private ArrayList<Ball> bullets;  //to use bullets
     private ArrayList<EnemyBullet> enemyBullets; //to use enemy bullets
+    private ArrayList<Obstacle> obstacles; //to implement obstacles.
     private int shootTmpPl;        //timer to control shooting
     private int direction;          //to control enemies direction
     private KeyManager keyManager;  // to manage the keyboard
@@ -182,6 +183,7 @@ public class Game implements Runnable {
          player = new Player(700, getHeight()/2 - 90, 70, 180, this);
          bullets = new ArrayList<Ball>();  
          enemyBullets = new ArrayList<EnemyBullet>();
+         obstacles = new ArrayList<Obstacle>();
          canShoot = true;
          shootTmpPl = 0;
          r = new Random();

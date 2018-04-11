@@ -18,9 +18,10 @@ public class Assets {
     public static BufferedImage background3; // to store background image for level 3
     public static BufferedImage background4; // to store background image for level 4
     
-    public static BufferedImage rick;     // to store the player's image
-    public static BufferedImage rick_gun;   //to store the player shooting image
-    public static BufferedImage bad;     //to store the brick image
+    //Game objects
+    public static BufferedImage player;     // to store the player's image
+    public static BufferedImage player_gun;   //to store the player shooting image
+    public static BufferedImage bad;     //to store the bplayer image
     public static BufferedImage shield;     //to store the shield image
     public static BufferedImage shield2;     //to store the shield image
     public static BufferedImage shield3;     //to store the shield image
@@ -54,8 +55,8 @@ public class Assets {
         bad = ImageLoader.loadImage("/images/nebulon.png");
         start = ImageLoader.loadImage("/images/mortyStart.png");
         pause = ImageLoader.loadImage("/images/pause.png");
-        rick = ImageLoader.loadImage("/images/rick.png");
-        rick_gun = ImageLoader.loadImage("/images/rick_gun.png");
+        player = ImageLoader.loadImage("/images/rick.png");
+        player_gun = ImageLoader.loadImage("/images/rick_gun.png");
         shield = ImageLoader.loadImage("/images/portal.png");
         shield2 = ImageLoader.loadImage("/images/portal2.png");
         shield3 = ImageLoader.loadImage("/images/portal3.png");
