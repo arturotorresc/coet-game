@@ -18,11 +18,32 @@ public class Player extends Item{
     private int width;
     private int height;
     private Game game;
+    private boolean visible; // This is false when the player is hidden.
     
     public Player(int x, int y, int width, int height, Game game) {
         super(x, y, width, height);
         this.game = game;
+        visible = true;
     }
+    
+    /**
+     * modifies the visible attribute to true or false.
+     * @param visible 
+     */
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    /**
+     * isVisible
+     * @return true or false depending on whether the player is hidden.
+     */
+    
+    public boolean isVisible() {
+        return visible;
+    }
+    
     /**
      * To get player's direction
      * @return direction
@@ -45,15 +66,19 @@ public class Player extends Item{
         // moving player depending on flags
         if (game.getKeyManager().up) {
            setY(getY() - 5);
+           this.setVisible(true);
         }
         if (game.getKeyManager().down) {
            setY(getY() + 5);
+           this.setVisible(true);
         }
         if (game.getKeyManager().left) {
             setX(getX() - 5);
+            this.setVisible(true);
         }
         if (game.getKeyManager().right) {
             setX(getX() + 5);
+            this.setVisible(true);
         }
         // collision with walls
         if (getY() + 180 >= game.getHeight()) {
@@ -69,12 +94,20 @@ public class Player extends Item{
             setX(0);
         }
     }
+    
+    public void hide(Obstacle o){
+        if(o.intersects(this) && o.isHideable()){
+            this.setVisible(false);
+        }
+    }
     /**
      * To render the player
      * @param g 
      */
     @Override
     public void render(Graphics g) {
-        g.drawImage(Assets.player_gun, getX(), getY(), getWidth(), getHeight(), null);        
+        if(this.isVisible()){
+            g.drawImage(Assets.player, getX(), getY(), getWidth(), getHeight(), null);
+        }        
     }
 }

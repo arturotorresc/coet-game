@@ -24,6 +24,7 @@ public class KeyManager implements KeyListener {
     public boolean s;       //flag to shoot
     public boolean g;       //flag to save the game
     public boolean l;       //flag to loaf the game
+    private boolean hide;   //flag to hide the player.
 
     private boolean keys[];  // to store all the flags for every key
     
@@ -75,6 +76,7 @@ public class KeyManager implements KeyListener {
         s = keys[KeyEvent.VK_S];
         g = keys[KeyEvent.VK_G];
         l = keys[KeyEvent.VK_L];
+        //hide = keys[KeyEvent.VK_SPACE];
         keys[KeyEvent.VK_S] = false;
         keys[KeyEvent.VK_P] = false;
         keys[KeyEvent.VK_R] = false;

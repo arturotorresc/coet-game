@@ -43,7 +43,7 @@ public class Game implements Runnable {
     private boolean gameOver;       //to control the game ending
     private Random r;               //to use a random number
     private Files file;              //File to save and load the game
-    
+
     
     /**
      * to create title, width and height and set the game is still not running

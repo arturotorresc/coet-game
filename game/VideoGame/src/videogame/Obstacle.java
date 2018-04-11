@@ -22,6 +22,25 @@ public class Obstacle extends Item {
         this.hideable = hideable;
         this.drawing = drawing;
     }
+    
+    /**
+     * This function is to determine whether the player can
+     * hide in the obstacle.
+     * @return hideable
+     */
+
+    public boolean isHideable() {
+        return hideable;
+    }
+    
+    /**
+     * modify the attribute.
+     * @param hideable 
+     */
+
+    public void setHideable(boolean hideable) {
+        this.hideable = hideable;
+    }
 
     @Override
     public void tick() {
