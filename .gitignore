@@ -1,5 +1,2 @@
 nbproject/private
-/build/
-/VideoGame/build/
-/VideoGame/nbproject/private/
-/game/VideoGame/dist/
+**/build
