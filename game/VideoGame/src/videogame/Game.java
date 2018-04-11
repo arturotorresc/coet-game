@@ -190,7 +190,7 @@ public class Game implements Runnable {
          direction = 1;
          vidas = 100;
          score = 0;
-         level = 4;
+         level = 1;
          gameOver = false;
          pause = false;
          display.getJframe().addKeyListener(keyManager);
