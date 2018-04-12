@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Space invaders style game with Rick and Morty theme
- * @author diego martinez
+ * Coet game 
+ * @author 
  */
 public class Game implements Runnable {
     private BufferStrategy bs;      // to have several buffers when displaying
@@ -180,7 +180,7 @@ public class Game implements Runnable {
     private void init() {
          display = new Display(title, getWidth(), getHeight());  
          Assets.init();
-         player = new Player(700, getHeight()/2 - 90, 70, 180, this);
+         player = new Player(700, getHeight()/2 - 90, 50, 62, this);
          bullets = new ArrayList<Ball>();  
          enemyBullets = new ArrayList<EnemyBullet>();
          obstacles = new ArrayList<Obstacle>();
@@ -340,7 +340,8 @@ public class Game implements Runnable {
                     g.drawImage(Assets.background4, 0, 0, width, height, null);
                     break;
             }
-            g.drawImage(Assets.shadow, player.getX()-800, player.getY()-500, width*2, height*2, null);
+            g.drawImage(Assets.shadow, player.getX()-1500-player.getWidth(), player.getY()-950-player.getHeight(),
+                    this.getWidth()*4, this.getHeight()*4, null);
             player.render(g);
             
             //draw the different menus depending on game status

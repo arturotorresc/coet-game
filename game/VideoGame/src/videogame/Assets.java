@@ -21,6 +21,10 @@ public class Assets {
     
     //Game objects
     public static BufferedImage player;     // to store the player's image
+    public static BufferedImage playerUp[]; // to store animations going up.
+    public static BufferedImage playerDown[]; //to store animations going down.
+    public static BufferedImage playerLeft[]; //to store animations going left.
+    public static BufferedImage playerRight[]; //to store animations going right.
     public static BufferedImage player_gun;   //to store the player shooting image
     public static BufferedImage bad;     //to store the bplayer image
     public static BufferedImage shield;     //to store the shield image
@@ -57,7 +61,7 @@ public class Assets {
         bad = ImageLoader.loadImage("/images/nebulon.png");
         start = ImageLoader.loadImage("/images/mortyStart.png");
         pause = ImageLoader.loadImage("/images/pause.png");
-        player = ImageLoader.loadImage("/images/rick.png");
+        player = ImageLoader.loadImage("/images/player.png");
         player_gun = ImageLoader.loadImage("/images/rick_gun.png");
         shield = ImageLoader.loadImage("/images/portal.png");
         shield2 = ImageLoader.loadImage("/images/portal2.png");
@@ -74,5 +78,19 @@ public class Assets {
         playerShot = new SoundClip("/sounds/bulletSound.wav");
         shieldHit = new SoundClip("/sounds/shieldSound.wav");
         playerHit = new SoundClip("/sounds/hitmarkerSound.wav");
+        
+        Spreadsheet spritesheet = new Spreadsheet(player);
+        playerUp = new BufferedImage[3];
+        playerDown = new BufferedImage[3];
+        playerLeft = new BufferedImage[3];
+        playerRight = new BufferedImage[3];
+        
+        for(int i = 0; i < 3; i++){
+            playerUp[i] = spritesheet.crop(i * 47, 192, 50, 62);
+            playerDown[i] = spritesheet.crop(i * 47, 0, 50, 62);
+            playerLeft[i] = spritesheet.crop(i * 47, 66, 50, 62);
+            playerRight[i] = spritesheet.crop(i * 47, 130, 50, 62);
+        }
+        
     }    
 }

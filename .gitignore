@@ -1,2 +1,5 @@
-nbproject/private
-**/build
+game/VideoGame/build/
+game/VideoGame/nbproject/private/
+/game/VideoGame/dist/
+
+assets/.DS_Store

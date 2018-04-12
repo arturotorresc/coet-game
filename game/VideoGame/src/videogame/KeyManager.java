@@ -18,7 +18,7 @@ public class KeyManager implements KeyListener {
     public boolean down;    // flag to move down the player
     public boolean left;    // flag to move left the player
     public boolean right;   // flag to move right the player
-    public boolean start;   //flag to space
+    public boolean start;   //flag to start game.
     public boolean p;       //flag to pause the game
     public boolean r;       //flag to restart the game
     public boolean g;       //flag to save the game
