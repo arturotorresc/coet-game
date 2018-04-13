@@ -8,6 +8,7 @@ package videogame;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 import java.util.Random;
@@ -43,6 +44,7 @@ public class Game implements Runnable {
     private boolean gameOver;       //to control the game ending
     private Random r;               //to use a random number
     private Files file;              //File to save and load the game
+    private Camera cam;
 
     
     /**
@@ -194,6 +196,7 @@ public class Game implements Runnable {
          gameOver = false;
          pause = false;
          display.getJframe().addKeyListener(keyManager);
+         cam = new Camera(0,0);
     }
     /**
      * To restart the game when is over
@@ -266,6 +269,8 @@ public class Game implements Runnable {
      * To tick the game
      */
     private void tick() {
+        cam.tick(player);
+        
         keyManager.tick();
         
         //pause and unpause the game
@@ -326,6 +331,8 @@ public class Game implements Runnable {
         else
         {
             g = bs.getDrawGraphics();
+            Graphics2D g2d = (Graphics2D)g;
+            g2d.translate(cam.getX(), cam.getY()); //begin of cam
             switch(getLevel()) {
                 case 1:
                     g.drawImage(Assets.background1, 0, 0, width, height, null);
@@ -368,6 +375,7 @@ public class Game implements Runnable {
             g.drawString("Vida: " + Integer.toString(vidas) + "%", 25, getHeight()-15);
             g.drawString("Score: " + Integer.toString(score), 160, getHeight()-15);
             bs.show();
+            g2d.translate(-cam.getX(), -cam.getY()); //end of cam
             g.dispose();
         }
        
