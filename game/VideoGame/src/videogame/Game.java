@@ -199,8 +199,7 @@ public class Game implements Runnable {
          display.getJframe().addKeyListener(keyManager);
          cam = new Camera(0,0);
          
-         enemy = new Enemy(getWidth() / 2, getHeight() / 2, 50, 50, 0, 0, 1, 2,
-         Assets.player, this);
+         enemy = new Enemy(getWidth() / 2, getHeight() / 2, 62, 77, 0, 0, 1, 2, 1, this);
     }
     /**
      * To restart the game when is over
