@@ -8,7 +8,8 @@ package videogame;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
-
+import java.awt.geom.RectangularShape;
+import java.awt.geom.Ellipse2D;
 /**
  * Class to manage items on the game
  * @author diego martinez
@@ -18,17 +19,22 @@ public abstract class Item {
     protected int y;        // to store y position
     protected int width;        // to store width
     protected int height;        // to store height
+    protected int ellipseWidth;  // to store ellipse Width;
+    protected int ellipseHeight; // to store ellipse Height;
     
     /**
      * Set the initial values to create the item
      * @param x <b>x</b> position of the object
      * @param y <b>y</b> position of the object
      */
-    public Item(int x, int y, int width, int height) {
+    public Item(int x, int y, int width, int height, int ellipseWidth,
+            int ellipseHeight) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.ellipseWidth = ellipseWidth;
+        this.ellipseHeight = ellipseHeight;
     }
     /**
      * To get item height
@@ -89,6 +95,22 @@ public abstract class Item {
     public void setWidth(int width) {
         this.width = width;
     }
+
+    public int getEllipseHeight() {
+        return ellipseHeight;
+    }
+
+    public int getEllipseWidth() {
+        return ellipseWidth;
+    }
+
+    public void setEllipseHeight(int ellipseHeight) {
+        this.ellipseHeight = ellipseHeight;
+    }
+
+    public void setEllipseWidth(int ellipseWidth) {
+        this.ellipseWidth = ellipseWidth;
+    }
     /**
      * To get item bounds
      * @return rectangle
@@ -105,6 +127,21 @@ public abstract class Item {
     public boolean intersects(Object obj) {
         return (obj instanceof Item && this.getBounds().intersects(((Item) obj).getBounds()));
     }
+    /**
+     * to get ellipse bounds
+     * @return ellipse
+     */
+    public Ellipse2D.Double getRadius(){
+        return new Ellipse2D.Double((getX() - getEllipseWidth() / 2),
+                (getY() - getEllipseHeight() / 2), getEllipseWidth(),
+                getEllipseHeight());
+    }
+    
+    public boolean detects(Object obj){
+       return(obj instanceof Item && 
+               this.getRadius().intersects(((Item) obj).getBounds()));
+    }
+    
     /**
      * To update positions of the item for every tick
      */

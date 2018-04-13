@@ -14,8 +14,8 @@ import java.awt.Graphics;
  */
 public class Player extends Item{
     
-    private int width;
-    private int height;
+    //private int width;
+    //private int height;
     private char direction; // To know which direction the player is facing.
     private Game game;
     private boolean visible; // This is false when the player is hidden.
@@ -25,8 +25,9 @@ public class Player extends Item{
     private Animation playerRight;
     private Animation playerLeft;
     
-    public Player(int x, int y, int width, int height, Game game) {
-        super(x, y, width, height);
+    public Player(int x, int y, int width, int height, int ellipseWidth,
+            int ellipseHeight, Game game) {
+        super(x, y, width, height, ellipseWidth, ellipseHeight);
         this.game = game;
         visible = true;
         

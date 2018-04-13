@@ -17,8 +17,9 @@ public class Obstacle extends Item {
     private boolean hideable;
     private BufferedImage drawing;
 
-    public Obstacle(int x, int y, int width, int height, boolean hideable, BufferedImage drawing) {
-        super(x, y, width, height);
+    public Obstacle(int x, int y, int width, int height, boolean hideable,
+            int ellipseWidth, int ellipseHeight, BufferedImage drawing) {
+        super(x, y, width, height, ellipseWidth, ellipseHeight);
         this.hideable = hideable;
         this.drawing = drawing;
     }

@@ -29,8 +29,6 @@ public class Game implements Runnable {
     private boolean started;        //to know when the game starts
     private Player player;          // to use a player
     private boolean canShoot;       // to control player's shooting
-    private ArrayList<Ball> bullets;  //to use bullets
-    private ArrayList<EnemyBullet> enemyBullets; //to use enemy bullets
     private ArrayList<Obstacle> obstacles; //to implement obstacles.
     private int shootTmpPl;        //timer to control shooting
     private int direction;          //to control enemies direction
@@ -46,6 +44,7 @@ public class Game implements Runnable {
     private Files file;              //File to save and load the game
     private Camera cam;
 
+    private Enemy enemy; 
     
     /**
      * to create title, width and height and set the game is still not running
@@ -133,6 +132,10 @@ public class Game implements Runnable {
     public void setPlayer(Player player) {
         this.player = player;
     }
+
+    public ArrayList<Obstacle> getObstacles() {
+        return obstacles;
+    }
     /**
      * To get the amoutn of lives of the game
      * @return an <code>int</code> value with vidas
@@ -182,9 +185,7 @@ public class Game implements Runnable {
     private void init() {
          display = new Display(title, getWidth(), getHeight());  
          Assets.init();
-         player = new Player(700, getHeight()/2 - 90, 50, 62, this);
-         bullets = new ArrayList<Ball>();  
-         enemyBullets = new ArrayList<EnemyBullet>();
+         player = new Player(700, getHeight()/2 - 90, 50, 62, 100, 100, this);
          obstacles = new ArrayList<Obstacle>();
          canShoot = true;
          shootTmpPl = 0;
@@ -197,6 +198,9 @@ public class Game implements Runnable {
          pause = false;
          display.getJframe().addKeyListener(keyManager);
          cam = new Camera(0,0);
+         
+         enemy = new Enemy(getWidth() / 2, getHeight() / 2, 50, 50, 0, 0, 1, 2,
+         Assets.player, this);
     }
     /**
      * To restart the game when is over
@@ -205,8 +209,6 @@ public class Game implements Runnable {
         continueGame();
         setStatus(0);
         setLevel(1);
-        bullets.clear();
-        enemyBullets.clear();
         canShoot = true;
         shootTmpPl = 0;
         r = new Random();
@@ -221,8 +223,6 @@ public class Game implements Runnable {
      */
     public void continueGame() {
         player.setY(getHeight()/2 - 90);
-        bullets.clear();
-        enemyBullets.clear();
         setStarted(false);
     }
     /**
@@ -298,6 +298,7 @@ public class Game implements Runnable {
         if (!pause && !gameOver) {
             if(this.isStarted()) {
                 player.tick();
+                enemy.tick();
             }
             //wait 1.5 seconds to shoot again
             if (shootTmpPl >= 25) {
@@ -347,9 +348,10 @@ public class Game implements Runnable {
                     g.drawImage(Assets.background4, 0, 0, width, height, null);
                     break;
             }
+            player.render(g);
+            enemy.render(g);
             g.drawImage(Assets.shadow, player.getX()-1500-player.getWidth(), player.getY()-950-player.getHeight(),
                     this.getWidth()*4, this.getHeight()*4, null);
-            player.render(g);
             
             //draw the different menus depending on game status
             if(!this.isStarted())
