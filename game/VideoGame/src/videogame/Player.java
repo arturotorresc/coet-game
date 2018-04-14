@@ -103,19 +103,19 @@ public class Player extends Item{
             this.setDirection('r');
             this.playerRight.tick();
         }
-//        // collision with walls
-//        if (getY() + 180 >= game.getHeight()) {
-//            setY(game.getHeight() - 180);
-//        }
-//        else if (getY() <= 0) {
-//            setY(0);
-//        }
-//        if (getX() + 20 >= game.getWidth()) {
-//            setX(game.getWidth() - 20);
-//        }
-//        else if (getX() <= 0) {
-//            setX(0);
-//        }
+        // collision with walls
+        if (getY() + 20 >= game.getHeight()) {
+            setY(game.getHeight() - 20);
+        }
+        else if (getY() <= 0) {
+            setY(0);
+        }
+        if (getX() + 20 >= game.getWidth()) {
+            setX(game.getWidth() - 20);
+        }
+        else if (getX() <= 0) {
+            setX(0);
+        }
     }
     
     public void hide(Obstacle o){
