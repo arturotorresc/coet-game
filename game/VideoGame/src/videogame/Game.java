@@ -43,8 +43,9 @@ public class Game implements Runnable {
     private Random r;               //to use a random number
     private Files file;              //File to save and load the game
     private Camera cam;
-
+    private Powerup key;
     private Enemy enemy; 
+    private boolean hasKey;
     
     /**
      * to create title, width and height and set the game is still not running
@@ -200,6 +201,9 @@ public class Game implements Runnable {
          cam = new Camera(0,0);
          
          enemy = new Enemy(getWidth() / 2, getHeight() / 2, 62, 77, 0, 0, 1, 2, 1, this);
+         key = new Powerup(250, 300, 40,40,0, 0);
+         hasKey = false;
+
     }
     /**
      * To restart the game when is over
@@ -216,6 +220,8 @@ public class Game implements Runnable {
         score = 0;
         gameOver = false;
         pause = false;
+        key = new Powerup(250, 300, 40,40,0, 0);
+        hasKey = false; 
     }
     /**
      * To continue the game after loosing a live
@@ -311,7 +317,10 @@ public class Game implements Runnable {
             gameOver = true;
             vidas = 0;
             status = 2;
-        }       
+        }    
+        if(player.intersects(key)){
+            hasKey = true;
+        }
     }
     /**
      * To render the game
@@ -347,8 +356,13 @@ public class Game implements Runnable {
                     g.drawImage(Assets.background4, 0, 0, width, height, null);
                     break;
             }
+            if(hasKey){
+                key.setX(player.getX() +10);
+                key.setY(player.getY()-240);
+            }
             player.render(g);
             enemy.render(g);
+            key.render(g);
             g.drawImage(Assets.shadow, player.getX()-1500-player.getWidth(), player.getY()-950-player.getHeight(),
                     this.getWidth()*4, this.getHeight()*4, null);
             
@@ -373,8 +387,8 @@ public class Game implements Runnable {
             g.setColor(Color.white);
             g.setFont(new Font("default", Font.BOLD, 18));
             //draw the score and lives 
-            g.drawString("Vida: " + Integer.toString(vidas) + "%", 25, getHeight()-15);
-            g.drawString("Score: " + Integer.toString(score), 160, getHeight()-15);
+            g.drawString("Vida: " + Integer.toString(vidas) + "%", player.getX()+100, player.getY()-215);
+            g.drawString("Score: " + Integer.toString(score), player.getX()+250, player.getY()-215);
             bs.show();
             g2d.translate(-cam.getX(), -cam.getY()); //end of cam
             g.dispose();
