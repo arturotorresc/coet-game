@@ -26,6 +26,10 @@ public class KeyManager implements KeyListener {
     private boolean hide;   //flag to hide the player.
 
     private boolean keys[];  // to store all the flags for every key
+
+    public boolean isHide() {
+        return hide;
+    }
     
     public KeyManager() {
         keys = new boolean[256];

@@ -40,7 +40,7 @@ public class Powerup extends Item {
 
     @Override
     public void render(Graphics g) {
-        g.drawImage(Assets.bad, getX(), getY(), getWidth(), getHeight(), null);//To change body of generated methods, choose Tools | Templates.
+        g.drawImage(Assets.player, getX(), getY(), getWidth(), getHeight(), null);//To change body of generated methods, choose Tools | Templates.
     }
     
 }

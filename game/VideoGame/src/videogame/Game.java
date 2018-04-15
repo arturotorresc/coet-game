@@ -46,7 +46,6 @@ public class Game implements Runnable {
     private Powerup key;
     private Enemy enemy; 
     private boolean hasKey;
-    
     /**
      * to create title, width and height and set the game is still not running
      * @param title to set the title of the window
@@ -203,7 +202,6 @@ public class Game implements Runnable {
          enemy = new Enemy(getWidth() / 2, getHeight() / 2, 62, 77, 0, 0, 1, 2, 1, this);
          key = new Powerup(250, 300, 40,40,0, 0);
          hasKey = false;
-
     }
     /**
      * To restart the game when is over
@@ -310,7 +308,11 @@ public class Game implements Runnable {
                 canShoot = true;
                 shootTmpPl = 0;
             }                       
-        }     
+        } 
+        
+        if(this.getKeyManager().isHide()){
+            
+        }
             
         //If lives == 0 game is over with status 2 (lose)
         if (vidas <= 0) {
@@ -363,8 +365,13 @@ public class Game implements Runnable {
             player.render(g);
             enemy.render(g);
             key.render(g);
-            g.drawImage(Assets.shadow, player.getX()-1500-player.getWidth(), player.getY()-950-player.getHeight(),
+            if(this.getPlayer().isVisible()){
+                g.drawImage(Assets.shadow, player.getX()-1500-player.getWidth(), player.getY()-950-player.getHeight(),
                     this.getWidth()*4, this.getHeight()*4, null);
+            }else{
+                g.drawImage(Assets.hidden, player.getX()-1500-player.getWidth(), player.getY()-950-player.getHeight(),
+                    this.getWidth()*4, this.getHeight()*4, null);
+            }
             
             //draw the different menus depending on game status
             if(!this.isStarted())
@@ -377,12 +384,13 @@ public class Game implements Runnable {
                 g.drawImage(Assets.pause, getWidth()/2 - 200, 
                         getHeight()/2 - 175, 400, 350, null);
             if(gameOver) {
-                if (status == 2)
+                /*if (status == 2)
                     g.drawImage(Assets.gameOver, getWidth()/2 - 200, 
                             getHeight()/2 - 175, 400, 350, null);
                 else if (status == 3)
                     g.drawImage(Assets.win, getWidth()/2 - 200, 
                             getHeight()/2 - 175, 400, 350, null);
+                */
             }
             g.setColor(Color.white);
             g.setFont(new Font("default", Font.BOLD, 18));

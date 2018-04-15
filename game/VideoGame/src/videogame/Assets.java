@@ -18,7 +18,7 @@ public class Assets {
     public static BufferedImage background3; // to store background image for level 3
     public static BufferedImage background4; // to store background image for level 4
     public static BufferedImage shadow;      // to store the shadow surrounding the player
-    
+    public static BufferedImage hidden;
     //Game objects
     public static BufferedImage player;     // to store the player's image
     public static BufferedImage playerUp[]; // to store animations going up.
@@ -30,8 +30,7 @@ public class Assets {
     public static BufferedImage monsterDown[]; //to store animations going down.
     public static BufferedImage monsterLeft[]; //to store animations going left.
     public static BufferedImage monsterRight[]; //to store animations going right.
-    public static BufferedImage player_gun;   //to store the player shooting image
-    public static BufferedImage bad;     //to store the bplayer image
+    
     
     //menu related images
     public static BufferedImage start;      //to store the starting image
@@ -55,13 +54,11 @@ public class Assets {
         background3 = ImageLoader.loadImage("/images/nivel3.png");
         background4 = ImageLoader.loadImage("/images/nivel4.png");
         shadow = ImageLoader.loadImage("/images/shadow.png");
-        
-        bad = ImageLoader.loadImage("/images/nebulon.png");
+        hidden = ImageLoader.loadImage("/images/hidden.png");
         start = ImageLoader.loadImage("/images/mortyStart.png");
         pause = ImageLoader.loadImage("/images/pause.png");
         player = ImageLoader.loadImage("/images/player.png");
         monster = ImageLoader.loadImage("/images/monster.png");
-        player_gun = ImageLoader.loadImage("/images/rick_gun.png");
         continueGame = ImageLoader.loadImage("/images/continue.png");
         gameOver = ImageLoader.loadImage("/images/gameOver.png");
         win = ImageLoader.loadImage("/images/win.png");
