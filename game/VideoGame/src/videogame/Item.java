@@ -116,7 +116,8 @@ public abstract class Item {
      * @return rectangle
      */
     public Rectangle getBounds() {
-        return new Rectangle(getX(), getY(), getWidth(), getHeight());
+        return new Rectangle(getX(), getY(), (getWidth() / 2) + (getWidth() / 4)
+                , (getHeight() / 2) + (getHeight() / 4));
     }
     
     /**
