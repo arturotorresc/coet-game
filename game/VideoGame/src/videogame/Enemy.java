@@ -129,12 +129,18 @@ public class Enemy extends Item {
                 }
                 break;
             case 1:
-                if(this.getY() >= this.patrolY && this.getY() <= this.patrolY + 20){
+                if(this.getY() >= this.patrolY 
+                        && this.getY() <= this.patrolY + 200
+                        && !this.returning){
                     this.setY(this.getY() + speed);
                     this.setDirection('d');
-                }else if(this.getY() > this.patrolY + 20){
+                }else if(this.getY() > this.patrolY + 200){
                     this.setY(this.getY() - speed);
                     this.setDirection('u');
+                }
+                
+                if(this.getY() == this.patrolY){
+                    this.returning = false;
                 }
                 break;
         }
@@ -145,7 +151,7 @@ public class Enemy extends Item {
         if(game.getPlayer().getY() > this.getY()){
             this.setY(this.getY() + speed);
             this.setDirection('d');
-        }else{
+        }else if(game.getPlayer().getY() < this.getY()){
             this.setY(this.getY() - speed);
             this.setDirection('u');
         }
@@ -153,7 +159,7 @@ public class Enemy extends Item {
         if(game.getPlayer().getX() > this.getX()){
             this.setX(this.getX() + speed);
             this.setDirection('r');
-        }else{
+        }else if(game.getPlayer().getX() < this.getX()){
             this.setX(this.getX() - speed);
             this.setDirection('l');
         }
@@ -174,7 +180,7 @@ public class Enemy extends Item {
             this.patrolX = this.getX();
             this.patrolY = this.getY();
         }else if(!this.detects(game.getPlayer())) {
-            this.patrol(0);
+            this.patrol(1);
         }   
     }
 
