@@ -7,6 +7,8 @@ package videogame;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.concurrent.ThreadLocalRandom;
+import java.awt.Point;
 
 /**
  *
@@ -23,9 +25,9 @@ public class Enemy extends Item {
     private Animation enemyLeft; // animation left.
     private Animation enemyRight; // animation right.
     private char direction; // determine enemy's direction.
-    private int patrolX; // determine the initial position to begin patrol in x.
-    private int patrolY; // determine the initial position to begin patrol in y.
-    private boolean returning; //indicates the state of the enemy's patrol.
+    private Point patrolA; // determine point A for patrol.
+    private Point patrolB; // determine point B for patrol.
+    private boolean wasChasing; // determine if the enemy chased the player.
 
     public Enemy(int x, int y, int width, int height,
             int ellipseWidth, int ellipseHeight, int type, int speed,
@@ -38,14 +40,20 @@ public class Enemy extends Item {
         this.drawing = drawing;
         this.direction = 'd';
         
-        this.patrolX = this.getX();
-        this.patrolY = this.getY();
-        this.returning = false;
+        int typeOfPatrol = ThreadLocalRandom.current().nextInt(0, 2);
+        this.patrolA = new Point(this.getX(), this.getY());
+        if(typeOfPatrol == 0){
+            this.patrolB = new Point(this.getX() + 200, this.getY());
+        }else{
+            this.patrolB = new Point(this.getX(), this.getY() + 200);
+        }
         
         int size = this.enemyCircleSize(type);
         this.setEllipseHeight(size);
         this.setEllipseWidth(size);
         this.setAnimations(drawing);
+        
+        this.wasChasing = false;
     }
     
     /**
@@ -107,62 +115,71 @@ public class Enemy extends Item {
         }
     } */
     
-    private void patrol(int type){
-        //type is what type of patrolling will the enemy execute.
-        // 0 is horizontally
-        // 1 is vertically  
-        switch(type){
-            case 0:
-                if(this.getX() >= this.patrolX 
-                        && this.getX() <= this.patrolX + 200
-                        && !this.returning){
-                    this.setX(this.getX() + speed);
-                    this.setDirection('r');
-                }else {
-                    this.returning = true;
-                    this.setX(this.getX() - speed);
-                    this.setDirection('l');
-                }
-                
-                if(this.getX() == this.patrolX){
-                    this.returning = false;
-                }
-                break;
-            case 1:
-                if(this.getY() >= this.patrolY 
-                        && this.getY() <= this.patrolY + 200
-                        && !this.returning){
-                    this.setY(this.getY() + speed);
-                    this.setDirection('d');
-                }else if(this.getY() > this.patrolY + 200){
-                    this.setY(this.getY() - speed);
-                    this.setDirection('u');
-                }
-                
-                if(this.getY() == this.patrolY){
-                    this.returning = false;
-                }
-                break;
+    private boolean returnToStation(){
+        return (this.getX() != patrolA.getX() || this.getY() != patrolA.getY())
+                && (this.wasChasing || 
+               (this.getX() == patrolB.getX() && this.getY() == patrolB.getY()));
+    }
+    
+    private void goToPoint(Point p){
+        if(p.getY() > this.getY()){
+            this.setY(this.getY() + speed);
+            this.setDirection('d');
+            this.enemyDown.tick();
+        }else if(p.getY() < this.getY()){
+            this.setY(this.getY() - speed);
+            this.setDirection('u');
+            this.enemyUp.tick();
         }
-        
+
+        if(p.getX() > this.getX()){
+            this.setX(this.getX() + speed);
+            this.setDirection('r');
+            this.enemyRight.tick();
+        }else if(p.getX() < this.getX()){
+            this.setX(this.getX() - speed);
+            this.setDirection('l');
+            this.enemyLeft.tick();
+        }
+    }
+    
+    private void patrol(){
+        if(this.returnToStation()) {
+            
+            this.goToPoint(patrolA);
+            
+        }else if(this.getX() == patrolA.getX() 
+                && this.getY() == patrolA.getY()
+                && this.wasChasing){
+            
+            this.wasChasing = false;
+            
+        }else if(!this.wasChasing){
+           this.goToPoint(patrolB);
+        }
     }
     
     private void chase(){
         if(game.getPlayer().getY() > this.getY()){
             this.setY(this.getY() + speed);
             this.setDirection('d');
+            this.enemyDown.tick();
         }else if(game.getPlayer().getY() < this.getY()){
             this.setY(this.getY() - speed);
             this.setDirection('u');
+            this.enemyUp.tick();
         }
 
         if(game.getPlayer().getX() > this.getX()){
             this.setX(this.getX() + speed);
             this.setDirection('r');
+            this.enemyRight.tick();
         }else if(game.getPlayer().getX() < this.getX()){
             this.setX(this.getX() - speed);
             this.setDirection('l');
+            this.enemyLeft.tick();
         }
+        this.wasChasing = true;
     }
     
     private boolean canChase(){
@@ -177,10 +194,8 @@ public class Enemy extends Item {
 
         if(this.canChase()){
             this.chase();
-            this.patrolX = this.getX();
-            this.patrolY = this.getY();
         }else if(!this.detects(game.getPlayer())) {
-            this.patrol(1);
+            this.patrol();
         }   
     }
 
