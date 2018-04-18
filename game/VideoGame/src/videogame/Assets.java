@@ -59,7 +59,7 @@ public class Assets {
         monster = ImageLoader.loadImage("/images/monster.png");
         continueGame = ImageLoader.loadImage("/images/continue.png");
         gameOver = ImageLoader.loadImage("/images/gameOver.png");
-        win = ImageLoader.loadImage("/images/win.png");
+        //win = ImageLoader.loadImage("/images/win.png");
         
         
         rain = new SoundClip("/sounds/rain.aiff");

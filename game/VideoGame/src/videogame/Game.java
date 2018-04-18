@@ -378,8 +378,8 @@ public class Game implements Runnable {
             }
             key.render(g);
             if(this.getPlayer().isVisible()){
-                g.drawImage(Assets.shadow, player.getX()-1500-player.getWidth(), player.getY()-950-player.getHeight(),
-                    this.getWidth()*4, this.getHeight()*4, null);
+              //  g.drawImage(Assets.shadow, player.getX()-1500-player.getWidth(), player.getY()-950-player.getHeight(),
+                //    this.getWidth()*4, this.getHeight()*4, null);
             }else{
                 g.drawImage(Assets.hidden, player.getX()-1500-player.getWidth(), player.getY()-950-player.getHeight(),
                     this.getWidth()*4, this.getHeight()*4, null);
