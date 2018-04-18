@@ -362,8 +362,14 @@ public class Game implements Runnable {
                 key.setX(player.getX() +10);
                 key.setY(player.getY()-240);
             }
-            player.render(g);
-            enemy.render(g);
+            
+            if(this.player.getY() > this.enemy.getY()){
+                enemy.render(g);
+                player.render(g);
+            }else{
+                player.render(g);
+                enemy.render(g);
+            }
             key.render(g);
             if(this.getPlayer().isVisible()){
                 g.drawImage(Assets.shadow, player.getX()-1500-player.getWidth(), player.getY()-950-player.getHeight(),
