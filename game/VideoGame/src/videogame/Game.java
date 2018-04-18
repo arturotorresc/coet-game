@@ -46,6 +46,7 @@ public class Game implements Runnable {
     private Powerup key;
     private Enemy enemy; 
     private boolean hasKey;
+    private boolean changeMusic;    // choose music depending on state.
     /**
      * to create title, width and height and set the game is still not running
      * @param title to set the title of the window
@@ -202,6 +203,12 @@ public class Game implements Runnable {
          enemy = new Enemy(getWidth() / 2, getHeight() / 2, 62, 77, 0, 0, 1, 2, 1, this);
          key = new Powerup(250, 300, 40,40,0, 0);
          hasKey = false;
+         
+         Assets.rain.setLooping(true);
+         Assets.rain.play();
+         Assets.ambientMusic.setLooping(true);
+         Assets.ambientMusic.play();
+         Assets.chaseMusic.setLooping(true);
     }
     /**
      * To restart the game when is over

@@ -105,8 +105,6 @@ public class Enemy extends Item {
         //If the enemy detects the player, start chasing them.
         if(this.detects(game.getPlayer()) && this.game.getPlayer().isVisible()){
             
-            System.out.println("Detected\n");
-            
             if(game.getPlayer().getY() > this.getY()){
                 this.setY(this.getY() + speed);
                 this.setDirection('d');

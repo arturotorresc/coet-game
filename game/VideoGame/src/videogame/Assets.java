@@ -40,10 +40,8 @@ public class Assets {
     public static BufferedImage win;        //to store the winning image
     
     //sounds
-    public static SoundClip alienShot;      //to store alien shot sound
-    public static SoundClip playerShot;     //to store player shot sound
-    public static SoundClip shieldHit;      //to store shield hit sound
-    public static SoundClip playerHit;      //to store player hit sound
+    public static SoundClip rain;           // to store rain ambient sound.
+    public static SoundClip ambientMusic; // to store ambient music.
 
     /**
      * initializing the images of the game
@@ -63,10 +61,9 @@ public class Assets {
         gameOver = ImageLoader.loadImage("/images/gameOver.png");
         win = ImageLoader.loadImage("/images/win.png");
         
-        alienShot = new SoundClip("/sounds/alienBeam.wav");
-        playerShot = new SoundClip("/sounds/bulletSound.wav");
-        shieldHit = new SoundClip("/sounds/shieldSound.wav");
-        playerHit = new SoundClip("/sounds/hitmarkerSound.wav");
+        
+        rain = new SoundClip("/sounds/rain.aiff");
+        ambientMusic = new SoundClip("/sounds/ambientMusic.wav");
         
         Spreadsheet playerSs = new Spreadsheet(player);
         Spreadsheet monsterSs = new Spreadsheet(monster);

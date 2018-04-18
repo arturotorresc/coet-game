@@ -31,10 +31,10 @@ public class Player extends Item{
         this.game = game;
         visible = true;
         
-        this.playerUp = new Animation(Assets.playerUp, 110);
-        this.playerDown = new Animation(Assets.playerDown, 110);
-        this.playerLeft = new Animation(Assets.playerLeft, 110);
-        this.playerRight = new Animation(Assets.playerRight, 110);
+        this.playerUp = new Animation(Assets.playerUp, 130);
+        this.playerDown = new Animation(Assets.playerDown, 130);
+        this.playerLeft = new Animation(Assets.playerLeft, 130);
+        this.playerRight = new Animation(Assets.playerRight, 130);
         this.direction = 'u';
           
     }
@@ -80,25 +80,25 @@ public class Player extends Item{
     public void tick() {
         // moving player depending on flags
         if (game.getKeyManager().up) {
-           setY(getY() - 5);
+           setY(getY() - 3);
            this.setVisible(true);
            this.setDirection('u');
            this.playerUp.tick();
         }
         if (game.getKeyManager().down) {
-           setY(getY() + 5);
+           setY(getY() + 3);
            this.setVisible(true);
            this.setDirection('d');
            this.playerDown.tick();
         }
         if (game.getKeyManager().left) {
-            setX(getX() - 5);
+            setX(getX() - 3);
             this.setVisible(true);
             this.setDirection('l');
             this.playerLeft.tick();
         }
         if (game.getKeyManager().right) {
-            setX(getX() + 5);
+            setX(getX() + 3);
             this.setVisible(true);
             this.setDirection('r');
             this.playerRight.tick();
