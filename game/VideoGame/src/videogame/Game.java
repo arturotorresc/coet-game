@@ -208,7 +208,6 @@ public class Game implements Runnable {
          Assets.rain.play();
          Assets.ambientMusic.setLooping(true);
          Assets.ambientMusic.play();
-         Assets.chaseMusic.setLooping(true);
     }
     /**
      * To restart the game when is over
