@@ -20,6 +20,7 @@ public class Display {
     private String title;   // title of the window
     private int width;      // width of the window
     private int height;     // height of the window
+    private boolean fullscreen; // to determine whether its fullscreen.
     
     /**
      * initializes the values for the application game
@@ -32,6 +33,7 @@ public class Display {
         this.width = width;
         this.height = height;        
         createDisplay();
+        this.fullscreen = false;
     }
     
     /**
@@ -46,7 +48,9 @@ public class Display {
         
         // setting not resizable, visible and possible to close
         jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jframe.setResizable(false);
+        jframe.setResizable(true);
+        jframe.setUndecorated(false);
+        jframe.setExtendedState(JFrame.MAXIMIZED_BOTH);
         jframe.setLocationRelativeTo(null);
         jframe.setVisible(true);
         
@@ -54,7 +58,6 @@ public class Display {
         canvas = new Canvas();
         canvas.setPreferredSize(new Dimension(width, height));
         canvas.setMaximumSize(new Dimension(width, height));
-        canvas.setPreferredSize(new Dimension(width, height));
         canvas.setFocusable(false);
         
         // adding the canvas to the app window and packing to

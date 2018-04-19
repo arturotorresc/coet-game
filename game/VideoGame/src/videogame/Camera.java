@@ -36,8 +36,8 @@ public class Camera {
     }
 
     public void tick(Player player){
-        x = -player.getX()+400;
-        y = -player.getY() +250;
+        x = -player.getX() + 400;
+        y = -player.getY() + 250;
     }    
     
 }
