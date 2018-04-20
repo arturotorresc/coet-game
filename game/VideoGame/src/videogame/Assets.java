@@ -36,6 +36,11 @@ public class Assets {
     //menu related images
     public static BufferedImage start;      //to store the starting image
     public static BufferedImage pause;      //to store the pausing image
+    public static BufferedImage startMenu;      //to store the pausing image
+    public static BufferedImage continueMenu;      //to store the pausing image
+    public static BufferedImage creditsMenu;      //to store the pausing image
+    public static BufferedImage helpMenu;      //to store the pausing image
+    
     public static BufferedImage continueGame;   //to store the continue game image
     public static BufferedImage gameOver;    //to store the gameOver image
     public static BufferedImage win;        //to store the winning image
@@ -61,6 +66,12 @@ public class Assets {
         continueGame = ImageLoader.loadImage("/images/continue.png");
         key = ImageLoader.loadImage("/images/key.png");
         gameOver = ImageLoader.loadImage("/images/gameOver.png");
+        // menu
+        
+        startMenu = ImageLoader.loadImage("/images/nGameMenu.jpg");
+        continueMenu = ImageLoader.loadImage("/images/continueMenu.jpg");
+        creditsMenu = ImageLoader.loadImage("/images/creditsMenu.jpg");
+        helpMenu = ImageLoader.loadImage("/images/helpMenu.jpg");
         //win = ImageLoader.loadImage("/images/win.png");
         
         

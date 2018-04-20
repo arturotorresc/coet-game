@@ -47,6 +47,7 @@ public class Game implements Runnable {
     private Enemy enemy; 
     private boolean hasKey;
     private boolean changeMusic;    // choose music depending on state.
+    private Menu menu; 
     /**
      * to create title, width and height and set the game is still not running
      * @param title to set the title of the window
@@ -204,6 +205,8 @@ public class Game implements Runnable {
          key = new Powerup(400, 200, 50,50,0, 0);
          hasKey = false;
          
+         menu = new Menu();
+         
          Assets.rain.setLooping(true);
          Assets.rain.play();
          Assets.ambientMusic.setLooping(true);
@@ -226,6 +229,7 @@ public class Game implements Runnable {
         pause = false;
         key = new Powerup(400, 200, 50,50,0, 0);
         hasKey = false; 
+        menu = new Menu();
     }
     /**
      * To continue the game after loosing a live
@@ -282,6 +286,14 @@ public class Game implements Runnable {
         
         keyManager.tick();
         
+        
+        if(this.getKeyManager().down && (menu.getVar() >= 1 && menu.getVar() <= 4)){
+            menu.setVar(menu.getVar()+1);
+        }
+        if(this.getKeyManager().up && (menu.getVar() <= 1 && menu.getVar() >= 4)){
+            menu.setVar(menu.getVar()-1);
+        }
+        
         //pause and unpause the game
         if (this.getKeyManager().p) 
             pause = !pause;
@@ -297,9 +309,13 @@ public class Game implements Runnable {
         }
         
         // starting the game
-        if (this.getKeyManager().start && !this.isStarted()) {
+        if (this.getKeyManager().enter && !this.isStarted() && menu.getVar() == 1) {
             setStarted(true);
         }
+        if(this.getKeyManager().enter && !this.isStarted() && menu.getVar() == 2 ){
+            System.out.print("continue");
+        }
+        
         
         if ((gameOver || pause) && this.getKeyManager().r)
             restart();
@@ -350,6 +366,7 @@ public class Game implements Runnable {
             g = bs.getDrawGraphics();
             Graphics2D g2d = (Graphics2D)g;
             g2d.translate(cam.getX(), cam.getY()); //begin of cam
+            
             switch(getLevel()) {
                 case 1:
                     g.drawImage(Assets.background1, 0, 0, width, height, null);
@@ -387,11 +404,13 @@ public class Game implements Runnable {
             
             //draw the different menus depending on game status
             if(!this.isStarted())
-                if (status == 0)
-                    g.drawImage(Assets.start, width/2 - 250, 95, 500, 400, null);
-                else if(status == 1)
-                    g.drawImage(Assets.continueGame, getWidth()/2 - 125, 
-                            getHeight()/2 - 75, 250, 150, null);                
+                menu.render(g);
+           
+//                if (status == 0)
+//                    g.drawImage(Assets.start, width/2 - 250, 95, 500, 400, null);
+//                else if(status == 1)
+//                    g.drawImage(Assets.continueGame, getWidth()/2 - 125, 
+//                            getHeight()/2 - 75, 250, 150, null);                
             if(pause)
                 g.drawImage(Assets.pause, getWidth()/2 - 200, 
                         getHeight()/2 - 175, 400, 350, null);
