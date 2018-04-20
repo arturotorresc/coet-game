@@ -56,6 +56,8 @@ public class Game implements Runnable {
     private TimerTask bloodAnimation; // task for the blood animation
     private boolean renderBlood; // flag to know if the player was hit.
     private boolean timerFlag;  // flag to know when to start a timer.
+    public boolean switchMusicFlag; // flag to know if music can be switched.
+    private SwitchMusic switchMusic; // to control the switching of music.
     /**
      * to create title, width and height and set the game is still not running
      * @param title to set the title of the window
@@ -216,6 +218,7 @@ public class Game implements Runnable {
          hitByEnemy = new Timer();
          scrollDown = true;
          scrollUp = true;
+         switchMusicFlag = true;
          
          menu = new Menu();
          
@@ -312,31 +315,29 @@ public class Game implements Runnable {
     
     private void scrollThroughMenu() {
         
-        
-        
-        if(this.getKeyManager().down && scrollDown){
+        if(this.getKeyManager().down && scrollDown) {
             scrollDown = false;
             this.menu.setVar(this.menu.getVar() + 1);
         }
         
-        if(this.getKeyManager().up && scrollUp){
+        if(this.getKeyManager().up && scrollUp) {
             scrollUp = false;
             this.menu.setVar(this.menu.getVar() - 1);
         }
         
-        if(!this.getKeyManager().down){
+        if(!this.getKeyManager().down) {
             scrollDown = true;
         }
         
-        if(!this.getKeyManager().up){
+        if(!this.getKeyManager().up) {
             scrollUp = true;
         }
         
-        if(this.menu.getVar() > 4){
+        if(this.menu.getVar() > 4) {
             this.menu.setVar(1);
         }
         
-        if(this.menu.getVar() < 1){
+        if(this.menu.getVar() < 1) {
             this.menu.setVar(4);
         }
         
@@ -344,10 +345,27 @@ public class Game implements Runnable {
         if (this.getKeyManager().enter && !this.isStarted() && menu.getVar() == 1) {
             setStarted(true);
         }
-        if(this.getKeyManager().enter && !this.isStarted() && menu.getVar() == 2 ){
+        if(this.getKeyManager().enter && !this.isStarted() && menu.getVar() == 2 ) {
             System.out.print("continue");
         }
         
+    }
+    
+    private void startChaseMusic() {
+        if(this.enemy.detects(this.player) && switchMusicFlag){
+            switchMusicFlag = false;
+            switchMusic = new SwitchMusic(Assets.ambientMusic,
+                    Assets.chaseMusic, true, 25600);
+            
+            Timer switchingFlag = new Timer();
+            TimerTask switchFlagTask = new TimerTask() {
+                public void run() {
+                    switchMusicFlag = true;
+                }
+            };
+            
+            switchingFlag.schedule(switchFlagTask, 25600);
+        }
     }
     
 
@@ -384,6 +402,7 @@ public class Game implements Runnable {
         this.hitPlayer();
         
         scrollThroughMenu();
+        startChaseMusic();
         
         
         if ((gameOver || pause) && this.getKeyManager().r)

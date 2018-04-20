@@ -49,6 +49,7 @@ public class Assets {
     //sounds
     public static SoundClip rain;           // to store rain ambient sound.
     public static SoundClip ambientMusic; // to store ambient music.
+    public static SoundClip chaseMusic;
 
     /**
      * initializing the images of the game
@@ -79,6 +80,7 @@ public class Assets {
         
         rain = new SoundClip("/sounds/rain.aiff");
         ambientMusic = new SoundClip("/sounds/ambientMusic.wav");
+        chaseMusic = new SoundClip("/sounds/chaseMusic.wav");
         
         Spreadsheet playerSs = new Spreadsheet(player);
         Spreadsheet monsterSs = new Spreadsheet(monster);
