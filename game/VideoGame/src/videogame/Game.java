@@ -50,6 +50,8 @@ public class Game implements Runnable {
     private boolean hasKey;
     private boolean changeMusic;    // choose music depending on state.
     private Menu menu;
+    private boolean scrollDown;        // flag to scroll through the menu.
+    private boolean scrollUp;
     private Timer hitByEnemy;       // to display blood for a period of time.
     private TimerTask bloodAnimation; // task for the blood animation
     private boolean renderBlood; // flag to know if the player was hit.
@@ -212,6 +214,8 @@ public class Game implements Runnable {
          renderBlood = false;
          timerFlag = true;
          hitByEnemy = new Timer();
+         scrollDown = true;
+         scrollUp = true;
          
          menu = new Menu();
          
@@ -306,6 +310,46 @@ public class Game implements Runnable {
         hitByEnemy.schedule(bloodAnimation, 150);
     }
     
+    private void scrollThroughMenu() {
+        
+        
+        
+        if(this.getKeyManager().down && scrollDown){
+            scrollDown = false;
+            this.menu.setVar(this.menu.getVar() + 1);
+        }
+        
+        if(this.getKeyManager().up && scrollUp){
+            scrollUp = false;
+            this.menu.setVar(this.menu.getVar() - 1);
+        }
+        
+        if(!this.getKeyManager().down){
+            scrollDown = true;
+        }
+        
+        if(!this.getKeyManager().up){
+            scrollUp = true;
+        }
+        
+        if(this.menu.getVar() > 4){
+            this.menu.setVar(1);
+        }
+        
+        if(this.menu.getVar() < 1){
+            this.menu.setVar(4);
+        }
+        
+        // starting the game
+        if (this.getKeyManager().enter && !this.isStarted() && menu.getVar() == 1) {
+            setStarted(true);
+        }
+        if(this.getKeyManager().enter && !this.isStarted() && menu.getVar() == 2 ){
+            System.out.print("continue");
+        }
+        
+    }
+    
 
     /**
      * To get the key manager
@@ -321,14 +365,6 @@ public class Game implements Runnable {
         cam.tick(player);
         
         keyManager.tick();
-        
-        
-        if(this.getKeyManager().down && (menu.getVar() >= 1 && menu.getVar() <= 4)){
-            menu.setVar(menu.getVar()+1);
-        }
-        if(this.getKeyManager().up && (menu.getVar() <= 1 && menu.getVar() >= 4)){
-            menu.setVar(menu.getVar()-1);
-        }
         
         //pause and unpause the game
         if (this.getKeyManager().p) 
@@ -347,13 +383,7 @@ public class Game implements Runnable {
         //Checks to see whether the enemy attacked the player. 
         this.hitPlayer();
         
-        // starting the game
-        if (this.getKeyManager().enter && !this.isStarted() && menu.getVar() == 1) {
-            setStarted(true);
-        }
-        if(this.getKeyManager().enter && !this.isStarted() && menu.getVar() == 2 ){
-            System.out.print("continue");
-        }
+        scrollThroughMenu();
         
         
         if ((gameOver || pause) && this.getKeyManager().r)

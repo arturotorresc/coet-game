@@ -12,11 +12,12 @@ import java.awt.Graphics;
  */
 public class Menu{
  
-    private int var = 1; 
+    private int var; 
     private Player player;
 
     
-    public Menu(){        
+    public Menu(){ 
+        this.var = 1;
     }
 
     public int getVar() {

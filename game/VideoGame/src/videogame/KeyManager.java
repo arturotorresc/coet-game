@@ -30,6 +30,14 @@ public class KeyManager implements KeyListener {
     public boolean isHide() {
         return hide;
     }
+
+    public void setDown(boolean down) {
+        this.down = down;
+    }
+
+    public void setUp(boolean up) {
+        this.up = up;
+    }
     
     public KeyManager() {
         keys = new boolean[256];
