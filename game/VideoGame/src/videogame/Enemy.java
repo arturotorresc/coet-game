@@ -72,10 +72,10 @@ public class Enemy extends Item {
     private void setAnimations(int drawing){
         switch(drawing){
             case 1:
-                this.enemyUp = new Animation(Assets.monsterUp, 110);
-                this.enemyDown = new Animation(Assets.monsterDown, 110);
-                this.enemyRight = new Animation(Assets.monsterRight, 110);
-                this.enemyLeft = new Animation(Assets.monsterLeft, 110);
+                this.enemyUp = new Animation(Assets.monsterUp, 180);
+                this.enemyDown = new Animation(Assets.monsterDown, 180);
+                this.enemyRight = new Animation(Assets.monsterRight, 180);
+                this.enemyLeft = new Animation(Assets.monsterLeft, 180);
                 break;
             case 2:
                 break;

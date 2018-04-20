@@ -7,6 +7,8 @@ package videogame;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Class to use the player in the game
@@ -19,6 +21,9 @@ public class Player extends Item{
     private char direction; // To know which direction the player is facing.
     private Game game;
     private boolean visible; // This is false when the player is hidden.
+    private int sprint;     // extra speed gained when sprinting.
+    private Timer sprintTime; // Time allowed to sprint.
+    private TimerTask sprintTask; // Task to execute the sprint.
     
     private Animation playerUp;
     private Animation playerDown;
@@ -30,6 +35,7 @@ public class Player extends Item{
         super(x, y, width, height, ellipseWidth, ellipseHeight);
         this.game = game;
         visible = true;
+        sprint = 0;
         
         this.playerUp = new Animation(Assets.playerUp, 130);
         this.playerDown = new Animation(Assets.playerDown, 130);
@@ -39,7 +45,25 @@ public class Player extends Item{
           
     }
     
-    
+    public void sprint(){
+        this.setSprint(2);
+        this.sprintTime = new Timer();
+        this.sprintTask = new TimerTask() {
+            public void run() {
+                setSprint(0);
+            }
+        };
+        
+        sprintTime.schedule(sprintTask, 3000);
+    }
+
+    public int getSprint() {
+        return sprint;
+    }
+
+    public void setSprint(int sprint) {
+        this.sprint = sprint;
+    }
     
     /**
      * modifies the visible attribute to true or false.
@@ -80,25 +104,25 @@ public class Player extends Item{
     public void tick() {
         // moving player depending on flags
         if (game.getKeyManager().up) {
-           setY(getY() - 3);
+           setY(getY() - (3 + sprint));
            this.setVisible(true);
            this.setDirection('u');
            this.playerUp.tick();
         }
         if (game.getKeyManager().down) {
-           setY(getY() + 3);
+           setY(getY() + (3 + sprint));
            this.setVisible(true);
            this.setDirection('d');
            this.playerDown.tick();
         }
         if (game.getKeyManager().left) {
-            setX(getX() - 3);
+            setX(getX() - (3 + sprint));
             this.setVisible(true);
             this.setDirection('l');
             this.playerLeft.tick();
         }
         if (game.getKeyManager().right) {
-            setX(getX() + 3);
+            setX(getX() + (3 + sprint));
             this.setVisible(true);
             this.setDirection('r');
             this.playerRight.tick();

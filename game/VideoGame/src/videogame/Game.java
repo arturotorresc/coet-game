@@ -56,6 +56,7 @@ public class Game implements Runnable {
     private TimerTask bloodAnimation; // task for the blood animation
     private boolean renderBlood; // flag to know if the player was hit.
     private boolean timerFlag;  // flag to know when to start a timer.
+    private boolean sprintFlag; // flag to cooldown sprint by the player.
     public boolean switchMusicFlag; // flag to know if music can be switched.
     private SwitchMusic switchMusic; // to control the switching of music.
     /**
@@ -197,7 +198,7 @@ public class Game implements Runnable {
     private void init() {
          display = new Display(title, getWidth(), getHeight());  
          Assets.init();
-         player = new Player(getWidth()/2, getHeight()/2 , 50, 62, 100, 100, this);
+         player = new Player(getWidth()/2, getHeight()/2 , 50, 62, 700, 700, this);
          obstacles = new ArrayList<Obstacle>();
          canShoot = true;
          shootTmpPl = 0;
@@ -210,7 +211,7 @@ public class Game implements Runnable {
          pause = false;
          display.getJframe().addKeyListener(keyManager);
          cam = new Camera(0,0);
-         enemy = new Enemy(getWidth() / 2+300, getHeight() / 2, 62, 77, 0, 0, 1, 2, 1, this);
+         enemy = new Enemy(getWidth() / 2+300, getHeight() / 2, 62, 77, 0, 0, 1, 1, 1, this);
          key = new Powerup(400, 200, 50,50,0, 0);
          hasKey = false;
          renderBlood = false;
@@ -219,6 +220,7 @@ public class Game implements Runnable {
          scrollDown = true;
          scrollUp = true;
          switchMusicFlag = true;
+         sprintFlag = true;
          
          menu = new Menu();
          
@@ -368,7 +370,27 @@ public class Game implements Runnable {
         }
     }
     
-
+    private void sprint() {
+        if(this.getKeyManager().isSprint() && sprintFlag){
+            sprintFlag = false;
+            this.player.sprint();
+            
+            Timer activateSprintFlag = new Timer();
+            TimerTask sprintFlagTask = new TimerTask() {
+                public void run() {
+                    sprintFlag = true;
+                }
+            };
+            
+            // Reactivate the sprint flag every 15 seconds.
+            activateSprintFlag.schedule(sprintFlagTask, 15000);
+        }
+        
+        // Stop sprinting if user releases shift key.
+        if(!this.getKeyManager().isSprint()){
+            this.player.setSprint(0);
+        }
+    }
     /**
      * To get the key manager
      * @return keyManager
@@ -404,6 +426,8 @@ public class Game implements Runnable {
         scrollThroughMenu();
         startChaseMusic();
         
+        //Allows sprinting by the player.
+        sprint();
         
         if ((gameOver || pause) && this.getKeyManager().r)
             restart();
