@@ -186,7 +186,7 @@ public class Game implements Runnable {
     private void init() {
          display = new Display(title, getWidth(), getHeight());  
          Assets.init();
-         player = new Player(700, getHeight()/2 - 90, 50, 62, 100, 100, this);
+         player = new Player(getWidth()/2, getHeight()/2 , 50, 62, 100, 100, this);
          obstacles = new ArrayList<Obstacle>();
          canShoot = true;
          shootTmpPl = 0;
@@ -200,8 +200,8 @@ public class Game implements Runnable {
          display.getJframe().addKeyListener(keyManager);
          cam = new Camera(0,0);
          
-         enemy = new Enemy(getWidth() / 2, getHeight() / 2, 62, 77, 0, 0, 1, 2, 1, this);
-         key = new Powerup(250, 300, 40,40,0, 0);
+         enemy = new Enemy(getWidth() / 2+300, getHeight() / 2, 62, 77, 0, 0, 1, 2, 1, this);
+         key = new Powerup(400, 200, 50,50,0, 0);
          hasKey = false;
          
          Assets.rain.setLooping(true);
@@ -224,7 +224,7 @@ public class Game implements Runnable {
         score = 0;
         gameOver = false;
         pause = false;
-        key = new Powerup(250, 300, 40,40,0, 0);
+        key = new Powerup(400, 200, 50,50,0, 0);
         hasKey = false; 
     }
     /**

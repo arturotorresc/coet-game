@@ -26,6 +26,7 @@ public class Assets {
     public static BufferedImage playerLeft[]; //to store animations going left.
     public static BufferedImage playerRight[]; //to store animations going right.
     public static BufferedImage monster; // to store monter's image.
+    public static BufferedImage key; // to store key's image.
     public static BufferedImage monsterUp[]; // to store animations going up.
     public static BufferedImage monsterDown[]; //to store animations going down.
     public static BufferedImage monsterLeft[]; //to store animations going left.
@@ -58,6 +59,7 @@ public class Assets {
         player = ImageLoader.loadImage("/images/player.png");
         monster = ImageLoader.loadImage("/images/monster.png");
         continueGame = ImageLoader.loadImage("/images/continue.png");
+        key = ImageLoader.loadImage("/images/key.png");
         gameOver = ImageLoader.loadImage("/images/gameOver.png");
         //win = ImageLoader.loadImage("/images/win.png");
         
