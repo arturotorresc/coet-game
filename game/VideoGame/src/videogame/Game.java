@@ -12,6 +12,8 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Coet game 
@@ -47,7 +49,11 @@ public class Game implements Runnable {
     private Enemy enemy; 
     private boolean hasKey;
     private boolean changeMusic;    // choose music depending on state.
-    private Menu menu; 
+    private Menu menu;
+    private Timer hitByEnemy;       // to display blood for a period of time.
+    private TimerTask bloodAnimation; // task for the blood animation
+    private boolean renderBlood; // flag to know if the player was hit.
+    private boolean timerFlag;  // flag to know when to start a timer.
     /**
      * to create title, width and height and set the game is still not running
      * @param title to set the title of the window
@@ -200,10 +206,12 @@ public class Game implements Runnable {
          pause = false;
          display.getJframe().addKeyListener(keyManager);
          cam = new Camera(0,0);
-         
          enemy = new Enemy(getWidth() / 2+300, getHeight() / 2, 62, 77, 0, 0, 1, 2, 1, this);
          key = new Powerup(400, 200, 50,50,0, 0);
          hasKey = false;
+         renderBlood = false;
+         timerFlag = true;
+         hitByEnemy = new Timer();
          
          menu = new Menu();
          
@@ -271,6 +279,34 @@ public class Game implements Runnable {
         }
         stop();
     }
+    
+    private void hitPlayer() {
+        if(this.enemy.intersects(player)){
+            if(this.enemy.getX() > this.player.getX()){
+                this.enemy.setX(this.enemy.getX() + 100);
+            }else{
+                this.enemy.setX(this.enemy.getX() - 100);
+            }
+            renderBlood = true;
+            if(timerFlag){
+                timerFlag = false;
+                this.startBloodAnimation();
+                
+            }
+        }
+    }
+    
+    private void startBloodAnimation() {
+        bloodAnimation = new TimerTask() {
+             public void run() {
+                 renderBlood = false;
+                 timerFlag = true;
+             }
+         };
+        hitByEnemy.schedule(bloodAnimation, 150);
+    }
+    
+
     /**
      * To get the key manager
      * @return keyManager
@@ -307,6 +343,9 @@ public class Game implements Runnable {
         if(pause && getKeyManager().g) {
             file.saveFile(this);
         }
+        
+        //Checks to see whether the enemy attacked the player. 
+        this.hitPlayer();
         
         // starting the game
         if (this.getKeyManager().enter && !this.isStarted() && menu.getVar() == 1) {
@@ -402,6 +441,11 @@ public class Game implements Runnable {
                     this.getWidth()*4, this.getHeight()*4, null);
             }
             
+            //Render blood animation.
+            if(renderBlood) {
+                g.drawImage(Assets.blood, player.getX()-1500-player.getWidth(), player.getY()-950-player.getHeight(),
+                    this.getWidth()*4, this.getHeight()*4, null);
+            }
             //draw the different menus depending on game status
             if(!this.isStarted())
                 menu.render(g);

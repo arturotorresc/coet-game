@@ -19,6 +19,7 @@ public class Assets {
     public static BufferedImage background4; // to store background image for level 4
     public static BufferedImage shadow;      // to store the shadow surrounding the player
     public static BufferedImage hidden;
+    public static BufferedImage blood;      // to store blood when enemy is hit.
     //Game objects
     public static BufferedImage player;     // to store the player's image
     public static BufferedImage playerUp[]; // to store animations going up.
@@ -57,6 +58,7 @@ public class Assets {
         background2 = ImageLoader.loadImage("/images/nivel2.png");
         background3 = ImageLoader.loadImage("/images/nivel3.png");
         background4 = ImageLoader.loadImage("/images/nivel4.png");
+        blood = ImageLoader.loadImage("/images/blood.png");
         shadow = ImageLoader.loadImage("/images/shadow.png");
         hidden = ImageLoader.loadImage("/images/hidden.png");
         start = ImageLoader.loadImage("/images/mortyStart.png");
