@@ -59,6 +59,8 @@ public class Game implements Runnable {
     private boolean sprintFlag; // flag to cooldown sprint by the player.
     public boolean switchMusicFlag; // flag to know if music can be switched.
     private SwitchMusic switchMusic; // to control the switching of music.
+    private boolean gameSavedMsg; // to show a message when game is saved
+    private int gameSavedMsgTmp; //to control the message showed temporarily
     /**
      * to create title, width and height and set the game is still not running
      * @param title to set the title of the window
@@ -445,16 +447,26 @@ public class Game implements Runnable {
         //pause and unpause the game
         if (this.getKeyManager().p) 
             pause = !pause;
-        
-        if(!this.isStarted()) {
-            if (this.getKeyManager().l) {
-                file.loadFile(this);
-            }
-        }
-        
+                
         if(pause && getKeyManager().g) {
             file.saveFile(this);
+            gameSavedMsg = true;
         }
+                
+        //if game is saved start a timer to show message
+        if (gameSavedMsg) {
+            gameSavedMsgTmp++;
+        }
+        
+        if (gameSavedMsgTmp >= 75) {
+            gameSavedMsg = false;
+            gameSavedMsgTmp = 0;
+        }
+        
+        if(hasKey){
+            key.setX(player.getX() +10);
+            key.setY(player.getY()-240);
+         }
         
         //Checks to see whether the enemy attacked the player. 
         this.hitPlayer();
@@ -528,11 +540,7 @@ public class Game implements Runnable {
                 case 4:
                     g.drawImage(Assets.background4, 0, 0, width, height, null);
                     break;
-            }
-            if(hasKey){
-                key.setX(player.getX() +10);
-                key.setY(player.getY()-240);
-            }
+            }          
             
             if(this.player.getY() > this.enemy.getY()){
                 enemy.render(g);
@@ -581,6 +589,11 @@ public class Game implements Runnable {
             //draw the score and lives 
             g.drawString("Vida: " + Integer.toString(vidas) + "%", player.getX()+100, player.getY()-215);
             g.drawString("Score: " + Integer.toString(score), player.getX()+250, player.getY()-215);
+            
+            if(gameSavedMsg) {
+                g.drawString("Game saved!", player.getX()-35, player.getY()-150);
+            }
+            
             bs.show();
             g2d.translate(-cam.getX(), -cam.getY()); //end of cam
             g.dispose();
