@@ -90,6 +90,21 @@ public class Game implements Runnable {
         this.started = started;
     }
     /**
+     * to get if player haskey
+     * @return hasKey
+     */
+    public boolean isHasKey() {
+        return hasKey;
+    }
+    /**
+     * to set if player hasKey
+     * @param hasKey 
+     */
+    public void setHasKey(boolean hasKey) {
+        this.hasKey = hasKey;
+    }
+    
+    /**
      * Get the score
      * @return score
      */
@@ -145,6 +160,21 @@ public class Game implements Runnable {
     public void setPlayer(Player player) {
         this.player = player;
     }
+    /**
+     * Get the enemy
+     * @return enemy
+     */
+    public Enemy getEnemy() {
+        return enemy;
+    }
+    /**
+     * Set the enemy
+     * @param enemy 
+     */
+    public void setEnemy(Enemy enemy) {
+        this.enemy = enemy;
+    }
+    
 
     public ArrayList<Obstacle> getObstacles() {
         return obstacles;

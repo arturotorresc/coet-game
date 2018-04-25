@@ -25,11 +25,18 @@ public class Files {
             // creating file object.
             printWriter = new PrintWriter(new FileWriter("data.txt"));
             // writing the game
+            // player position
             printWriter.println("" + game.getPlayer().getX() + "," + 
                     game.getPlayer().getY());
-            printWriter.println("" + game.getScore() + "," + game.getVidas());
-            
-            //TODO: check what will be saved and loaded in the game 
+            // player's lives
+            printWriter.println("" + game.getVidas());
+            // enemies' position
+            printWriter.println("" + game.getEnemy().getX() + "," +
+                    game.getEnemy().getY());
+            // actual level
+            printWriter.println("" + game.getLevel());
+            // has key? (boolean)
+            printWriter.println("" + game.isHasKey());
             
             printWriter.close();
             
@@ -53,12 +60,22 @@ public class Files {
             game.getPlayer().setY(Integer.parseInt(tokens[1]));
             
             line = bufferedReader.readLine();
-            tokens = line.split(",");
-            // Setting score and lives for game.
-            game.setScore(Integer.parseInt(tokens[0]));
-            game.setVidas(Integer.parseInt(tokens[1]));
+            // Setting lives for game.
+            game.setVidas(Integer.parseInt(line));
             
-            //TODO: check what will be saved and loaded in the game         
+            line = bufferedReader.readLine();
+            tokens = line.split(",");
+            // Setting the x and y values of the enemy
+            game.getEnemy().setX(Integer.parseInt(tokens[0]));
+            game.getEnemy().setY(Integer.parseInt(tokens[1]));
+            
+            line = bufferedReader.readLine();
+            // Setting the actual level
+            game.setLevel(Integer.parseInt(line));
+            
+            line = bufferedReader.readLine();
+            // Setting if player has key
+            game.setHasKey(Boolean.parseBoolean(line));
             
             
         } catch(IOException ioe){
