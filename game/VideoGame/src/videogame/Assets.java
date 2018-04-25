@@ -44,6 +44,7 @@ public class Assets {
     public static BufferedImage continueMenu;      //to store the pausing image
     public static BufferedImage creditsMenu;      //to store the pausing image
     public static BufferedImage helpMenu;      //to store the pausing image
+    public static BufferedImage mute;           // 
     
     public static BufferedImage continueGame;   //to store the continue game image
     public static BufferedImage gameOver;    //to store the gameOver image
@@ -82,6 +83,7 @@ public class Assets {
         continueMenu = ImageLoader.loadImage("/images/continueMenu.jpg");
         creditsMenu = ImageLoader.loadImage("/images/creditsMenu.jpg");
         helpMenu = ImageLoader.loadImage("/images/helpMenu.jpg");
+        mute = ImageLoader.loadImage("/images/mute.png");
         //win = ImageLoader.loadImage("/images/win.png");
         
         
@@ -89,6 +91,7 @@ public class Assets {
         ambientMusic = new SoundClip("/sounds/ambientMusic.wav");
         chaseMusic = new SoundClip("/sounds/chaseMusic.wav");
         monsterAttack = new SoundClip("/sounds/cuchillo.wav");
+        
         
         Spreadsheet playerSs = new Spreadsheet(player);
         Spreadsheet monsterSs = new Spreadsheet(monster);
