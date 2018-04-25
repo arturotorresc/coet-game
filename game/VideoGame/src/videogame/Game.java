@@ -174,8 +174,10 @@ public class Game implements Runnable {
     public void setEnemy(Enemy enemy) {
         this.enemy = enemy;
     }
-    
-
+    /**
+     * To get the array of obstacles
+     * @return obstacles
+     */
     public ArrayList<Obstacle> getObstacles() {
         return obstacles;
     }
@@ -282,7 +284,10 @@ public class Game implements Runnable {
      * To continue the game after loosing a live
      */
     public void continueGame() {
-        player.setY(getHeight()/2 - 90);
+        player.setY(getHeight()/2 - 31);
+        player.setX(getWidth()/2 - 25);
+        enemy.setX(getWidth()/2 +300);
+        enemy.setY(getHeight()/2);
         setStarted(false);
     }
     /**
@@ -378,7 +383,8 @@ public class Game implements Runnable {
             setStarted(true);
         }
         if(this.getKeyManager().enter && !this.isStarted() && menu.getVar() == 2 ) {
-            System.out.print("continue");
+            file.loadFile(this);
+            setStarted(true);
         }
         
     }
