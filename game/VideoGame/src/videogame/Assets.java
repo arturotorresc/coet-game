@@ -32,6 +32,9 @@ public class Assets {
     public static BufferedImage monsterDown[]; //to store animations going down.
     public static BufferedImage monsterLeft[]; //to store animations going left.
     public static BufferedImage monsterRight[]; //to store animations going right.
+    public static BufferedImage full_hearts;    // Full hearts image.
+    public static BufferedImage half_hearts;    // Half hearts image.
+    public static BufferedImage one_heart;      // One heart image.
     
     
     //menu related images
@@ -50,6 +53,7 @@ public class Assets {
     public static SoundClip rain;           // to store rain ambient sound.
     public static SoundClip ambientMusic; // to store ambient music.
     public static SoundClip chaseMusic;
+    public static SoundClip monsterAttack; // to store monster attacking player.
 
     /**
      * initializing the images of the game
@@ -69,8 +73,11 @@ public class Assets {
         continueGame = ImageLoader.loadImage("/images/continue.png");
         key = ImageLoader.loadImage("/images/key.png");
         gameOver = ImageLoader.loadImage("/images/gameOver.png");
-        // menu
+        full_hearts = ImageLoader.loadImage("/images/hearts_full.png");
+        half_hearts = ImageLoader.loadImage("/images/hearts_2.png");
+        one_heart = ImageLoader.loadImage("/images/hearts_1.png");
         
+        // menu
         startMenu = ImageLoader.loadImage("/images/nGameMenu.jpg");
         continueMenu = ImageLoader.loadImage("/images/continueMenu.jpg");
         creditsMenu = ImageLoader.loadImage("/images/creditsMenu.jpg");
@@ -81,6 +88,7 @@ public class Assets {
         rain = new SoundClip("/sounds/rain.aiff");
         ambientMusic = new SoundClip("/sounds/ambientMusic.wav");
         chaseMusic = new SoundClip("/sounds/chaseMusic.wav");
+        monsterAttack = new SoundClip("/sounds/cuchillo.wav");
         
         Spreadsheet playerSs = new Spreadsheet(player);
         Spreadsheet monsterSs = new Spreadsheet(monster);

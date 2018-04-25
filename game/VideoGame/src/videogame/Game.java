@@ -226,6 +226,8 @@ public class Game implements Runnable {
         this.level = level;
     }    
     
+    
+    
     /**
      * initializing the variables of the game
      */
@@ -238,7 +240,7 @@ public class Game implements Runnable {
          shootTmpPl = 0;
          r = new Random();
          direction = 1;
-         vidas = 100;
+         vidas = 3;
          score = 0;
          level = 1;
          gameOver = false;
@@ -257,7 +259,6 @@ public class Game implements Runnable {
          sprintFlag = true;
          
          menu = new Menu();
-         
          Assets.rain.setLooping(true);
          Assets.rain.play();
          Assets.ambientMusic.setLooping(true);
@@ -328,6 +329,8 @@ public class Game implements Runnable {
     
     private void hitPlayer() {
         if(this.enemy.intersects(player)){
+            this.setVidas(this.getVidas()-1);
+            Assets.monsterAttack.play();
             if(this.enemy.getX() > this.player.getX()){
                 this.enemy.setX(this.enemy.getX() + 100);
             }else{
@@ -587,8 +590,18 @@ public class Game implements Runnable {
             g.setColor(Color.white);
             g.setFont(new Font("default", Font.BOLD, 18));
             //draw the score and lives 
-            g.drawString("Vida: " + Integer.toString(vidas) + "%", player.getX()+100, player.getY()-215);
-            g.drawString("Score: " + Integer.toString(score), player.getX()+250, player.getY()-215);
+            if(this.isStarted()){
+                if(this.vidas == 3){
+                    g.drawImage(Assets.full_hearts, player.getX()+255, player.getY()-260,
+                        125, 75, null);
+                }else if(this.vidas == 2){
+                    g.drawImage(Assets.half_hearts, player.getX()+255, player.getY()-260,
+                        125, 75, null);
+                }else if(this.vidas == 1){
+                    g.drawImage(Assets.one_heart, player.getX()+255, player.getY()-260,
+                        125, 75, null);
+                }
+            }
             
             if(gameSavedMsg) {
                 g.drawString("Game saved!", player.getX()-35, player.getY()-150);
