@@ -16,10 +16,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * Coet game 
- * @author 
+ * Coet game
+ *
+ * @author
  */
 public class Game implements Runnable {
+
     private BufferStrategy bs;      // to have several buffers when displaying
     private Graphics g;             // to paint objects
     private Display display;        // to display in the game
@@ -39,14 +41,14 @@ public class Game implements Runnable {
     private int vidas;              //to store lives
     private int score;              //to store score
     //to control game status (0-not started, 1-playing, 2-gameOver, 3-Win)
-    private int status;             
+    private int status;
     private int level;              //to control the actual level being played
     private boolean gameOver;       //to control the game ending
     private Random r;               //to use a random number
     private Files file;              //File to save and load the game
     private Camera cam;
     private Powerup key;
-    private Enemy enemy; 
+    private Enemy enemy;
     private boolean hasKey;
     private boolean changeMusic;    // choose music depending on state.
     private Menu menu;
@@ -61,11 +63,15 @@ public class Game implements Runnable {
     private SwitchMusic switchMusic; // to control the switching of music.
     private boolean gameSavedMsg; // to show a message when game is saved
     private int gameSavedMsgTmp; //to control the message showed temporarily
+    private boolean mute; // to mute the game 
+    private boolean restartMusicFlag; // to restartMusic
+
     /**
      * to create title, width and height and set the game is still not running
+     *
      * @param title to set the title of the window
      * @param width to set the width of the window
-     * @param height  to set the height of the window
+     * @param height to set the height of the window
      */
     public Game(String title, int width, int height) {
         this.title = title;
@@ -79,191 +85,232 @@ public class Game implements Runnable {
 
     /**
      * Check if game is started
+     *
      * @return started
      */
     public boolean isStarted() {
         return started;
     }
+
     /**
      * Set if the game is started
+     *
      * @param started - boolean
      */
     public void setStarted(boolean started) {
         this.started = started;
     }
+
     /**
      * to get if player haskey
+     *
      * @return hasKey
      */
     public boolean isHasKey() {
         return hasKey;
     }
+
     /**
      * to set if player hasKey
-     * @param hasKey 
+     *
+     * @param hasKey
      */
     public void setHasKey(boolean hasKey) {
         this.hasKey = hasKey;
     }
-    
+
     /**
      * Get the score
+     *
      * @return score
      */
     public int getScore() {
         return score;
     }
+
     /**
      * Set the score
-     * @param score 
+     *
+     * @param score
      */
     public void setScore(int score) {
         this.score = score;
     }
+
     /**
      * Get enemies direction
+     *
      * @return direction
      */
     public int getDirection() {
         return direction;
     }
+
     /**
      * Set enemies direction
-     * @param direction 
+     *
+     * @param direction
      */
     public void setDirection(int direction) {
         this.direction = direction;
-    }    
+    }
+
     /**
      * To get the width of the game window
+     *
      * @return an <code>int</code> value with the width
      */
     public int getWidth() {
         return width;
     }
+
     /**
      * To get the height of the game window
+     *
      * @return an <code>int</code> value with the height
      */
     public int getHeight() {
         return height;
     }
+
     /**
      * Get the player
+     *
      * @return player
      */
     public Player getPlayer() {
         return player;
     }
+
     /**
      * set the player
-     * @param player 
+     *
+     * @param player
      */
     public void setPlayer(Player player) {
         this.player = player;
     }
+
     /**
      * Get the enemy
+     *
      * @return enemy
      */
     public Enemy getEnemy() {
         return enemy;
     }
+
     /**
      * Set the enemy
-     * @param enemy 
+     *
+     * @param enemy
      */
     public void setEnemy(Enemy enemy) {
         this.enemy = enemy;
     }
+
     /**
      * To get the array of obstacles
+     *
      * @return obstacles
      */
     public ArrayList<Obstacle> getObstacles() {
         return obstacles;
     }
+
     /**
      * To get the amoutn of lives of the game
+     *
      * @return an <code>int</code> value with vidas
      */
     public int getVidas() {
         return vidas;
     }
+
     /**
      * To set the amount of lives left
-     * @param vidas 
+     *
+     * @param vidas
      */
     public void setVidas(int vidas) {
         this.vidas = vidas;
     }
+
     /**
      * To get the game's status
+     *
      * @return status
      */
     public int getStatus() {
         return status;
     }
+
     /**
      * To set the game's status
-     * @param status 
+     *
+     * @param status
      */
     public void setStatus(int status) {
         this.status = status;
     }
+
     /**
      * To get the actual level being played
+     *
      * @return level
      */
     public int getLevel() {
         return level;
     }
+
     /**
      * To set the actual level being played
-     * @param level 
+     *
+     * @param level
      */
     public void setLevel(int level) {
         this.level = level;
     }    
-    
-    
-    
     /**
      * initializing the variables of the game
      */
     private void init() {
-         display = new Display(title, getWidth(), getHeight());  
-         Assets.init();
-         player = new Player(getWidth()/2, getHeight()/2 , 50, 62, 700, 700, this);
-         obstacles = new ArrayList<Obstacle>();
-         canShoot = true;
-         shootTmpPl = 0;
-         r = new Random();
-         direction = 1;
-         vidas = 3;
-         score = 0;
-         level = 1;
-         gameOver = false;
-         pause = false;
-         display.getJframe().addKeyListener(keyManager);
-         cam = new Camera(0,0);
-         enemy = new Enemy(getWidth() / 2+300, getHeight() / 2, 62, 77, 0, 0, 1, 1, 1, this);
-         key = new Powerup(400, 200, 50,50,0, 0);
-         hasKey = false;
-         renderBlood = false;
-         timerFlag = true;
-         hitByEnemy = new Timer();
-         scrollDown = true;
-         scrollUp = true;
-         switchMusicFlag = true;
-         sprintFlag = true;
-         
-         menu = new Menu();
-         Assets.rain.setLooping(true);
-         Assets.rain.play();
-         Assets.ambientMusic.setLooping(true);
-         Assets.ambientMusic.play();
+        display = new Display(title, getWidth(), getHeight());
+        Assets.init();
+        player = new Player(getWidth() / 2, getHeight() / 2, 50, 62, 700, 700, this);
+        obstacles = new ArrayList<Obstacle>();
+        canShoot = true;
+        shootTmpPl = 0;
+        r = new Random();
+        direction = 1;
+        vidas = 100;
+        score = 0;
+        level = 1;
+        gameOver = false;
+        pause = false;
+        display.getJframe().addKeyListener(keyManager);
+        cam = new Camera(0, 0);
+        enemy = new Enemy(getWidth() / 2 + 300, getHeight() / 2, 62, 77, 0, 0, 1, 1, 1, this);
+        key = new Powerup(400, 200, 50, 50, 0, 0);
+        hasKey = false;
+        renderBlood = false;
+        timerFlag = true;
+        hitByEnemy = new Timer();
+        scrollDown = true;
+        scrollUp = true;
+        switchMusicFlag = true;
+        sprintFlag = true;
+        mute = false;
+        restartMusicFlag = false;
+
+        menu = new Menu();
+
+        Assets.rain.setLooping(true);
+        Assets.rain.play();
+        Assets.ambientMusic.setLooping(true);
+        Assets.ambientMusic.play();
     }
+
     /**
      * To restart the game when is over
      */
@@ -279,20 +326,24 @@ public class Game implements Runnable {
         score = 0;
         gameOver = false;
         pause = false;
-        key = new Powerup(400, 200, 50,50,0, 0);
-        hasKey = false; 
+        key = new Powerup(400, 200, 50, 50, 0, 0);
+        hasKey = false;
+        mute = false;
         menu = new Menu();
+        restartMusicFlag = false;
     }
+
     /**
      * To continue the game after loosing a live
      */
     public void continueGame() {
-        player.setY(getHeight()/2 - 31);
-        player.setX(getWidth()/2 - 25);
-        enemy.setX(getWidth()/2 +300);
-        enemy.setY(getHeight()/2);
+        player.setY(getHeight() / 2 - 31);
+        player.setX(getWidth() / 2 - 25);
+        enemy.setX(getWidth() / 2 + 300);
+        enemy.setY(getHeight() / 2);
         setStarted(false);
     }
+
     /**
      * To run the game
      */
@@ -316,175 +367,204 @@ public class Game implements Runnable {
             delta += (now - lastTime) / timeTick;
             // updating the last time
             lastTime = now;
-            
+
             // if delta is positive we tick the game
             if (delta >= 1) {
                 tick();
                 render();
-                delta --;
+                delta--;
             }
         }
         stop();
     }
-    
+
     private void hitPlayer() {
         if(this.enemy.intersects(player)){
             this.setVidas(this.getVidas()-1);
             Assets.monsterAttack.play();
             if(this.enemy.getX() > this.player.getX()){
                 this.enemy.setX(this.enemy.getX() + 100);
-            }else{
+            } else {
                 this.enemy.setX(this.enemy.getX() - 100);
             }
             renderBlood = true;
-            if(timerFlag){
+            if (timerFlag) {
                 timerFlag = false;
                 this.startBloodAnimation();
-                
+
             }
         }
     }
-    
+
     private void startBloodAnimation() {
         bloodAnimation = new TimerTask() {
-             public void run() {
-                 renderBlood = false;
-                 timerFlag = true;
-             }
-         };
+            public void run() {
+                renderBlood = false;
+                timerFlag = true;
+            }
+        };
         hitByEnemy.schedule(bloodAnimation, 150);
     }
-    
+
     private void scrollThroughMenu() {
-        
-        if(this.getKeyManager().down && scrollDown) {
+
+        if (this.getKeyManager().down && scrollDown) {
             scrollDown = false;
             this.menu.setVar(this.menu.getVar() + 1);
         }
-        
-        if(this.getKeyManager().up && scrollUp) {
+
+        if (this.getKeyManager().up && scrollUp) {
             scrollUp = false;
             this.menu.setVar(this.menu.getVar() - 1);
         }
-        
-        if(!this.getKeyManager().down) {
+
+        if (!this.getKeyManager().down) {
             scrollDown = true;
         }
-        
-        if(!this.getKeyManager().up) {
+
+        if (!this.getKeyManager().up) {
             scrollUp = true;
         }
-        
-        if(this.menu.getVar() > 4) {
+
+        if (this.menu.getVar() > 4) {
             this.menu.setVar(1);
         }
-        
-        if(this.menu.getVar() < 1) {
+
+        if (this.menu.getVar() < 1) {
             this.menu.setVar(4);
         }
-        
+
         // starting the game
         if (this.getKeyManager().enter && !this.isStarted() && menu.getVar() == 1) {
             setStarted(true);
         }
-        if(this.getKeyManager().enter && !this.isStarted() && menu.getVar() == 2 ) {
+        if (this.getKeyManager().enter && !this.isStarted() && menu.getVar() == 2) {
             file.loadFile(this);
             setStarted(true);
         }
-        
+
     }
-    
+
     private void startChaseMusic() {
-        if(this.enemy.detects(this.player) && switchMusicFlag){
+        if (this.enemy.detects(this.player) && switchMusicFlag) {
             switchMusicFlag = false;
             switchMusic = new SwitchMusic(Assets.ambientMusic,
                     Assets.chaseMusic, true, 25600);
-            
+
             Timer switchingFlag = new Timer();
             TimerTask switchFlagTask = new TimerTask() {
                 public void run() {
                     switchMusicFlag = true;
                 }
             };
-            
+
             switchingFlag.schedule(switchFlagTask, 25600);
         }
     }
-    
+
+    private void muteB() {
+        if (this.getKeyManager().mute && !mute) {
+            Assets.chaseMusic.stop();
+            Assets.rain.stop();
+            Assets.ambientMusic.stop();
+            mute = true;
+        } else if (this.getKeyManager().mute && mute) {
+            Assets.ambientMusic.play();
+            mute = false;
+            restartMusicFlag = true;
+        }
+    }
+
     private void sprint() {
-        if(this.getKeyManager().isSprint() && sprintFlag){
+        if (this.getKeyManager().isSprint() && sprintFlag) {
             sprintFlag = false;
             this.player.sprint();
-            
+
             Timer activateSprintFlag = new Timer();
             TimerTask sprintFlagTask = new TimerTask() {
                 public void run() {
                     sprintFlag = true;
                 }
             };
-            
+
             // Reactivate the sprint flag every 15 seconds.
             activateSprintFlag.schedule(sprintFlagTask, 15000);
         }
-        
+
         // Stop sprinting if user releases shift key.
-        if(!this.getKeyManager().isSprint()){
+        if (!this.getKeyManager().isSprint()) {
             this.player.setSprint(0);
         }
     }
+
     /**
      * To get the key manager
+     *
      * @return keyManager
      */
     public KeyManager getKeyManager() {
         return keyManager;
     }
+
     /**
      * To tick the game
      */
     private void tick() {
         cam.tick(player);
-        
+
         keyManager.tick();
-        
+
+        muteB();
+
+        if (restartMusicFlag) {
+            restartMusicFlag = false;
+            Assets.ambientMusic.getLooping();
+            Assets.ambientMusic.play();
+            Assets.rain.getLooping();
+            Assets.rain.play();
+
+        }
+
         //pause and unpause the game
-        if (this.getKeyManager().p) 
+        if (this.getKeyManager().p) {
             pause = !pause;
-                
-        if(pause && getKeyManager().g) {
+        }
+
+        if (pause && getKeyManager().g) {
             file.saveFile(this);
             gameSavedMsg = true;
         }
-                
+
         //if game is saved start a timer to show message
         if (gameSavedMsg) {
             gameSavedMsgTmp++;
         }
-        
+
         if (gameSavedMsgTmp >= 75) {
             gameSavedMsg = false;
             gameSavedMsgTmp = 0;
         }
-        
-        if(hasKey){
-            key.setX(player.getX() +10);
-            key.setY(player.getY()-240);
-         }
-        
+
+        if (hasKey) {
+            key.setX(player.getX() + 10);
+            key.setY(player.getY() - 240);
+        }
+
         //Checks to see whether the enemy attacked the player. 
         this.hitPlayer();
-        
+
         scrollThroughMenu();
         startChaseMusic();
-        
+
         //Allows sprinting by the player.
         sprint();
-        
-        if ((gameOver || pause) && this.getKeyManager().r)
+
+        if ((gameOver || pause) && this.getKeyManager().r) {
             restart();
-        
+        }
+
         if (!pause && !gameOver) {
-            if(this.isStarted()) {
+            if (this.isStarted()) {
                 player.tick();
                 enemy.tick();
             }
@@ -492,23 +572,24 @@ public class Game implements Runnable {
             if (shootTmpPl >= 25) {
                 canShoot = true;
                 shootTmpPl = 0;
-            }                       
-        } 
-        
-        if(this.getKeyManager().isHide()){
-            
+            }
         }
-            
+
+        if (this.getKeyManager().isHide()) {
+
+        }
+
         //If lives == 0 game is over with status 2 (lose)
         if (vidas <= 0) {
             gameOver = true;
             vidas = 0;
             status = 2;
-        }    
-        if(player.intersects(key)){
+        }
+        if (player.intersects(key)) {
             hasKey = true;
         }
     }
+
     /**
      * To render the game
      */
@@ -520,17 +601,15 @@ public class Game implements Runnable {
         after clearing the Rectanlge, getting the graphic object from the 
         buffer strategy element. 
         show the graphic and dispose it to the trash system
-        */
+         */
         if (bs == null) {
             display.getCanvas().createBufferStrategy(3);
-        }
-        else
-        {
+        } else {
             g = bs.getDrawGraphics();
-            Graphics2D g2d = (Graphics2D)g;
+            Graphics2D g2d = (Graphics2D) g;
             g2d.translate(cam.getX(), cam.getY()); //begin of cam
-            
-            switch(getLevel()) {
+
+            switch (getLevel()) {
                 case 1:
                     g.drawImage(Assets.background1, 0, 0, width, height, null);
                     break;
@@ -543,49 +622,54 @@ public class Game implements Runnable {
                 case 4:
                     g.drawImage(Assets.background4, 0, 0, width, height, null);
                     break;
-            }          
-            
-            if(this.player.getY() > this.enemy.getY()){
+            }
+
+            if (this.player.getY() > this.enemy.getY()) {
                 enemy.render(g);
                 player.render(g);
-            }else{
+            } else {
                 player.render(g);
                 enemy.render(g);
             }
             key.render(g);
-            if(this.getPlayer().isVisible()){
-               g.drawImage(Assets.shadow, player.getX()-1500-player.getWidth(), player.getY()-950-player.getHeight(),
-                    this.getWidth()*4, this.getHeight()*4, null);
-            }else{
-                g.drawImage(Assets.hidden, player.getX()-1500-player.getWidth(), player.getY()-950-player.getHeight(),
-                    this.getWidth()*4, this.getHeight()*4, null);
+            if (this.getPlayer().isVisible()) {
+                g.drawImage(Assets.shadow, player.getX() - 1500 - player.getWidth(), player.getY() - 950 - player.getHeight(),
+                        this.getWidth() * 4, this.getHeight() * 4, null);
+            } else {
+                g.drawImage(Assets.hidden, player.getX() - 1500 - player.getWidth(), player.getY() - 950 - player.getHeight(),
+                        this.getWidth() * 4, this.getHeight() * 4, null);
             }
-            
+
             //Render blood animation.
-            if(renderBlood) {
-                g.drawImage(Assets.blood, player.getX()-1500-player.getWidth(), player.getY()-950-player.getHeight(),
-                    this.getWidth()*4, this.getHeight()*4, null);
+            if (renderBlood) {
+                g.drawImage(Assets.blood, player.getX() - 1500 - player.getWidth(), player.getY() - 950 - player.getHeight(),
+                        this.getWidth() * 4, this.getHeight() * 4, null);
             }
             //draw the different menus depending on game status
-            if(!this.isStarted())
+            if (!this.isStarted()) {
                 menu.render(g);
-           
+            }
+
 //                if (status == 0)
 //                    g.drawImage(Assets.start, width/2 - 250, 95, 500, 400, null);
 //                else if(status == 1)
 //                    g.drawImage(Assets.continueGame, getWidth()/2 - 125, 
 //                            getHeight()/2 - 75, 250, 150, null);                
-            if(pause)
-                g.drawImage(Assets.pause, getWidth()/2 - 200, 
-                        getHeight()/2 - 175, 400, 350, null);
-            if(gameOver) {
+            if (pause) {
+                g.drawImage(Assets.pause, getWidth() / 2 - 200,
+                        getHeight() / 2 - 175, 400, 350, null);
+            }
+            if (gameOver) {
                 /*if (status == 2)
                     g.drawImage(Assets.gameOver, getWidth()/2 - 200, 
                             getHeight()/2 - 175, 400, 350, null);
                 else if (status == 3)
                     g.drawImage(Assets.win, getWidth()/2 - 200, 
                             getHeight()/2 - 175, 400, 350, null);
-                */
+                 */
+            }
+            if (mute) {
+                g.drawImage(Assets.mute, player.getX() - 200, player.getY() + 215, 30, 30, null);
             }
             g.setColor(Color.white);
             g.setFont(new Font("default", Font.BOLD, 18));
@@ -606,14 +690,14 @@ public class Game implements Runnable {
             if(gameSavedMsg) {
                 g.drawString("Game saved!", player.getX()-35, player.getY()-150);
             }
-            
+
             bs.show();
             g2d.translate(-cam.getX(), -cam.getY()); //end of cam
             g.dispose();
         }
-       
+
     }
-    
+
     /**
      * setting the thread for the game
      */
@@ -624,7 +708,7 @@ public class Game implements Runnable {
             thread.start();
         }
     }
-    
+
     /**
      * stopping the thread
      */
@@ -635,7 +719,7 @@ public class Game implements Runnable {
                 thread.join();
             } catch (InterruptedException ie) {
                 ie.printStackTrace();
-            }           
+            }
         }
     }
 }

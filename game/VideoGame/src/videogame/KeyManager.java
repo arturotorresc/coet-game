@@ -25,6 +25,7 @@ public class KeyManager implements KeyListener {
     public boolean l;       //flag to loaf the game
     private boolean hide;   //flag to hide the player.
     private boolean sprint; // flag to sprint.
+    public boolean mute;    // flag to mute the game 
 
     private boolean keys[];  // to store all the flags for every key
 
@@ -58,7 +59,8 @@ public class KeyManager implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         // set true to every key pressed except P and R
-        if (e.getKeyCode() == KeyEvent.VK_P || e.getKeyCode() == KeyEvent.VK_R){
+        if (e.getKeyCode() == KeyEvent.VK_P || e.getKeyCode() == KeyEvent.VK_R 
+                || e.getKeyCode() == KeyEvent.VK_M){
             keys[e.getKeyCode()] = false;
         }else{
             keys[e.getKeyCode()] = true;
@@ -71,7 +73,8 @@ public class KeyManager implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         // set false to every key released except P and R
-        if (e.getKeyCode() == KeyEvent.VK_P || e.getKeyCode() == KeyEvent.VK_R){
+        if (e.getKeyCode() == KeyEvent.VK_P || e.getKeyCode() == KeyEvent.VK_R 
+                || e.getKeyCode() == KeyEvent.VK_M){
             keys[e.getKeyCode()] = true;
         }else{
             keys[e.getKeyCode()] = false;
@@ -95,5 +98,7 @@ public class KeyManager implements KeyListener {
         sprint = keys[KeyEvent.VK_SHIFT];
         keys[KeyEvent.VK_P] = false;
         keys[KeyEvent.VK_R] = false;
+        mute = keys[KeyEvent.VK_M];
+        keys[KeyEvent.VK_M] = false;
     }
 }
