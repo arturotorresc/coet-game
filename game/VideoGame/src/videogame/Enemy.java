@@ -204,8 +204,6 @@ public class Enemy extends Item {
 
     @Override
     public void render(Graphics g) {
-        g.setColor(Color.white);
-        g.drawString("patrol: " + activePatrol, this.getX()+50, this.getY()-15);
         if(this.detects(game.getPlayer()) && this.game.getPlayer().isVisible()){
             switch(this.getDirection()){
                 case 'u':

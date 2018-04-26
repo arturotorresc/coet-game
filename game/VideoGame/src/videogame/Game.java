@@ -65,6 +65,9 @@ public class Game implements Runnable {
     private int gameSavedMsgTmp; //to control the message showed temporarily
     private boolean mute; // to mute the game 
     private boolean restartMusicFlag; // to restartMusic
+    private Timer introTimer;   // to show the intro if its a new game.
+    private TimerTask showTimer; // show the timer.
+    private boolean introFlag;  // introflag to only show the intro once.
 
     /**
      * to create title, width and height and set the game is still not running
@@ -283,7 +286,7 @@ public class Game implements Runnable {
         shootTmpPl = 0;
         r = new Random();
         direction = 1;
-        vidas = 100;
+        vidas = 3;
         score = 0;
         level = 1;
         gameOver = false;
@@ -302,6 +305,7 @@ public class Game implements Runnable {
         sprintFlag = true;
         mute = false;
         restartMusicFlag = false;
+        introFlag = false;
 
         menu = new Menu();
 
@@ -436,7 +440,7 @@ public class Game implements Runnable {
 
         // starting the game
         if (this.getKeyManager().enter && !this.isStarted() && menu.getVar() == 1) {
-            setStarted(true);
+            this.intro();
         }
         if (this.getKeyManager().enter && !this.isStarted() && menu.getVar() == 2) {
             file.loadFile(this);
@@ -461,7 +465,7 @@ public class Game implements Runnable {
             switchingFlag.schedule(switchFlagTask, 25600);
         }
     }
-
+    
     private void muteB() {
         if (this.getKeyManager().mute && !mute) {
             Assets.chaseMusic.stop();
@@ -474,7 +478,23 @@ public class Game implements Runnable {
             restartMusicFlag = true;
         }
     }
-
+    
+    private void intro() {
+        /*
+        Timer introTimer;   // to show the intro if its a new game.
+        TimerTask showTimer; // show the timer.
+        introFlag;
+        */
+        introFlag = true;
+        introTimer = new Timer();
+        showTimer = new TimerTask() {
+            public void run() {
+                introFlag = false;
+                setStarted(true);
+            }
+        };
+        introTimer.schedule(showTimer, 15000);
+    }
     private void sprint() {
         if (this.getKeyManager().isSprint() && sprintFlag) {
             sprintFlag = false;
@@ -646,10 +666,14 @@ public class Game implements Runnable {
                         this.getWidth() * 4, this.getHeight() * 4, null);
             }
             //draw the different menus depending on game status
-            if (!this.isStarted()) {
+
+            if(!this.isStarted()){
                 menu.render(g);
             }
-
+            
+            if(introFlag){
+                g.drawImage(Assets.intro,0, 0, 800, 500, null);
+            }
 //                if (status == 0)
 //                    g.drawImage(Assets.start, width/2 - 250, 95, 500, 400, null);
 //                else if(status == 1)
@@ -671,8 +695,6 @@ public class Game implements Runnable {
             if (mute) {
                 g.drawImage(Assets.mute, player.getX() - 200, player.getY() + 215, 30, 30, null);
             }
-            g.setColor(Color.white);
-            g.setFont(new Font("default", Font.BOLD, 18));
             //draw the score and lives 
             if(this.isStarted()){
                 if(this.vidas == 3){
@@ -686,7 +708,8 @@ public class Game implements Runnable {
                         125, 75, null);
                 }
             }
-            
+            g.setColor(Color.white);
+            g.setFont(new Font("default", Font.BOLD, 18));
             if(gameSavedMsg) {
                 g.drawString("Game saved!", player.getX()-35, player.getY()-150);
             }

@@ -49,6 +49,7 @@ public class Assets {
     public static BufferedImage continueGame;   //to store the continue game image
     public static BufferedImage gameOver;    //to store the gameOver image
     public static BufferedImage win;        //to store the winning image
+    public static BufferedImage intro;      // to store the intro image.
     
     //sounds
     public static SoundClip rain;           // to store rain ambient sound.
@@ -84,6 +85,7 @@ public class Assets {
         creditsMenu = ImageLoader.loadImage("/images/creditsMenu.jpg");
         helpMenu = ImageLoader.loadImage("/images/helpMenu.jpg");
         mute = ImageLoader.loadImage("/images/mute.png");
+        intro = ImageLoader.loadImage("/images/intro.png");
         //win = ImageLoader.loadImage("/images/win.png");
         
         
