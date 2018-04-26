@@ -44,6 +44,7 @@ public class Assets {
     public static BufferedImage continueMenu;      //to store the pausing image
     public static BufferedImage creditsMenu;      //to store the pausing image
     public static BufferedImage helpMenu;      //to store the pausing image
+    public static BufferedImage exitMenu;       // 
     public static BufferedImage mute;           // 
     
     public static BufferedImage continueGame;   //to store the continue game image
@@ -80,12 +81,13 @@ public class Assets {
         one_heart = ImageLoader.loadImage("/images/hearts_1.png");
         
         // menu
-        startMenu = ImageLoader.loadImage("/images/nGameMenu.jpg");
-        continueMenu = ImageLoader.loadImage("/images/continueMenu.jpg");
-        creditsMenu = ImageLoader.loadImage("/images/creditsMenu.jpg");
-        helpMenu = ImageLoader.loadImage("/images/helpMenu.jpg");
+        startMenu = ImageLoader.loadImage("/images/nGameMenu.png");
+        continueMenu = ImageLoader.loadImage("/images/continueMenu.png");
+        creditsMenu = ImageLoader.loadImage("/images/creditsMenu.png");
+//        helpMenu = ImageLoader.loadImage("/images/helpMenu.png");
         mute = ImageLoader.loadImage("/images/mute.png");
         intro = ImageLoader.loadImage("/images/intro.png");
+        exitMenu = ImageLoader.loadImage("/images/exitMenu.png");
         //win = ImageLoader.loadImage("/images/win.png");
         
         

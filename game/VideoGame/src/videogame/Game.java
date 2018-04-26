@@ -471,6 +471,7 @@ public class Game implements Runnable {
             Assets.chaseMusic.stop();
             Assets.rain.stop();
             Assets.ambientMusic.stop();
+            Assets.monsterAttack.stop();
             mute = true;
         } else if (this.getKeyManager().mute && mute) {
             Assets.ambientMusic.play();
