@@ -62,7 +62,7 @@ public class Assets {
      * initializing the images of the game
      */
     public static void init() {
-        main_lvl = ImageLoader.loadImage("/map/main_map.jpeg");
+        main_lvl = ImageLoader.loadImage("/images/fondo.jpg");
         background2 = ImageLoader.loadImage("/images/nivel2.png");
         background3 = ImageLoader.loadImage("/images/nivel3.png");
         background4 = ImageLoader.loadImage("/images/nivel4.png");
@@ -84,7 +84,7 @@ public class Assets {
         startMenu = ImageLoader.loadImage("/images/nGameMenu.png");
         continueMenu = ImageLoader.loadImage("/images/continueMenu.png");
         creditsMenu = ImageLoader.loadImage("/images/creditsMenu.png");
-//        helpMenu = ImageLoader.loadImage("/images/helpMenu.png");
+        helpMenu = ImageLoader.loadImage("/images/ helpMenu.png");
         mute = ImageLoader.loadImage("/images/mute.png");
         intro = ImageLoader.loadImage("/images/intro.png");
         exitMenu = ImageLoader.loadImage("/images/exitMenu.png");

@@ -430,7 +430,7 @@ public class Game implements Runnable {
             scrollUp = true;
         }
 
-        if (this.menu.getVar() > 4) {
+        if (this.menu.getVar() > 5) {
             this.menu.setVar(1);
         }
 

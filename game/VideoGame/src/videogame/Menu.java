@@ -46,6 +46,9 @@ public class Menu{
             case 4: 
               g.drawImage(Assets.helpMenu, 0, 0, 800, 500, null);
             break;
+            case 5: 
+              g.drawImage(Assets.exitMenu, 0, 0, 800, 500, null);
+            break;
             default:
              g.drawImage(Assets.exitMenu, 0, 0, 800, 500, null);
             break;
