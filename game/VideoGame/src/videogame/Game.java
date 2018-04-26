@@ -510,11 +510,6 @@ public class Game implements Runnable {
             // Reactivate the sprint flag every 15 seconds.
             activateSprintFlag.schedule(sprintFlagTask, 15000);
         }
-
-        // Stop sprinting if user releases shift key.
-        if (!this.getKeyManager().isSprint()) {
-            this.player.setSprint(0);
-        }
     }
 
     /**
@@ -631,7 +626,7 @@ public class Game implements Runnable {
 
             switch (getLevel()) {
                 case 1:
-                    g.drawImage(Assets.background1, 0, 0, width, height, null);
+                    g.drawImage(Assets.main_lvl, 0, 0, 3200, 1536, null);
                     break;
                 case 2:
                     g.drawImage(Assets.background2, 0, 0, width, height, null);

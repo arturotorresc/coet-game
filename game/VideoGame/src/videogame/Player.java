@@ -128,7 +128,7 @@ public class Player extends Item{
             this.playerRight.tick();
         }
         // collision with walls
-        if (getY() + 20 >= game.getHeight()) {
+        /*if (getY() + 20 >= game.getHeight()) {
             setY(game.getHeight() - 20);
         }
         else if (getY() <= 0) {
@@ -139,7 +139,7 @@ public class Player extends Item{
         }
         else if (getX() <= 0) {
             setX(0);
-        }
+        }*/
     }
     
     public void hide(Obstacle o){

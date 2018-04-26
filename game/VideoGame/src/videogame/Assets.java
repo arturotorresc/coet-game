@@ -13,7 +13,7 @@ import java.awt.image.BufferedImage;
  */
 public class Assets {
     //backgrounds
-    public static BufferedImage background1; // to store background image for level 1
+    public static BufferedImage main_lvl; // to store background image for level 1
     public static BufferedImage background2; // to store background image for level 2
     public static BufferedImage background3; // to store background image for level 3
     public static BufferedImage background4; // to store background image for level 4
@@ -61,7 +61,7 @@ public class Assets {
      * initializing the images of the game
      */
     public static void init() {
-        background1 = ImageLoader.loadImage("/images/nivel1.png");
+        main_lvl = ImageLoader.loadImage("/map/main_map.jpeg");
         background2 = ImageLoader.loadImage("/images/nivel2.png");
         background3 = ImageLoader.loadImage("/images/nivel3.png");
         background4 = ImageLoader.loadImage("/images/nivel4.png");
