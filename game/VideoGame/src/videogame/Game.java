@@ -46,12 +46,13 @@ public class Game implements Runnable {
     private boolean gameOver;       //to control the game ending
     private Random r;               //to use a random number
     private Files file;              //File to save and load the game
-    private Camera cam;
-    private Powerup key;
-    private Enemy enemy;
+    private Camera cam;             // to use the cam
+    private Powerup key;            // to use the key
+    private Enemy enemy;            //to use the enemy
     private boolean hasKey;
     private boolean changeMusic;    // choose music depending on state.
-    private Menu menu;
+    private Menu menu;              //to use the main menu
+    private PauseMenu pauseMenu;    //to use the pause menu
     private boolean scrollDown;        // flag to scroll through the menu.
     private boolean scrollUp;
     private Timer hitByEnemy;       // to display blood for a period of time.
@@ -61,8 +62,6 @@ public class Game implements Runnable {
     private boolean sprintFlag; // flag to cooldown sprint by the player.
     public boolean switchMusicFlag; // flag to know if music can be switched.
     private SwitchMusic switchMusic; // to control the switching of music.
-    private boolean gameSavedMsg; // to show a message when game is saved
-    private int gameSavedMsgTmp; //to control the message showed temporarily
     private boolean mute; // to mute the game 
     private boolean restartMusicFlag; // to restartMusic
     private Timer introTimer;   // to show the intro if its a new game.
@@ -308,6 +307,8 @@ public class Game implements Runnable {
         introFlag = false;
 
         menu = new Menu();
+        pauseMenu = new PauseMenu();
+
 
         Assets.rain.setLooping(true);
         Assets.rain.play();
@@ -335,6 +336,8 @@ public class Game implements Runnable {
         mute = false;
         menu = new Menu();
         restartMusicFlag = false;
+        pauseMenu = new PauseMenu();
+
     }
 
     /**
@@ -448,9 +451,40 @@ public class Game implements Runnable {
         }
 
     }
+    
+    private void scrollThroughPauseMenu() {
+
+        if (this.getKeyManager().down && scrollDown) {
+            scrollDown = false;
+            this.pauseMenu.setVar(this.pauseMenu.getVar() + 1);
+        }
+
+        if (this.getKeyManager().up && scrollUp) {
+            scrollUp = false;
+            this.pauseMenu.setVar(this.pauseMenu.getVar() - 1);
+        }
+
+        if (!this.getKeyManager().down) {
+            scrollDown = true;
+        }
+
+        if (!this.getKeyManager().up) {
+            scrollUp = true;
+        }
+
+        if (this.pauseMenu.getVar() > 3) {
+            this.pauseMenu.setVar(1);
+        }
+
+        if (this.pauseMenu.getVar() < 1) {
+            this.pauseMenu.setVar(2);
+        } 
+        
+
+    }
 
     private void startChaseMusic() {
-        if (this.enemy.detects(this.player) && switchMusicFlag) {
+        if (this.enemy.detects(this.player) && switchMusicFlag && !mute) {
             switchMusicFlag = false;
             switchMusic = new SwitchMusic(Assets.ambientMusic,
                     Assets.chaseMusic, true, 25600);
@@ -532,38 +566,37 @@ public class Game implements Runnable {
 
         muteB();
 
-        if (restartMusicFlag) {
-            restartMusicFlag = false;
-            Assets.ambientMusic.getLooping();
-            Assets.ambientMusic.play();
-            Assets.rain.getLooping();
-            Assets.rain.play();
-
-        }
+//        if (restartMusicFlag) {
+//            restartMusicFlag = false;
+//            Assets.ambientMusic.getLooping();
+//            Assets.ambientMusic.play();
+//            Assets.rain.getLooping();
+//            Assets.rain.play();
+//
+//        }
 
         //pause and unpause the game
         if (this.getKeyManager().p) {
             pause = !pause;
         }
-
-        if (pause && getKeyManager().g) {
-            file.saveFile(this);
-            gameSavedMsg = true;
-        }
-
-        //if game is saved start a timer to show message
-        if (gameSavedMsg) {
-            gameSavedMsgTmp++;
-        }
-
-        if (gameSavedMsgTmp >= 75) {
-            gameSavedMsg = false;
-            gameSavedMsgTmp = 0;
-        }
-
         if (hasKey) {
             key.setX(player.getX() + 10);
             key.setY(player.getY() - 240);
+        }
+        if(pause){
+            scrollThroughPauseMenu();
+            
+            if (this.getKeyManager().enter && pauseMenu.getVar() == 1){
+                file.saveFile(this);
+            }
+            if(this.getKeyManager().enter && pauseMenu.getVar() == 2){
+                pause = !pause;
+            }
+            if(this.getKeyManager().enter && pauseMenu.getVar() == 3){
+                restart();
+
+            }           
+          
         }
 
         //Checks to see whether the enemy attacked the player. 
@@ -571,6 +604,7 @@ public class Game implements Runnable {
 
         scrollThroughMenu();
         startChaseMusic();
+        
 
         //Allows sprinting by the player.
         sprint();
@@ -604,6 +638,8 @@ public class Game implements Runnable {
         if (player.intersects(key)) {
             hasKey = true;
         }
+        
+        
     }
 
     /**
@@ -663,7 +699,7 @@ public class Game implements Runnable {
             }
             //draw the different menus depending on game status
 
-            if(!this.isStarted()){
+            if(!this.isStarted() || (pauseMenu.getVar() == 3 && this.getKeyManager().enter)){
                 menu.render(g);
             }
             
@@ -675,10 +711,8 @@ public class Game implements Runnable {
 //                else if(status == 1)
 //                    g.drawImage(Assets.continueGame, getWidth()/2 - 125, 
 //                            getHeight()/2 - 75, 250, 150, null);                
-            if (pause) {
-                g.drawImage(Assets.pause, getWidth() / 2 - 200,
-                        getHeight() / 2 - 175, 400, 350, null);
-            }
+           
+            
             if (gameOver) {
                 /*if (status == 2)
                     g.drawImage(Assets.gameOver, getWidth()/2 - 200, 
@@ -704,11 +738,12 @@ public class Game implements Runnable {
                         125, 75, null);
                 }
             }
+             if (pause) {
+                pauseMenu.render(g);
+            }
             g.setColor(Color.white);
             g.setFont(new Font("default", Font.BOLD, 18));
-            if(gameSavedMsg) {
-                g.drawString("Game saved!", player.getX()-35, player.getY()-150);
-            }
+            
 
             bs.show();
             g2d.translate(-cam.getX(), -cam.getY()); //end of cam
