@@ -46,6 +46,9 @@ public class Assets {
     public static BufferedImage helpMenu;      //to store the pausing image
     public static BufferedImage exitMenu;       // 
     public static BufferedImage mute;           // 
+    public static BufferedImage pauseGame;  // save game option (pause menu) img
+    public static BufferedImage pauseContinue; // continue option (pause menu) img
+    public static BufferedImage pauseMain;      // mainMenu option (pause menu)img
     
     public static BufferedImage continueGame;   //to store the continue game image
     public static BufferedImage gameOver;    //to store the gameOver image
@@ -63,9 +66,9 @@ public class Assets {
      */
     public static void init() {
         main_lvl = ImageLoader.loadImage("/images/fondo.jpg");
-        background2 = ImageLoader.loadImage("/images/nivel2.png");
-        background3 = ImageLoader.loadImage("/images/nivel3.png");
-        background4 = ImageLoader.loadImage("/images/nivel4.png");
+       //  background2 = ImageLoader.loadImage("/images/nivel2.png");
+       // background3 = ImageLoader.loadImage("/images/nivel3.png");
+       // background4 = ImageLoader.loadImage("/images/nivel4.png");
         blood = ImageLoader.loadImage("/images/blood.png");
         shadow = ImageLoader.loadImage("/images/shadow.png");
         hidden = ImageLoader.loadImage("/images/hidden.png");
@@ -80,7 +83,7 @@ public class Assets {
         half_hearts = ImageLoader.loadImage("/images/hearts_2.png");
         one_heart = ImageLoader.loadImage("/images/hearts_1.png");
         
-        // menu
+        // main menu
         startMenu = ImageLoader.loadImage("/images/nGameMenu.png");
         continueMenu = ImageLoader.loadImage("/images/continueMenu.png");
         creditsMenu = ImageLoader.loadImage("/images/creditsMenu.png");
@@ -90,6 +93,12 @@ public class Assets {
         exitMenu = ImageLoader.loadImage("/images/exitMenu.png");
         //win = ImageLoader.loadImage("/images/win.png");
         
+        //pause menu
+        pauseGame = ImageLoader.loadImage("/images/savePause.png");
+        pauseContinue = ImageLoader.loadImage("/images/continuePause.png");
+        pauseMain = ImageLoader.loadImage("/images/mainPause.png");
+
+
         
         rain = new SoundClip("/sounds/rain.aiff");
         ambientMusic = new SoundClip("/sounds/ambientMusic.wav");
