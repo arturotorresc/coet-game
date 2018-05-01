@@ -67,6 +67,7 @@ public class Game implements Runnable {
     private Timer introTimer;   // to show the intro if its a new game.
     private TimerTask showTimer; // show the timer.
     private boolean introFlag;  // introflag to only show the intro once.
+    private boolean creditsFlag;  // creditsFlag 
 
     /**
      * to create title, width and height and set the game is still not running
@@ -305,7 +306,7 @@ public class Game implements Runnable {
         mute = false;
         restartMusicFlag = false;
         introFlag = false;
-
+        creditsFlag = false;
         menu = new Menu();
         pauseMenu = new PauseMenu();
 
@@ -337,6 +338,8 @@ public class Game implements Runnable {
         menu = new Menu();
         restartMusicFlag = false;
         pauseMenu = new PauseMenu();
+        creditsFlag = false;
+
 
     }
 
@@ -448,6 +451,13 @@ public class Game implements Runnable {
         if (this.getKeyManager().enter && !this.isStarted() && menu.getVar() == 2) {
             file.loadFile(this);
             setStarted(true);
+        }
+        if (this.getKeyManager().enter && !this.isStarted() && menu.getVar() == 3){
+             creditsFlag = true;
+             
+         }
+        if(this.getKeyManager().enter && !this.isStarted() && menu.getVar() == 5){
+            System.exit(0);
         }
 
     }
@@ -583,6 +593,7 @@ public class Game implements Runnable {
             key.setX(player.getX() + 10);
             key.setY(player.getY() - 240);
         }
+        
         if(pause){
             scrollThroughPauseMenu();
             
@@ -737,6 +748,10 @@ public class Game implements Runnable {
                     g.drawImage(Assets.one_heart, player.getX()+255, player.getY()-260,
                         125, 75, null);
                 }
+            }
+            if(creditsFlag){
+               g.drawImage(Assets.creditspic, 0, 0, 800, 500, null);
+
             }
              if (pause) {
                 pauseMenu.render(g);

@@ -46,9 +46,10 @@ public class Assets {
     public static BufferedImage helpMenu;      //to store the pausing image
     public static BufferedImage exitMenu;       // 
     public static BufferedImage mute;           // 
-    public static BufferedImage pauseGame;  // save game option (pause menu) img
-    public static BufferedImage pauseContinue; // continue option (pause menu) img
-    public static BufferedImage pauseMain;      // mainMenu option (pause menu)img
+    public static BufferedImage pauseGame;  // save game -  option (pause menu) img
+    public static BufferedImage pauseContinue; // continue - option (pause menu) img
+    public static BufferedImage pauseMain;      // mainMenu - option (pause menu)img
+    public static BufferedImage creditspic; 
     
     public static BufferedImage continueGame;   //to store the continue game image
     public static BufferedImage gameOver;    //to store the gameOver image
@@ -91,6 +92,7 @@ public class Assets {
         mute = ImageLoader.loadImage("/images/mute.png");
         intro = ImageLoader.loadImage("/images/intro.png");
         exitMenu = ImageLoader.loadImage("/images/exitMenu.png");
+        creditspic = ImageLoader.loadImage("/images/credistPic.png");
         //win = ImageLoader.loadImage("/images/win.png");
         
         //pause menu
