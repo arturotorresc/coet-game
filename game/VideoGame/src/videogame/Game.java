@@ -279,6 +279,15 @@ public class Game implements Runnable {
         this.vidas = vidas;
     }
 
+    public ArrayList<Powerup> getKeys() {
+        return keys;
+    }
+
+    public void setKeys(ArrayList<Powerup> keys) {
+        this.keys = keys;
+    }
+    
+
     /**
      * To get the game's status
      *
@@ -1003,9 +1012,9 @@ public class Game implements Runnable {
         
         keys.forEach((key) -> {
             key.tick();
+            key.setMoving(true, cantKeys);
             if (player.intersects(key)) {
-                cantKeys++;                    
-                key.setMoving(true, cantKeys);
+                cantKeys++; 
             }            
         }); 
               
@@ -1134,7 +1143,7 @@ public class Game implements Runnable {
                 pauseMenu.render(g);
             }
             g.setColor(Color.white);
-            g.setFont(new Font("default", Font.BOLD, 18));
+            g.setFont(new Font("default", Font.BOLD, 18));           
             
             if(keysAlert) {
                 if(3 - cantKeys > 1)
@@ -1149,7 +1158,7 @@ public class Game implements Runnable {
             }
             if(gameSavedMsg) {
                 g.drawString("Game saved!", player.getX()-35, player.getY()-150);
-            }            
+            }           
 
             bs.show();
             g2d.translate(-cam.getX(), -cam.getY()); //end of cam

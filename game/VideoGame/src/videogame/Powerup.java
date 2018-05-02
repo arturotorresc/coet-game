@@ -54,7 +54,7 @@ public class Powerup extends Item {
     }
     @Override
     public void tick() {
-        if(this.isMoving()) {
+        if(this.isMoving() && cantKeys != 0) {
             this.setX(g.getPlayer().getX()+(30*this.cantKeys) - 50);
             this.setY(g.getPlayer().getY()- 40);
         }            
