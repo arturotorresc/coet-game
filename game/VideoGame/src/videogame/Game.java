@@ -309,8 +309,7 @@ public class Game implements Runnable {
         creditsFlag = false;
         menu = new Menu();
         pauseMenu = new PauseMenu();
-
-
+        
         Assets.rain.setLooping(true);
         Assets.rain.play();
         Assets.ambientMusic.setLooping(true);
@@ -339,6 +338,8 @@ public class Game implements Runnable {
         restartMusicFlag = false;
         pauseMenu = new PauseMenu();
         creditsFlag = false;
+        Assets.gameoverMusic.stop();
+        Assets.ambientMusic.play();
     }
 
     /**
@@ -610,9 +611,6 @@ public class Game implements Runnable {
 
         //Checks to see whether the enemy attacked the player. 
         this.hitPlayer();
-        if(this.vidas == 0){
-            gameOver = true;
-        }
 
         scrollThroughMenu();
         startChaseMusic();
@@ -642,10 +640,14 @@ public class Game implements Runnable {
         }
 
         //If lives == 0 game is over with status 2 (lose)
-        if (vidas <= 0) {
+        if (vidas == 0) {
             gameOver = true;
-            vidas = 0;
+            vidas = -1;
             status = 2;
+            this.vidas = -1;
+            Assets.gameoverMusic.setLooping(true);
+            Assets.chaseMusic.stop();
+            Assets.gameoverMusic.play();
         }
         if (player.intersects(key)) {
             hasKey = true;

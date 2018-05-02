@@ -61,6 +61,7 @@ public class Assets {
     public static SoundClip ambientMusic; // to store ambient music.
     public static SoundClip chaseMusic;
     public static SoundClip monsterAttack; // to store monster attacking player.
+    public static SoundClip gameoverMusic; // to store game over music.
 
     /**
      * initializing the images of the game
@@ -106,6 +107,7 @@ public class Assets {
         ambientMusic = new SoundClip("/sounds/ambientMusic.wav");
         chaseMusic = new SoundClip("/sounds/chaseMusic.wav");
         monsterAttack = new SoundClip("/sounds/cuchillo.wav");
+        gameoverMusic = new SoundClip("/sounds/gameoverMusic.wav");
         
         
         Spreadsheet playerSs = new Spreadsheet(player);
