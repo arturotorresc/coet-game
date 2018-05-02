@@ -70,7 +70,7 @@ public class Game implements Runnable {
     private Timer introTimer;   // to show the intro if its a new game.
     private TimerTask showTimer; // show the timer.
     private boolean introFlag;  // introflag to only show the intro once.
-
+    private boolean helpFlag;
     private boolean keysBlocked; //to block keys when moving automatically
     private int keysBlockTmp; // to control the blocking of keys temporarily
     private int cantKeys; //to control how many keys the player haves
@@ -78,9 +78,9 @@ public class Game implements Runnable {
     private int keysAlertTmp; //to control showing of message
     private boolean keysAlert2; //to alert of missing keys
     private int keysAlertTmp2; //to control showing of message
-
+    private int help = 0;
     private boolean creditsFlag;  // creditsFlag 
-    private int credits;
+    private int credits = 0;
 
     /**
      * to create title, width and height and set the game is still not running
@@ -468,6 +468,7 @@ public class Game implements Runnable {
         menu = new Menu(this);
         pauseMenu = new PauseMenu(this);
         cantKeys = 0;
+        helpFlag = false;
         
         Assets.rain.setLooping(true);
         Assets.rain.play();
@@ -501,6 +502,7 @@ public class Game implements Runnable {
         restartMusicFlag = false;
         pauseMenu = new PauseMenu(this);
         creditsFlag = false;
+        helpFlag = false;
         Assets.gameoverMusic.stop();
         Assets.ambientMusic.play();
     }
@@ -615,8 +617,11 @@ public class Game implements Runnable {
             setStarted(true);
         }
         if (this.getKeyManager().enter && !this.isStarted() && menu.getVar() == 3){
-             creditsFlag = true;
+            creditsFlag = true;
          }
+         if(this.getKeyManager().enter && !this.isStarted() && menu.getVar() == 4){
+            helpFlag = true;
+        }
         if(this.getKeyManager().enter && !this.isStarted() && menu.getVar() == 5){
             System.exit(0);
         }
@@ -797,6 +802,14 @@ public class Game implements Runnable {
         if (credits >= 150) {
             creditsFlag = false;
             credits = 0;
+        }
+        if (helpFlag) {
+            help++;
+         }
+        
+        if (help >= 500) {
+            helpFlag = false;
+            help = 0;
         }
 
         //Checks to see whether the enemy attacked the player. 
@@ -1023,7 +1036,9 @@ public class Game implements Runnable {
             }
             if(creditsFlag){
                g.drawImage(Assets.creditspic, 0, 0, 800, 500, null);
-
+            }
+            if(helpFlag){
+               g.drawImage(Assets.help, 0, 0, 800, 500, null);
             }
              if (pause) {
                 pauseMenu.render(g);
