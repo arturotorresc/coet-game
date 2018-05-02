@@ -47,9 +47,10 @@ public class Game implements Runnable {
     private Random r;               //to use a random number
     private Files file;              //File to save and load the game
     private Camera cam;             // to use the cam
-    private Powerup key;            // to use the key
+    private ArrayList<Powerup> keys;            // to use the key
     private Enemy enemy;            //to use the enemy
     private boolean hasKey;
+    private int hasKeyTmp;
     private boolean changeMusic;    // choose music depending on state.
     private Menu menu;              //to use the main menu
     private PauseMenu pauseMenu;    //to use the pause menu
@@ -72,6 +73,11 @@ public class Game implements Runnable {
 
     private boolean keysBlocked; //to block keys when moving automatically
     private int keysBlockTmp; // to control the blocking of keys temporarily
+    private int cantKeys; //to control how many keys the player haves
+    private boolean keysAlert; //to alert of missing keys
+    private int keysAlertTmp; //to control showing of message
+    private boolean keysAlert2; //to alert of missing keys
+    private int keysAlertTmp2; //to control showing of message
 
     private boolean creditsFlag;  // creditsFlag 
     private int credits;
@@ -129,7 +135,21 @@ public class Game implements Runnable {
     public void setHasKey(boolean hasKey) {
         this.hasKey = hasKey;
     }
-
+    /**
+     * To get how many keys the player has
+     * @return cantKeys
+     */
+    public int getCantKeys() {
+        return cantKeys;
+    }
+    /**
+     * to set how many keys the player has
+     * @param cantKeys 
+     */
+    public void setCantKeys(int cantKeys) {
+        this.cantKeys = cantKeys;
+    }
+    
     /**
      * Get the score
      *
@@ -429,7 +449,10 @@ public class Game implements Runnable {
         display.getJframe().addKeyListener(keyManager);
         cam = new Camera(0, 0);
         enemy = new Enemy(getWidth() / 2 + 300, getHeight() / 2, 62, 77, 0, 0, 1, 1, 1, this);
-        key = new Powerup(400, 200, 50, 50, 0, 0);
+        keys = new ArrayList<Powerup>();
+        keys.add(new Powerup(485, 1110, 35, 35, 0, 0, this));
+        keys.add(new Powerup(2513, 1385, 35, 35, 0, 0, this));
+        keys.add(new Powerup(2745, 755, 35, 35, 0, 0, this));
         hasKey = false;
         renderBlood = false;
         timerFlag = true;
@@ -442,8 +465,9 @@ public class Game implements Runnable {
         restartMusicFlag = false;
         introFlag = false;
         creditsFlag = false;
-        menu = new Menu();
-        pauseMenu = new PauseMenu();
+        menu = new Menu(this);
+        pauseMenu = new PauseMenu(this);
+        cantKeys = 0;
         
         Assets.rain.setLooping(true);
         Assets.rain.play();
@@ -466,12 +490,16 @@ public class Game implements Runnable {
         score = 0;
         gameOver = false;
         pause = false;
-        key = new Powerup(400, 200, 50, 50, 0, 0);
+        keys = new ArrayList<Powerup>();
+        keys.add(new Powerup(485, 1110, 35, 35, 0, 0, this));
+        keys.add(new Powerup(2513, 1385, 35, 35, 0, 0, this));
+        keys.add(new Powerup(2745, 755, 35, 35, 0, 0, this));
         hasKey = false;
+        cantKeys = 0;
         mute = false;
-        menu = new Menu();
+        menu = new Menu(this);
         restartMusicFlag = false;
-        pauseMenu = new PauseMenu();
+        pauseMenu = new PauseMenu(this);
         creditsFlag = false;
         Assets.gameoverMusic.stop();
         Assets.ambientMusic.play();
@@ -738,10 +766,7 @@ public class Game implements Runnable {
         if (this.getKeyManager().p) {
             pause = !pause;
         }
-        if (hasKey) {
-            key.setX(player.getX() + 10);
-            key.setY(player.getY() - 240);
-        }
+        
         
         if(pause){
             scrollThroughPauseMenu();
@@ -757,16 +782,15 @@ public class Game implements Runnable {
                 restart();
             }
         }
+        
+        if (gameSavedMsg)
+            gameSavedMsgTmp++;
 
         if (gameSavedMsgTmp >= 70) {
             gameSavedMsg = false;
             gameSavedMsgTmp = 0;
         }           
           
-        if (hasKey) {
-            key.setX(player.getX() + 10);
-            key.setY(player.getY() - 240);
-        }
         if (creditsFlag) {
             credits++;
          }
@@ -793,7 +817,7 @@ public class Game implements Runnable {
         if (!pause && !gameOver) {
             if (this.isStarted()) {
                 player.tick();
-                enemy.tick();
+               // enemy.tick();
             }
             //wait 1.5 seconds to shoot again
             if (shootTmpPl >= 25) {
@@ -812,10 +836,7 @@ public class Game implements Runnable {
             Assets.chaseMusic.stop();
             Assets.gameoverMusic.play();
         }
-        if (player.intersects(key)) {
-            hasKey = true;
-        }
-        
+               
 
         obstacles.forEach((obs) ->{
            if(player.intersects(obs)) {
@@ -850,10 +871,22 @@ public class Game implements Runnable {
         else if ((player.getX() > 1521 && player.getX() < 1536) &&
                 (player.getY() > 600 && player.getY() < 615) &&
                 player.getDirection() == 'u') {
-            keysBlocked = true;
-            player.setX(2744);
-            player.setY(1046);
-            player.setDirection('d');
+            if(cantKeys == 0) {
+                keysAlert2 = true;
+            } else {
+                keysBlocked = true;
+                player.setX(2744);
+                player.setY(1046);
+                player.setDirection('d');
+            }            
+        }
+        
+        if(keysAlert2)
+            keysAlertTmp2++;
+        
+        if(keysAlertTmp2 >= 75) {
+            keysAlert2 = false;
+            keysAlertTmp2 = 0;
         }
         
         if (keysBlocked) {
@@ -864,7 +897,31 @@ public class Game implements Runnable {
         if (keysBlockTmp >= 25) {
             keysBlocked = false;
             keysBlockTmp = 0;
-        }        
+        }
+        
+        keys.forEach((key) -> {
+            key.tick();
+            if (player.intersects(key)) {
+                cantKeys++;                    
+                key.setMoving(true, cantKeys);
+            }            
+        }); 
+              
+
+        if ((player.getX() > 10 && player.getX() < 45) && player.getY() < 85) {
+            if (cantKeys < 3) {
+                keysAlert = true;
+            }
+            //AQUI VA EL FINAL!!!!
+        }
+        
+        if(keysAlert)
+            keysAlertTmp++;
+        
+        if(keysAlertTmp >= 75) {
+            keysAlert = false;
+            keysAlertTmp = 0;
+        }
     }
 
     /**
@@ -912,7 +969,10 @@ public class Game implements Runnable {
                 player.render(g);
                 enemy.render(g);
             }
-            key.render(g);
+            keys.forEach((key) -> {
+                key.render(g);
+            });
+            
             if (this.getPlayer().isVisible()) {
                 g.drawImage(Assets.shadow, player.getX() - 1500 - player.getWidth(), player.getY() - 950 - player.getHeight(),
                         this.getWidth() * 4, this.getHeight() * 4, null);
@@ -970,10 +1030,21 @@ public class Game implements Runnable {
             }
             g.setColor(Color.white);
             g.setFont(new Font("default", Font.BOLD, 18));
+            
+            if(keysAlert) {
+                if(3 - cantKeys > 1)
+                    g.drawString("" + (3 - cantKeys) + " keys missing!", 
+                            player.getX()-30, player.getY()-30);
+                else
+                    g.drawString("" + (3 - cantKeys) + " key missing!", 
+                            player.getX()-30, player.getY()-30);
+            }
+            if(keysAlert2) {
+                g.drawString("1 key missing!", player.getX()-30, player.getY()-30);
+            }
             if(gameSavedMsg) {
                 g.drawString("Game saved!", player.getX()-35, player.getY()-150);
-            }
-            
+            }            
 
             bs.show();
             g2d.translate(-cam.getX(), -cam.getY()); //end of cam

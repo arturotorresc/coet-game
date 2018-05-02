@@ -18,10 +18,12 @@ public class PauseMenu{
  
     private int var; 
     private Player player;
+    private Game g;
 
     
-    public PauseMenu(){ 
+    public PauseMenu(Game g){ 
         this.var = 1;
+        this.g = g;
     }
 
     public int getVar() {
@@ -36,16 +38,20 @@ public class PauseMenu{
       
         switch(var){
             case 1:
-              g.drawImage(Assets.pauseGame,0, 0, 800, 500, null);
+              g.drawImage(Assets.pauseGame, this.g.getPlayer().getX() - 400, 
+                      this.g.getPlayer().getY() - 250, 800, 500, null);
             break;
             case 2: 
-              g.drawImage(Assets.pauseContinue, 0, 0, 800, 500, null);
+              g.drawImage(Assets.pauseContinue, this.g.getPlayer().getX() - 400, 
+                      this.g.getPlayer().getY() - 250, 800, 500, null);
             break;
             case 3: 
-              g.drawImage(Assets.pauseMain, 0, 0, 800, 500, null);
+              g.drawImage(Assets.pauseMain, this.g.getPlayer().getX() - 400, 
+                      this.g.getPlayer().getY() - 250, 800, 500, null);
             break;
             default:
-              g.drawImage(Assets.pauseGame,0, 0, 800, 500, null);
+              g.drawImage(Assets.pauseGame, this.g.getPlayer().getX() - 400, 
+                      this.g.getPlayer().getY() - 250, 800, 500, null);
             break;
         }
         
