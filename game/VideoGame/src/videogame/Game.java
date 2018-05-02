@@ -81,6 +81,7 @@ public class Game implements Runnable {
     private boolean keysAlert2; //to alert of missing keys
     private int keysAlertTmp2; //to control showing of message
     private int help = 0;
+    private boolean winGame;
 
     //to control enemy's movement when crashing
     private boolean enemyCrash; 
@@ -490,6 +491,7 @@ public class Game implements Runnable {
         pauseMenu = new PauseMenu(this);
         cantKeys = 0;
         helpFlag = false;
+        winGame = false;
         
         Assets.rain.setLooping(true);
         Assets.rain.play();
@@ -1029,9 +1031,12 @@ public class Game implements Runnable {
         if ((player.getX() > 10 && player.getX() < 45) && player.getY() < 85) {
             if (cantKeys < 3) {
                 keysAlert = true;
-            }
-            //AQUI VA EL FINAL!!!!
+            } else {
+                winGame = true;
+            }            
         }
+        
+        
         
         if(keysAlert)
             keysAlertTmp++;
@@ -1060,118 +1065,121 @@ public class Game implements Runnable {
             g = bs.getDrawGraphics();
             Graphics2D g2d = (Graphics2D) g;
             g2d.translate(cam.getX(), cam.getY()); //begin of cam
-
-            switch (getLevel()) {
-                case 1:
-                    g.drawImage(Assets.main_lvl, 0, 0, 3200, 1536, null);
-                    break;
-                case 2:
-                    g.drawImage(Assets.background2, 0, 0, width, height, null);
-                    break;
-                case 3:
-                    g.drawImage(Assets.background3, 0, 0, width, height, null);
-                    break;
-                case 4:
-                    g.drawImage(Assets.background4, 0, 0, width, height, null);
-                    break;
-            }
-            
-          //  obstacles.forEach((obs) -> {
-          //      obs.render(g);
-          //  });
-
-            if (this.player.getY() > this.enemy.getY()) {
-                enemy.render(g);
-                player.render(g);
-            } else {
-                player.render(g);
-                enemy.render(g);
-            }
-            keys.forEach((key) -> {
-                key.render(g);
-            });
-            
-            if (this.getPlayer().isVisible()) {
-                g.drawImage(Assets.shadow, player.getX() - 1500 - player.getWidth(), player.getY() - 950 - player.getHeight(),
-                        this.getWidth() * 4, this.getHeight() * 4, null);
-            } else {
-                g.drawImage(Assets.hidden, player.getX() - 1500 - player.getWidth(), player.getY() - 950 - player.getHeight(),
-                        this.getWidth() * 4, this.getHeight() * 4, null);
-            }
-
-            //Render blood animation.
-            if (renderBlood) {
-                g.drawImage(Assets.blood, player.getX() - 1500 - player.getWidth(), player.getY() - 950 - player.getHeight(),
-                        this.getWidth() * 4, this.getHeight() * 4, null);
-            }
-            //draw the different menus depending on game status
-
-            if(!this.isStarted() || (pauseMenu.getVar() == 3 && this.getKeyManager().enter)){
-                menu.render(g);
-            }
-            
-            if(introFlag){
-                g.drawImage(Assets.intro,0, 0, 800, 500, null);
-            }
-//                if (status == 0)
-//                    g.drawImage(Assets.start, width/2 - 250, 95, 500, 400, null);
-//                else if(status == 1)
-//                    g.drawImage(Assets.continueGame, getWidth()/2 - 125, 
-//                            getHeight()/2 - 75, 250, 150, null);                
-           
-            
-            if (gameOver) {
-                g.drawImage(Assets.gameOver, player.getX() - 400, 
-                      player.getY() - 250, 800, 500, null);
-            }
-            if (mute) {
-                g.drawImage(Assets.mute, player.getX() - 200, player.getY() + 215, 30, 30, null);
-            }
-            //draw the score and lives 
-            if(this.isStarted()){
-                if(this.vidas == 3){
-                    g.drawImage(Assets.full_hearts, player.getX()+255, player.getY()-260,
-                        125, 75, null);
-                }else if(this.vidas == 2){
-                    g.drawImage(Assets.half_hearts, player.getX()+255, player.getY()-260,
-                        125, 75, null);
-                }else if(this.vidas == 1){
-                    g.drawImage(Assets.one_heart, player.getX()+255, player.getY()-260,
-                        125, 75, null);
+            if (!winGame) {
+                switch (getLevel()) {
+                    case 1:
+                        g.drawImage(Assets.main_lvl, 0, 0, 3200, 1536, null);
+                        break;
+                    case 2:
+                        g.drawImage(Assets.background2, 0, 0, width, height, null);
+                        break;
+                    case 3:
+                        g.drawImage(Assets.background3, 0, 0, width, height, null);
+                        break;
+                    case 4:
+                        g.drawImage(Assets.background4, 0, 0, width, height, null);
+                        break;
                 }
+
+              //  obstacles.forEach((obs) -> {
+              //      obs.render(g);
+              //  });
+
+                if (this.player.getY() > this.enemy.getY()) {
+                    enemy.render(g);
+                    player.render(g);
+                } else {
+                    player.render(g);
+                    enemy.render(g);
+                }
+                keys.forEach((key) -> {
+                    key.render(g);
+                });
+
+                if (this.getPlayer().isVisible()) {
+                    g.drawImage(Assets.shadow, player.getX() - 1500 - player.getWidth(), player.getY() - 950 - player.getHeight(),
+                            this.getWidth() * 4, this.getHeight() * 4, null);
+                } else {
+                    g.drawImage(Assets.hidden, player.getX() - 1500 - player.getWidth(), player.getY() - 950 - player.getHeight(),
+                            this.getWidth() * 4, this.getHeight() * 4, null);
+                }
+
+                //Render blood animation.
+                if (renderBlood) {
+                    g.drawImage(Assets.blood, player.getX() - 1500 - player.getWidth(), player.getY() - 950 - player.getHeight(),
+                            this.getWidth() * 4, this.getHeight() * 4, null);
+                }
+                //draw the different menus depending on game status
+
+                if(!this.isStarted() || (pauseMenu.getVar() == 3 && this.getKeyManager().enter)){
+                    menu.render(g);
+                }
+
+                if(introFlag){
+                    g.drawImage(Assets.intro,0, 0, 800, 500, null);
+                }
+    //                if (status == 0)
+    //                    g.drawImage(Assets.start, width/2 - 250, 95, 500, 400, null);
+    //                else if(status == 1)
+    //                    g.drawImage(Assets.continueGame, getWidth()/2 - 125, 
+    //                            getHeight()/2 - 75, 250, 150, null);                
+
+
+                if (gameOver) {
+                    g.drawImage(Assets.gameOver, player.getX() - 400, 
+                          player.getY() - 250, 800, 500, null);
+                }
+                if (mute) {
+                    g.drawImage(Assets.mute, player.getX() - 200, player.getY() + 215, 30, 30, null);
+                }
+                //draw the score and lives 
+                if(this.isStarted()){
+                    if(this.vidas == 3){
+                        g.drawImage(Assets.full_hearts, player.getX()+255, player.getY()-260,
+                            125, 75, null);
+                    }else if(this.vidas == 2){
+                        g.drawImage(Assets.half_hearts, player.getX()+255, player.getY()-260,
+                            125, 75, null);
+                    }else if(this.vidas == 1){
+                        g.drawImage(Assets.one_heart, player.getX()+255, player.getY()-260,
+                            125, 75, null);
+                    }
+                }
+                if(creditsFlag){
+                   g.drawImage(Assets.creditspic, 0, 0, 800, 500, null);
+                }
+                if(helpFlag){
+                   g.drawImage(Assets.help, 0, 0, 800, 500, null);
+                }
+                 if (pause) {
+                    pauseMenu.render(g);
+                }
+                g.setColor(Color.white);
+                g.setFont(new Font("default", Font.BOLD, 18));           
+
+                if(keysAlert) {
+                    if(3 - cantKeys > 1)
+                        g.drawString("" + (3 - cantKeys) + " keys missing!", 
+                                player.getX()-30, player.getY()-30);
+                    else
+                        g.drawString("" + (3 - cantKeys) + " key missing!", 
+                                player.getX()-30, player.getY()-30);
+                }
+                if(keysAlert2) {
+                    g.drawString("1 key missing!", player.getX()-30, player.getY()-30);
+                }
+                if(gameSavedMsg) {
+                    g.drawString("Game saved!", player.getX()-35, player.getY()-150);
+                }          
+            } else  {
+                g.drawImage(Assets.win, player.getX() - 400, 
+                          player.getY() - 250, 800, 500, null);
             }
-            if(creditsFlag){
-               g.drawImage(Assets.creditspic, 0, 0, 800, 500, null);
-            }
-            if(helpFlag){
-               g.drawImage(Assets.help, 0, 0, 800, 500, null);
-            }
-             if (pause) {
-                pauseMenu.render(g);
-            }
-            g.setColor(Color.white);
-            g.setFont(new Font("default", Font.BOLD, 18));           
-            
-            if(keysAlert) {
-                if(3 - cantKeys > 1)
-                    g.drawString("" + (3 - cantKeys) + " keys missing!", 
-                            player.getX()-30, player.getY()-30);
-                else
-                    g.drawString("" + (3 - cantKeys) + " key missing!", 
-                            player.getX()-30, player.getY()-30);
-            }
-            if(keysAlert2) {
-                g.drawString("1 key missing!", player.getX()-30, player.getY()-30);
-            }
-            if(gameSavedMsg) {
-                g.drawString("Game saved!", player.getX()-35, player.getY()-150);
-            }           
 
             bs.show();
             g2d.translate(-cam.getX(), -cam.getY()); //end of cam
             g.dispose();
         }
-
     }
 
     /**
