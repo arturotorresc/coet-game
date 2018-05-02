@@ -328,7 +328,7 @@ public class Game implements Runnable {
         shootTmpPl = 0;
         r = new Random();
         direction = 1;
-        vidas = 100;
+        vidas = 3;
         score = 0;
         gameOver = false;
         pause = false;
@@ -339,8 +339,6 @@ public class Game implements Runnable {
         restartMusicFlag = false;
         pauseMenu = new PauseMenu();
         creditsFlag = false;
-
-
     }
 
     /**
@@ -612,6 +610,9 @@ public class Game implements Runnable {
 
         //Checks to see whether the enemy attacked the player. 
         this.hitPlayer();
+        if(this.vidas == 0){
+            gameOver = true;
+        }
 
         scrollThroughMenu();
         startChaseMusic();
@@ -725,13 +726,7 @@ public class Game implements Runnable {
            
             
             if (gameOver) {
-                /*if (status == 2)
-                    g.drawImage(Assets.gameOver, getWidth()/2 - 200, 
-                            getHeight()/2 - 175, 400, 350, null);
-                else if (status == 3)
-                    g.drawImage(Assets.win, getWidth()/2 - 200, 
-                            getHeight()/2 - 175, 400, 350, null);
-                 */
+                g.drawImage(Assets.gameOver, -220, -150, 1768, 829, null);
             }
             if (mute) {
                 g.drawImage(Assets.mute, player.getX() - 200, player.getY() + 215, 30, 30, null);

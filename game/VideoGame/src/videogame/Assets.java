@@ -79,7 +79,7 @@ public class Assets {
         monster = ImageLoader.loadImage("/images/monster.png");
         continueGame = ImageLoader.loadImage("/images/continue.png");
         key = ImageLoader.loadImage("/images/key.png");
-        gameOver = ImageLoader.loadImage("/images/gameOver.png");
+        gameOver = ImageLoader.loadImage("/images/gameover.jpg");
         full_hearts = ImageLoader.loadImage("/images/hearts_full.png");
         half_hearts = ImageLoader.loadImage("/images/hearts_2.png");
         one_heart = ImageLoader.loadImage("/images/hearts_1.png");
