@@ -465,8 +465,8 @@ public class Game implements Runnable {
         restartMusicFlag = false;
         introFlag = false;
         creditsFlag = false;
-        menu = new Menu();
-        pauseMenu = new PauseMenu();
+        menu = new Menu(this);
+        pauseMenu = new PauseMenu(this);
         cantKeys = 0;
         
         Assets.rain.setLooping(true);
@@ -497,9 +497,9 @@ public class Game implements Runnable {
         hasKey = false;
         cantKeys = 0;
         mute = false;
-        menu = new Menu();
+        menu = new Menu(this);
         restartMusicFlag = false;
-        pauseMenu = new PauseMenu();
+        pauseMenu = new PauseMenu(this);
         creditsFlag = false;
         Assets.gameoverMusic.stop();
         Assets.ambientMusic.play();
@@ -1030,9 +1030,7 @@ public class Game implements Runnable {
             }
             g.setColor(Color.white);
             g.setFont(new Font("default", Font.BOLD, 18));
-            g.drawString("x: " + player.getX() + " y: " + player.getY(), 
-                    player.getX()-20, player.getY()-20);
-            g.drawString("k: " + cantKeys, player.getX(), player.getY()+80);
+            
             if(keysAlert) {
                 if(3 - cantKeys > 1)
                     g.drawString("" + (3 - cantKeys) + " keys missing!", 
