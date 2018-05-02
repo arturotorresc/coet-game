@@ -773,7 +773,6 @@ public class Game implements Runnable {
 //            Assets.ambientMusic.play();
 //            Assets.rain.getLooping();
 //            Assets.rain.play();
-//
 //        }
 
         //pause and unpause the game
@@ -1094,7 +1093,8 @@ public class Game implements Runnable {
            
             
             if (gameOver) {
-                g.drawImage(Assets.gameOver, -220, -150, 1768, 829, null);
+                g.drawImage(Assets.gameOver, player.getX() - 400, 
+                      player.getY() - 250, 800, 500, null);
             }
             if (mute) {
                 g.drawImage(Assets.mute, player.getX() - 200, player.getY() + 215, 30, 30, null);
