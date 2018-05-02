@@ -10,6 +10,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.ThreadLocalRandom;
 import java.awt.Point;
+import static java.lang.Math.abs;
 
 /**
  *
@@ -58,12 +59,23 @@ public class Enemy extends Item {
         this.wasChasing = false;
         this.activePatrol = 'A';
     }
-    
-    /**
-     * enemy circle size will determine the diameter of the circle.
-     * @param type
-     * @return width
-     */
+
+    public Point getPatrolA() {
+        return patrolA;
+    }
+
+    public void setPatrolA(Point patrolA) {
+        this.patrolA = patrolA;
+    }
+
+    public Point getPatrolB() {
+        return patrolB;
+    }
+
+    public void setPatrolB(Point patrolB) {
+        this.patrolB = patrolB;
+    }
+       
     
     /**
      * set which animation the enemy will have.
@@ -82,6 +94,11 @@ public class Enemy extends Item {
         }
     }
     
+    /**
+     * enemy circle size will determine the diameter of the circle.
+     * @param type
+     * @return width
+     */
     private int enemyCircleSize(int type){
         int size = 0;
         switch(type){
@@ -92,7 +109,7 @@ public class Enemy extends Item {
                 size = 550;
                 break;
             case 3:
-                size = 700;
+                size = 950;
                 break;
         }
         return size;
@@ -104,6 +121,46 @@ public class Enemy extends Item {
 
     public void setDirection(char direction) {
         this.direction = direction;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public Animation getEnemyUp() {
+        return enemyUp;
+    }
+
+    public void setEnemyUp(Animation enemyUp) {
+        this.enemyUp = enemyUp;
+    }
+
+    public Animation getEnemyDown() {
+        return enemyDown;
+    }
+
+    public void setEnemyDown(Animation enemyDown) {
+        this.enemyDown = enemyDown;
+    }
+
+    public Animation getEnemyLeft() {
+        return enemyLeft;
+    }
+
+    public void setEnemyLeft(Animation enemyLeft) {
+        this.enemyLeft = enemyLeft;
+    }
+
+    public Animation getEnemyRight() {
+        return enemyRight;
+    }
+
+    public void setEnemyRight(Animation enemyRight) {
+        this.enemyRight = enemyRight;
     }
     
     /**
@@ -133,9 +190,7 @@ public class Enemy extends Item {
             this.setY(this.getY() - speed);
             this.setDirection('u');
             this.enemyUp.tick();
-        }
-
-        if(p.getX() > this.getX()){
+        }else if(p.getX() > this.getX()){
             this.setX(this.getX() + speed);
             this.setDirection('r');
             this.enemyRight.tick();
@@ -157,24 +212,42 @@ public class Enemy extends Item {
     }
     
     private void chase(){
-        if(game.getPlayer().getY() > this.getY()){
-            this.setY(this.getY() + speed);
-            this.setDirection('d');
-            this.enemyDown.tick();
-        }else if(game.getPlayer().getY() < this.getY()){
-            this.setY(this.getY() - speed);
-            this.setDirection('u');
-            this.enemyUp.tick();
-        }
-        
-        if(game.getPlayer().getX() > this.getX()){
-            this.setX(this.getX() + speed);
-            this.setDirection('r');
-            this.enemyRight.tick();
-        }else if(game.getPlayer().getX() < this.getX()){
-            this.setX(this.getX() - speed);
-            this.setDirection('l');
-            this.enemyLeft.tick();
+        if (abs(game.getPlayer().getX() - this.getX()) < 200) {
+            if(game.getPlayer().getY() > this.getY()){
+                this.setY(this.getY() + speed);
+                this.setDirection('d');
+                this.enemyDown.tick();           
+            }else if(game.getPlayer().getY() < this.getY()){
+                this.setY(this.getY() - speed);
+                this.setDirection('u');
+                this.enemyUp.tick();            
+            } else if(game.getPlayer().getX() > this.getX()){
+                this.setX(this.getX() + speed);
+                this.setDirection('r');
+                this.enemyRight.tick();
+            } else if(game.getPlayer().getX() < this.getX()){
+                this.setX(this.getX() - speed);
+                this.setDirection('l');
+                this.enemyLeft.tick();
+            }
+        } else {
+            if(game.getPlayer().getX() > this.getX()){
+                this.setX(this.getX() + speed);
+                this.setDirection('r');
+                this.enemyRight.tick();
+            } else if(game.getPlayer().getX() <= this.getX()){
+                this.setX(this.getX() - speed);
+                this.setDirection('l');
+                this.enemyLeft.tick();
+            } else if(game.getPlayer().getY() > this.getY()){
+                this.setY(this.getY() + speed);
+                this.setDirection('d');
+                this.enemyDown.tick();           
+            }else if(game.getPlayer().getY() <= this.getY()){
+                this.setY(this.getY() - speed);
+                this.setDirection('u');
+                this.enemyUp.tick();            
+            }
         }
         
         this.wasChasing = true;

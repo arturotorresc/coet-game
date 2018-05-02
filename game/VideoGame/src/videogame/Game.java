@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 import java.util.Random;
@@ -79,6 +80,16 @@ public class Game implements Runnable {
     private boolean keysAlert2; //to alert of missing keys
     private int keysAlertTmp2; //to control showing of message
     private int help = 0;
+
+    //to control enemy's movement when crashing
+    private boolean enemyCrash; 
+    private int enemyCrashTmp;
+    private boolean enemyCrash2; 
+    private int enemyCrashTmp2;
+    //to control enemy's detection of the player
+    private boolean enemyNotDetect;
+    private int enemyNotDetectTmp;
+
     private boolean creditsFlag;  // creditsFlag 
     private int credits = 0;
 
@@ -448,7 +459,7 @@ public class Game implements Runnable {
         pause = false;
         display.getJframe().addKeyListener(keyManager);
         cam = new Camera(0, 0);
-        enemy = new Enemy(getWidth() / 2 + 300, getHeight() / 2, 62, 77, 0, 0, 1, 1, 1, this);
+        enemy = new Enemy(getWidth() / 2 + 300, getHeight() / 2, 62, 77, 0, 0, 3, 1, 1, this);
         keys = new ArrayList<Powerup>();
         keys.add(new Powerup(485, 1110, 35, 35, 0, 0, this));
         keys.add(new Powerup(2513, 1385, 35, 35, 0, 0, this));
@@ -557,15 +568,14 @@ public class Game implements Runnable {
             this.setVidas(this.getVidas()-1);
             Assets.monsterAttack.play();
             if(this.enemy.getX() > this.player.getX()){
-                this.enemy.setX(this.enemy.getX() + 100);
+                this.enemy.setX(this.enemy.getX() + 50);
             } else {
-                this.enemy.setX(this.enemy.getX() - 100);
+                this.enemy.setX(this.enemy.getX() - 50);
             }
             renderBlood = true;
             if (timerFlag) {
                 timerFlag = false;
                 this.startBloodAnimation();
-
             }
         }
     }
@@ -625,7 +635,6 @@ public class Game implements Runnable {
         if(this.getKeyManager().enter && !this.isStarted() && menu.getVar() == 5){
             System.exit(0);
         }
-
     }
     
     private void scrollThroughPauseMenu() {
@@ -830,7 +839,7 @@ public class Game implements Runnable {
         if (!pause && !gameOver) {
             if (this.isStarted()) {
                 player.tick();
-               // enemy.tick();
+                enemy.tick();
             }
             //wait 1.5 seconds to shoot again
             if (shootTmpPl >= 25) {
@@ -850,7 +859,6 @@ public class Game implements Runnable {
             Assets.gameoverMusic.play();
         }
                
-
         obstacles.forEach((obs) ->{
            if(player.intersects(obs)) {
                switch(player.getDirection()) {
@@ -869,9 +877,79 @@ public class Game implements Runnable {
                }
                if (this.getKeyManager().isHide() && obs.isHideable()) {
                     player.setVisible(false);
+               }               
+           }
+           if (enemy.intersects(obs)) {
+               switch(enemy.getDirection()) {
+                   case 'u':
+                       enemy.setY(enemy.getY()+1);
+                       enemyCrash = true;
+                       break;
+                   case 'd':
+                       enemy.setY(enemy.getY()-1);
+                       enemyCrash = true;                       
+                       break;
+                   case 'r':
+                       enemy.setX(enemy.getX()-1);
+                       enemyCrash2 = true;
+                       break;
+                   case 'l':
+                       enemy.setX(enemy.getX()+1);
+                       enemyCrash2 = true;
+                       break;
                }
            }
+           
+           if(enemyCrash) {
+               if (enemy.getX() >= player.getX()) {
+                            enemy.setX(enemy.getX() - 1);
+                            enemy.setDirection('l');
+                            enemy.getEnemyRight().tick();
+                }else if (enemy.getX() < player.getX()) {
+                            enemy.setX(enemy.getX() + 1);
+                            enemy.setDirection('r');
+                            enemy.getEnemyLeft().tick();
+                }
+               enemyCrashTmp++;
+           }
+           if(enemyCrashTmp >= 3) {
+               enemyCrash = false;
+               enemyCrashTmp = 0;
+           }
+           
+           if(enemyCrash2) {
+               if (enemy.getY() >= player.getY()) {
+                            enemy.setY(enemy.getY() - 1);
+                            enemy.setDirection('U');
+                            enemy.getEnemyUp().tick();
+                }else if (enemy.getY() < player.getY()) {
+                            enemy.setY(enemy.getY() + 1);
+                            enemy.setDirection('d');
+                            enemy.getEnemyDown().tick();
+                }
+               enemyCrashTmp2++;
+           }
+           if(enemyCrashTmp2 >= 3) {
+               enemyCrash2 = false;
+               enemyCrashTmp2 = 0;
+           }
         });
+        
+        if(!enemy.detects(this.player)) {
+            enemyNotDetect = true;
+        } else if (enemy.detects(this.player)) {
+            enemyNotDetect = false;
+            enemyNotDetectTmp = 0;
+        }
+        
+        if (enemyNotDetect) {
+            enemyNotDetectTmp++;
+        }
+        
+        if (enemyNotDetectTmp >= 150) {
+            enemy.setX(player.getX()-150);
+            enemy.setY(player.getY()-200);
+        }
         
         if ((player.getX() > 2730 && player.getX() < 2745) &&
                 (player.getY() > 1030 && player.getY() < 1049) &&
