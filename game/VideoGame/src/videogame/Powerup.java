@@ -14,11 +14,29 @@ import java.awt.Graphics;
 public class Powerup extends Item {
     private int x; 
     private int y;
+    private Game g;
+    private boolean moving;
+    private int cantKeys;
 
-    public Powerup(int x, int y, int width, int height, int ellipseWidth, int ellipseHeight) {
+    public Powerup(int x, int y, int width, int height, int ellipseWidth, int ellipseHeight, Game g) {
         super(x, y, width, height, ellipseWidth, ellipseHeight);
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.g = g;
+        this.moving = false;
     }
 
+    public boolean isMoving() {
+        return moving;
+    }
+
+    public void setMoving(boolean moving, int cantKeys) {
+        this.moving = moving;
+        this.cantKeys = cantKeys;
+    }
+    
     public int getX() {
         return x;
     }
@@ -36,6 +54,10 @@ public class Powerup extends Item {
     }
     @Override
     public void tick() {
+        if(this.isMoving()) {
+            this.setX(g.getPlayer().getX()+(30*this.cantKeys) - 50);
+            this.setY(g.getPlayer().getY()- 40);
+        }            
     }
 
     @Override
