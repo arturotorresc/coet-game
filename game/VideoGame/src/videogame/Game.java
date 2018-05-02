@@ -635,6 +635,13 @@ public class Game implements Runnable {
         if (this.getKeyManager().enter && !this.isStarted() && menu.getVar() == 2) {
             file.loadFile(this);
             setStarted(true);
+            keys.forEach((key) -> {
+            key.tick();            
+            if (player.intersects(key)) {
+                key.setMoving(true, cantKeys);
+                cantKeys++; 
+            }            
+        });
         }
         if (this.getKeyManager().enter && !this.isStarted() && menu.getVar() == 3){
             creditsFlag = true;
@@ -1011,9 +1018,9 @@ public class Game implements Runnable {
         }
         
         keys.forEach((key) -> {
-            key.tick();
-            key.setMoving(true, cantKeys);
+            key.tick();            
             if (player.intersects(key)) {
+                key.setMoving(true, cantKeys);
                 cantKeys++; 
             }            
         }); 
