@@ -10,6 +10,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 import java.util.Random;
@@ -897,6 +898,16 @@ public class Game implements Runnable {
                        enemyCrash2 = true;
                        break;
                }
+               int posX, posY;
+               if (enemyNotDetectTmp >= 150) {
+                  do {
+                     posX = player.getX()-150;
+                     posY = player.getY()-200;
+                  } while(obs.intersects(new Rectangle(posX, 
+                          posY, 50, 62)));
+                  enemy.setX(posX);
+                  enemy.setY(posY);
+               }
            }
            
            if(enemyCrash) {
@@ -919,7 +930,7 @@ public class Game implements Runnable {
            if(enemyCrash2) {
                if (enemy.getY() >= player.getY()) {
                             enemy.setY(enemy.getY() - 1);
-                            enemy.setDirection('U');
+                            enemy.setDirection('u');
                             enemy.getEnemyUp().tick();
                 }else if (enemy.getY() < player.getY()) {
                             enemy.setY(enemy.getY() + 1);
@@ -946,6 +957,7 @@ public class Game implements Runnable {
         }
         
         if (enemyNotDetectTmp >= 150) {
+            
             enemy.setX(player.getX()-150);
             enemy.setY(player.getY()-200);
         }
