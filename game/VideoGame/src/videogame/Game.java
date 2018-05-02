@@ -74,6 +74,7 @@ public class Game implements Runnable {
     private int keysBlockTmp; // to control the blocking of keys temporarily
 
     private boolean creditsFlag;  // creditsFlag 
+    private int credits;
 
     /**
      * to create title, width and height and set the game is still not running
@@ -587,7 +588,6 @@ public class Game implements Runnable {
         }
         if (this.getKeyManager().enter && !this.isStarted() && menu.getVar() == 3){
              creditsFlag = true;
-             
          }
         if(this.getKeyManager().enter && !this.isStarted() && menu.getVar() == 5){
             System.exit(0);
@@ -758,22 +758,30 @@ public class Game implements Runnable {
             }
         }
 
-        if (gameSavedMsgTmp >= 75) {
+        if (gameSavedMsgTmp >= 70) {
             gameSavedMsg = false;
             gameSavedMsgTmp = 0;
-            }           
+        }           
           
         if (hasKey) {
             key.setX(player.getX() + 10);
             key.setY(player.getY() - 240);
         }
+        if (creditsFlag) {
+            credits++;
+         }
+        if (credits >= 150) {
+            creditsFlag = false;
+            credits = 0;
+        }
 
         //Checks to see whether the enemy attacked the player. 
         this.hitPlayer();
 
-        scrollThroughMenu();
-        startChaseMusic();
-        
+       if(!mute){
+            scrollThroughMenu();
+            startChaseMusic();
+       }
 
         //Allows sprinting by the player.
         sprint();
