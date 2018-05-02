@@ -19,6 +19,7 @@ public class Player extends Item{
     //private int width;
     //private int height;
     private char direction; // To know which direction the player is facing.
+    private char antDirection; //to know the anteriro direction
     private Game game;
     private boolean visible; // This is false when the player is hidden.
     private int sprint;     // extra speed gained when sprinting.
@@ -98,34 +99,59 @@ public class Player extends Item{
         this.direction = direction;
     }
     /**
+     * To get player's anterior direction
+     * @return antDirection
+     */
+    public char getAntDirection() {
+        return antDirection;
+    }
+    /**
+     * To set player's anterior direction
+     * @param antDirection 
+     */
+    public void setAntDirection(char antDirection) {
+        this.antDirection = antDirection;
+    }  
+    
+    private void changeDir(char dir) {
+        this.antDirection = dir;
+    }
+    /**
      * To tick the player
      */
     @Override
     public void tick() {
-        // moving player depending on flags
-        if (game.getKeyManager().up) {
-           setY(getY() - (3 + sprint));
-           this.setVisible(true);
-           this.setDirection('u');
-           this.playerUp.tick();
-        }
-        if (game.getKeyManager().down) {
-           setY(getY() + (3 + sprint));
-           this.setVisible(true);
-           this.setDirection('d');
-           this.playerDown.tick();
-        }
-        if (game.getKeyManager().left) {
-            setX(getX() - (3 + sprint));
-            this.setVisible(true);
-            this.setDirection('l');
-            this.playerLeft.tick();
-        }
-        if (game.getKeyManager().right) {
-            setX(getX() + (3 + sprint));
-            this.setVisible(true);
-            this.setDirection('r');
-            this.playerRight.tick();
+        // moving player depending on 
+        if(!game.isKeysBlocked()) {
+            if (game.getKeyManager().up) {
+               setY(getY() - (3 + sprint));
+               this.setVisible(true);
+               if(this.getDirection() != 'u')
+                   changeDir(this.getDirection());
+               this.setDirection('u');
+               this.playerUp.tick();
+            }else if (game.getKeyManager().down) {
+               setY(getY() + (3 + sprint));
+               this.setVisible(true);
+               if(this.getDirection() != 'd')
+                   changeDir(this.getDirection());
+               this.setDirection('d');
+               this.playerDown.tick();
+            }else if (game.getKeyManager().left) {
+                setX(getX() - (3 + sprint));
+                this.setVisible(true);
+                if(this.getDirection() != 'l')
+                    changeDir(this.getDirection());
+                this.setDirection('l');
+                this.playerLeft.tick();
+            }else if (game.getKeyManager().right) {
+                setX(getX() + (3 + sprint));
+                this.setVisible(true);
+                if(this.getDirection() != 'r')
+                    changeDir(this.getDirection());
+                this.setDirection('r');
+                this.playerRight.tick();
+            }
         }
         // collision with walls
         /*if (getY() + 20 >= game.getHeight()) {

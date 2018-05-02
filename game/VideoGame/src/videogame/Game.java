@@ -62,11 +62,17 @@ public class Game implements Runnable {
     private boolean sprintFlag; // flag to cooldown sprint by the player.
     public boolean switchMusicFlag; // flag to know if music can be switched.
     private SwitchMusic switchMusic; // to control the switching of music.
+    private boolean gameSavedMsg; // to show a message when game is saved
+    private int gameSavedMsgTmp; //to control the message showed temporarily
     private boolean mute; // to mute the game 
     private boolean restartMusicFlag; // to restartMusic
     private Timer introTimer;   // to show the intro if its a new game.
     private TimerTask showTimer; // show the timer.
     private boolean introFlag;  // introflag to only show the intro once.
+
+    private boolean keysBlocked; //to block keys when moving automatically
+    private int keysBlockTmp; // to control the blocking of keys temporarily
+
     private boolean creditsFlag;  // creditsFlag 
 
     /**
@@ -84,6 +90,7 @@ public class Game implements Runnable {
         started = false;
         status = 0;
         keyManager = new KeyManager();
+        keysBlocked = false;
     }
 
     /**
@@ -274,6 +281,133 @@ public class Game implements Runnable {
     public void setLevel(int level) {
         this.level = level;
     }    
+    
+    /**
+     * Initialize all objects for collisions
+     */
+    private void initObstacles() {
+        obstacles = new ArrayList<Obstacle>();        
+        obstacles.add(new Obstacle(0, 0, 3200, 20, false, 0, 0));
+        obstacles.add(new Obstacle(-10, 0, 1, 1536, false, 0, 0));
+        obstacles.add(new Obstacle(3199, 0, 1, 1536, false, 0, 0));
+        
+        obstacles.add(new Obstacle(0, 20, 490, 60, false, 0, 0)); // 1 p
+        obstacles.add(new Obstacle(495, 130, 10, 50, true, 0, 0)); // 1 ob
+        obstacles.add(new Obstacle(240, 90, 200, 10, false, 0, 0)); // 1 ob
+        obstacles.add(new Obstacle(135, 80, 70, 28, true, 0, 0)); // 1 ob
+        
+        obstacles.add(new Obstacle(525, 0, 40, 340, false, 0, 0)); // 2 p
+        obstacles.add(new Obstacle(1265, 0, 35, 370, false, 0, 0)); // 2 p
+        
+        obstacles.add(new Obstacle(1305, 20, 1050, 70, false, 0, 0)); // 3 p
+        obstacles.add(new Obstacle(2375, 20, 45, 135, false, 0, 0)); // 3 p
+        obstacles.add(new Obstacle(2375, 325, 45, 135, false, 0, 0)); // 3 p
+        obstacles.add(new Obstacle(1305, 325, 475, 45, false, 0, 0)); //3 p
+        obstacles.add(new Obstacle(1900, 325, 475, 45, false, 0, 0)); // 3 p
+        for(int i = 0; i < 8; i++) {
+            obstacles.add(new Obstacle(1390+(i*128), 120, 5, 25, true, 0, 0)); // 3 ob
+            obstacles.add(new Obstacle(1390+(i*128), 242, 5, 20, true, 0, 0)); // 3 ob
+        }
+        for(int i = 0; i < 7; i++) {
+            obstacles.add(new Obstacle(1455+(i*128), 105, 5, 5, false, 0, 0)); // 3 ob
+        }
+        
+        
+        obstacles.add(new Obstacle(2420, 20, 780, 60, false, 0, 0)); // 4 p
+        obstacles.add(new Obstacle(2885, 85, 200, 10, false, 0, 0)); // 4 ob
+        obstacles.add(new Obstacle(3085, 90, 115, 10, false, 0, 0)); // 4 ob
+        obstacles.add(new Obstacle(3130, 180, 70, 50, true, 0, 0)); // 4 ob
+        obstacles.add(new Obstacle(3120, 180, 1, 125, false, 0, 0)); // 4 ob
+        obstacles.add(new Obstacle(3120, 390, 85, 110, true, 0, 0)); // 4 ob
+        obstacles.add(new Obstacle(2825, 510, 375, 80, false, 0, 0)); // 4 p
+        obstacles.add(new Obstacle(2325, 510, 380, 80, false, 0, 0)); // 4 p
+        obstacles.add(new Obstacle(2570, 395, 90, 5, true, 0, 0)); // 4 ob
+        obstacles.add(new Obstacle(2857, 395, 90, 5, true, 0, 0)); // 4 ob
+        obstacles.add(new Obstacle(2775, 230, 50, 40, true, 0, 0)); // 4 ob
+        obstacles.add(new Obstacle(2430, 330, 15, 35, false, 0, 0)); // 4 ob
+        obstacles.add(new Obstacle(2430, 430, 15, 35, false, 0, 0)); // 4 ob        
+        
+        obstacles.add(new Obstacle(0, 480, 180, 80, false, 0, 0)); // 5 p
+        obstacles.add(new Obstacle(300, 480, 460, 80, false, 0, 0)); // 5 p
+        obstacles.add(new Obstacle(330, 560, 110, 25, true, 0, 0)); // 5 ob
+        obstacles.add(new Obstacle(525, 560, 110, 25, true, 0, 0)); // 5 ob
+        obstacles.add(new Obstacle(750, 570, 15, 170, false, 0, 0)); // 5 ob
+        obstacles.add(new Obstacle(425, 715, 5, 45, true, 0, 0)); // 5 ob
+        obstacles.add(new Obstacle(685, 715, 5, 45, true, 0, 0)); // 5 ob
+        obstacles.add(new Obstacle(520, 690, 70, 5, true, 0, 0)); //5 ob
+        obstacles.add(new Obstacle(520, 815, 70, 5, true, 0, 0)); // 5 ob
+        
+        obstacles.add(new Obstacle(815, 510, 690, 120, false, 0, 0)); // 6 p
+        obstacles.add(new Obstacle(1580, 510, 670, 120, false, 0, 0)); // 6 p
+        obstacles.add(new Obstacle(1505, 510, 75, 80, false, 0, 0)); // 6 p
+        obstacles.add(new Obstacle(2280, 510, 45, 430, false, 0, 0)); // 6 p
+        obstacles.add(new Obstacle(780, 482, 45, 410, false, 0, 0)); // 6 p
+        obstacles.add(new Obstacle(2067, 776, 81, 20, true, 0, 0)); // 6 ob
+        obstacles.add(new Obstacle(1977, 730, 60, 70, true, 0, 0)); // 6 ob
+        obstacles.add(new Obstacle(1800, 632, 10, 118, false, 0, 0)); // 6 ob
+        obstacles.add(new Obstacle(1700, 745, 90, 10, false, 0, 0)); // 6 ob
+        obstacles.add(new Obstacle(1380, 650, 105, 5, false, 0, 0)); // 6 ob
+        obstacles.add(new Obstacle(1078, 1536, 695, 5, false, 0, 0)); // 6 p
+        obstacles.add(new Obstacle(1780, 1390, 490, 155, false, 0, 0)); //6 p
+        obstacles.add(new Obstacle(2215, 960, 55, 95, false, 0, 0)); // 6 p
+        obstacles.add(new Obstacle(989, 631, 15, 75, false, 0, 0)); // 6 ob
+        obstacles.add(new Obstacle(940, 700, 55, 5, false, 0, 0)); // 6 ob
+        obstacles.add(new Obstacle(940, 705, 15, 160, false, 0, 0)); // 6 ob
+        obstacles.add(new Obstacle(940, 870, 245, 5, false, 0, 0)); // 6 ob
+        obstacles.add(new Obstacle(1200, 870, 3, 545, false, 0, 0)); // 6 ob
+        obstacles.add(new Obstacle(1205, 1415, 345, 10, false, 0, 0)); // 6 ob
+        obstacles.add(new Obstacle(1550, 1260, 5, 160, false, 0, 0)); // 6 ob
+        obstacles.add(new Obstacle(1550, 1250, 85, 10, false, 0, 0)); // 6 ob
+        obstacles.add(new Obstacle(1740, 1250, 345, 10, false, 0, 0)); // 6 ob
+        obstacles.add(new Obstacle(2090, 1090, 5, 160, false, 0, 0)); // 6 ob
+        obstacles.add(new Obstacle(1870, 1090, 230, 10, false, 0, 0)); //6 ob
+        obstacles.add(new Obstacle(1870, 900, 5, 190, false, 0, 0)); // 6 ob
+        obstacles.add(new Obstacle(1710, 900, 160, 5, false, 0, 0)); // 6 ob
+        obstacles.add(new Obstacle(1710, 880, 5, 20, false, 0, 0)); // 6 ob
+        obstacles.add(new Obstacle(2060, 1165, 65, 10, true, 0, 0)); // 6 ob
+        obstacles.add(new Obstacle(1287, 1100, 485, 5, false, 0, 0)); // 6 ob
+        obstacles.add(new Obstacle(1430, 1045, 60, 65, true, 0, 0)); // 6 ob
+        obstacles.add(new Obstacle(910, 780, 55, 10, true, 0, 0)); // 6 ob
+        obstacles.add(new Obstacle(1240, 1375, 10, 55, true, 0, 0)); // 6 ob
+        
+        obstacles.add(new Obstacle(2720, 530, 15, 25, false, 0, 0)); // 7 p
+        obstacles.add(new Obstacle(2800, 530, 20, 25, false, 0, 0)); // 7 p
+        obstacles.add(new Obstacle(2400, 590, 25, 35, true, 0, 0)); // 7 ob
+        obstacles.add(new Obstacle(2485, 590, 25, 30, true, 0, 0)); // 7 ob
+        obstacles.add(new Obstacle(2565, 590, 20, 35, true, 0, 0)); // 7 ob
+        obstacles.add(new Obstacle(2635, 590, 10, 25, false, 0, 0)); // 7 ob
+        obstacles.add(new Obstacle(2860, 590, 35, 20, false, 0, 0)); // 7 ob
+        obstacles.add(new Obstacle(3050, 590, 35, 20, false, 0, 0)); // 7 ob
+        obstacles.add(new Obstacle(2990, 658, 10, 35, false, 0, 0)); // 7 ob
+        obstacles.add(new Obstacle(2925, 680, 5, 10, false, 0, 0)); // 7 ob
+        obstacles.add(new Obstacle(2890, 740, 135, 30, true, 0, 0)); // 7 ob
+        obstacles.add(new Obstacle(2945, 770, 20, 5, true, 0, 0)); // 7 ob
+        obstacles.add(new Obstacle(2935, 840, 50, 30, true, 0, 0)); // 7 ob
+        obstacles.add(new Obstacle(2550, 840, 50, 30, true, 0, 0)); // 7 ob
+        obstacles.add(new Obstacle(2550, 740, 100, 30, true, 0, 0)); // 7 ob
+        obstacles.add(new Obstacle(2560, 770, 20, 5, true, 0, 0)); // 7 ob
+        
+        obstacles.add(new Obstacle(0, 1466, 1070, 50, false, 0, 0)); // 8 p
+        obstacles.add(new Obstacle(0, 995, 1070, 50, false, 0, 0)); // 8 p
+        obstacles.add(new Obstacle(360, 1045, 65, 15, true, 0, 0)); // 8 ob
+        obstacles.add(new Obstacle(585, 1045, 75, 15, true, 0, 0)); // 8 ob
+        obstacles.add(new Obstacle(390, 1060, 15, 15, true, 0, 0)); // 8 ob
+        obstacles.add(new Obstacle(635, 1060, 15, 15, true, 0, 0)); // 8 ob
+        obstacles.add(new Obstacle(0, 1175, 10, 20, true, 0, 0));// 8 ob
+        obstacles.add(new Obstacle(0, 1265, 10, 25, true, 0, 0)); // 8 ob
+                
+        obstacles.add(new Obstacle(2370, 1466, 800, 50, false, 0, 0)); //9 p
+        obstacles.add(new Obstacle(2310, 1100, 45, 436, false, 0, 0)); //9 p
+        obstacles.add(new Obstacle(2355, 960, 375, 115, false, 0, 0)); // 9 p
+        obstacles.add(new Obstacle(2795, 960, 375, 115, false, 0, 0)); // 9 p
+        obstacles.add(new Obstacle(2730, 960, 65, 60, false, 0, 0)); // 9 p
+        obstacles.add(new Obstacle(2540, 1090, 100, 5, false, 0, 0)); // 9 ob
+        obstacles.add(new Obstacle(2355, 1100, 90, 15, false, 0, 0)); //9 ob
+        obstacles.add(new Obstacle(3090, 1100, 90, 15, false, 0, 0)); //9 ob
+        obstacles.add(new Obstacle(2450, 1230, 345, 110, true, 0, 0)); //9 ob
+        
+    }
+    
     /**
      * initializing the variables of the game
      */
@@ -281,7 +415,7 @@ public class Game implements Runnable {
         display = new Display(title, getWidth(), getHeight());
         Assets.init();
         player = new Player(getWidth() / 2, getHeight() / 2, 50, 62, 700, 700, this);
-        obstacles = new ArrayList<Obstacle>();
+        initObstacles();
         canShoot = true;
         shootTmpPl = 0;
         r = new Random();
@@ -564,6 +698,22 @@ public class Game implements Runnable {
     public KeyManager getKeyManager() {
         return keyManager;
     }
+    /**
+     * To get if keys are blocked
+     * @return keysBlocked
+     */
+    public boolean isKeysBlocked() {
+        return keysBlocked;
+    }
+    /**
+     * To set if keys are blocked
+     * @param keysBlocked 
+     */
+    public void setKeysBlocked(boolean keysBlocked) {
+        this.keysBlocked = keysBlocked;
+    }
+    
+    
 
     /**
      * To tick the game
@@ -598,15 +748,24 @@ public class Game implements Runnable {
             
             if (this.getKeyManager().enter && pauseMenu.getVar() == 1){
                 file.saveFile(this);
+                gameSavedMsg = true;
             }
             if(this.getKeyManager().enter && pauseMenu.getVar() == 2){
                 pause = !pause;
             }
             if(this.getKeyManager().enter && pauseMenu.getVar() == 3){
                 restart();
+            }
+        }
 
+        if (gameSavedMsgTmp >= 75) {
+            gameSavedMsg = false;
+            gameSavedMsgTmp = 0;
             }           
           
+        if (hasKey) {
+            key.setX(player.getX() + 10);
+            key.setY(player.getY() - 240);
         }
 
         //Checks to see whether the enemy attacked the player. 
@@ -634,11 +793,7 @@ public class Game implements Runnable {
                 shootTmpPl = 0;
             }
         }
-
-        if (this.getKeyManager().isHide()) {
-
-        }
-
+        
         //If lives == 0 game is over with status 2 (lose)
         if (vidas == 0) {
             gameOver = true;
@@ -653,7 +808,55 @@ public class Game implements Runnable {
             hasKey = true;
         }
         
+
+        obstacles.forEach((obs) ->{
+           if(player.intersects(obs)) {
+               switch(player.getDirection()) {
+                   case 'u':
+                       player.setY(player.getY()+3);
+                       break;
+                   case 'd':
+                       player.setY(player.getY()-3);
+                       break;
+                   case 'r':
+                       player.setX(player.getX()-3);
+                       break;
+                   case 'l':
+                       player.setX(player.getX()+3);
+                       break;
+               }
+               if (this.getKeyManager().isHide() && obs.isHideable()) {
+                    player.setVisible(false);
+               }
+           }
+        });
         
+        if ((player.getX() > 2730 && player.getX() < 2745) &&
+                (player.getY() > 1030 && player.getY() < 1049) &&
+                player.getDirection() == 'u') {
+            keysBlocked = true;
+            player.setX(1529);
+            player.setY(605);
+            player.setDirection('d');            
+        }
+        else if ((player.getX() > 1521 && player.getX() < 1536) &&
+                (player.getY() > 600 && player.getY() < 615) &&
+                player.getDirection() == 'u') {
+            keysBlocked = true;
+            player.setX(2744);
+            player.setY(1046);
+            player.setDirection('d');
+        }
+        
+        if (keysBlocked) {
+            keysBlockTmp++;
+            player.setY(player.getY()+2);
+        }
+        
+        if (keysBlockTmp >= 25) {
+            keysBlocked = false;
+            keysBlockTmp = 0;
+        }        
     }
 
     /**
@@ -689,6 +892,10 @@ public class Game implements Runnable {
                     g.drawImage(Assets.background4, 0, 0, width, height, null);
                     break;
             }
+            
+          //  obstacles.forEach((obs) -> {
+          //      obs.render(g);
+          //  });
 
             if (this.player.getY() > this.enemy.getY()) {
                 enemy.render(g);
@@ -755,6 +962,9 @@ public class Game implements Runnable {
             }
             g.setColor(Color.white);
             g.setFont(new Font("default", Font.BOLD, 18));
+            if(gameSavedMsg) {
+                g.drawString("Game saved!", player.getX()-35, player.getY()-150);
+            }
             
 
             bs.show();

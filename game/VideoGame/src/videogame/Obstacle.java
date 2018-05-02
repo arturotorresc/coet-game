@@ -5,8 +5,8 @@
  */
 package videogame;
 
+import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 
 /**
  *
@@ -15,13 +15,11 @@ import java.awt.image.BufferedImage;
 public class Obstacle extends Item {
     
     private boolean hideable;
-    private BufferedImage drawing;
 
     public Obstacle(int x, int y, int width, int height, boolean hideable,
-            int ellipseWidth, int ellipseHeight, BufferedImage drawing) {
+            int ellipseWidth, int ellipseHeight) {
         super(x, y, width, height, ellipseWidth, ellipseHeight);
         this.hideable = hideable;
-        this.drawing = drawing;
     }
     
     /**
@@ -49,8 +47,9 @@ public class Obstacle extends Item {
     }
 
     @Override
-    public void render(Graphics g) {
-        g.drawImage(drawing, getX(), getY(), getWidth(), getHeight(), null);//To change body of generated methods, choose Tools | Templates.
+    public void render(Graphics g) { 
+        g.setColor(Color.red);
+        g.drawRect(getX(), getY(), getWidth(), getHeight());
     }
     
 }
