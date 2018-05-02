@@ -11,6 +11,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 /**
  * Class to save and load files for saving the game
@@ -36,7 +37,9 @@ public class Files {
             // actual level
             printWriter.println("" + game.getLevel());
             // has key? (boolean)
-            printWriter.println("" + game.isHasKey());
+            printWriter.println("" + game.isHasKey());            
+            //cant keys
+            printWriter.println("" + game.getCantKeys());
             
             printWriter.close();
             
@@ -76,6 +79,10 @@ public class Files {
             line = bufferedReader.readLine();
             // Setting if player has key
             game.setHasKey(Boolean.parseBoolean(line));
+                        
+            line = bufferedReader.readLine();
+            game.setCantKeys(Integer.parseInt(line));
+            
             
             
         } catch(IOException ioe){
