@@ -103,13 +103,13 @@ public class Enemy extends Item {
         int size = 0;
         switch(type){
             case 1:
-                size = 450;
+                size = 350;
                 break;
             case 2:
-                size = 550;
+                size = 450;
                 break;
             case 3:
-                size = 950;
+                size = 550;
                 break;
         }
         return size;

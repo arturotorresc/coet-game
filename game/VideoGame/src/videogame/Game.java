@@ -470,7 +470,7 @@ public class Game implements Runnable {
         pause = false;
         display.getJframe().addKeyListener(keyManager);
         cam = new Camera(0, 0);
-        enemy = new Enemy(getWidth() / 2 + 300, getHeight() / 2, 62, 77, 0, 0, 3, 1, 1, this);
+        enemy = new Enemy(getWidth() / 2 + 800, getHeight() / 2, 62, 77, 0, 0, 3, 1, 1, this);
         keys = new ArrayList<Powerup>();
         keys.add(new Powerup(485, 1110, 35, 35, 0, 0, this));
         keys.add(new Powerup(2513, 1385, 35, 35, 0, 0, this));
@@ -881,16 +881,16 @@ public class Game implements Runnable {
            if(player.intersects(obs)) {
                switch(player.getDirection()) {
                    case 'u':
-                       player.setY(player.getY()+3);
+                       player.setY(player.getY()+ (3 + player.getSprint()));
                        break;
                    case 'd':
-                       player.setY(player.getY()-3);
+                       player.setY(player.getY()-(3 + player.getSprint()));
                        break;
                    case 'r':
-                       player.setX(player.getX()-3);
+                       player.setX(player.getX()-(3 + player.getSprint()));
                        break;
                    case 'l':
-                       player.setX(player.getX()+3);
+                       player.setX(player.getX()+(3 + player.getSprint()));
                        break;
                }
                if (this.getKeyManager().isHide() && obs.isHideable()) {
@@ -917,7 +917,7 @@ public class Game implements Runnable {
                        break;
                }
                int posX, posY;
-               if (enemyNotDetectTmp >= 150) {
+               if (enemyNotDetectTmp >= 1750) {
                   do {
                      posX = player.getX()-150;
                      posY = player.getY()-200;
@@ -974,10 +974,28 @@ public class Game implements Runnable {
             enemyNotDetectTmp++;
         }
         
-        if (enemyNotDetectTmp >= 150) {
+        if (enemyNotDetectTmp >= 1750) {
             
-            enemy.setX(player.getX()-150);
-            enemy.setY(player.getY()-200);
+            switch(player.getDirection()) {
+                case 'u':
+                    enemy.setX(player.getX());
+                    enemy.setY(player.getY() + 150);
+                    break;
+                case 'd':
+                    enemy.setX(player.getX());
+                    enemy.setY(player.getY() - 150);
+                    break;
+                case 'l':
+                    enemy.setX(player.getX()-150);
+                    enemy.setY(player.getY());
+                    break;
+                case 'r':
+                    enemy.setX(player.getX()+150);
+                    enemy.setY(player.getY());
+                    break;
+                default:
+                    break;
+            }
         }
         
         if ((player.getX() > 2730 && player.getX() < 2745) &&
